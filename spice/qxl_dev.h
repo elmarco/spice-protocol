@@ -33,20 +33,10 @@
 #define _H_QXL_DEV
 
 #include <spice/types.h>
+#include <spice/barrier.h>
 
 #include "ipc_ring.h"
 #include "draw.h"
-
-#ifdef __GNUC__
-#ifdef __i386__
-#define mb() __asm__ __volatile__ ("lock; addl $0,0(%%esp)": : :"memory")
-#else
-//mfence
-#define mb() __asm__ __volatile__ ("lock; addl $0,0(%%rsp)": : :"memory")
-#endif
-#else
-#define mb() __asm {lock add [esp], 0}
-#endif
 
 #include <spice/start-packed.h>
 

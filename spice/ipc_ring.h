@@ -107,13 +107,13 @@ typedef struct SPICE_ATTR_PACKED name {                   \
 #define RING_PROD_WAIT(r, wait)                 \
     if (((wait) = RING_IS_FULL(r))) {           \
         (r)->notify_on_cons = (r)->cons + 1;    \
-        mb();	                                \
+        spice_mb();	                        \
         (wait) = RING_IS_FULL(r);               \
     }
 
 #define RING_PUSH(r, notify)                    \
     (r)->prod++;                                \
-    mb();                                       \
+    spice_mb();                                 \
     (notify) = (r)->prod == (r)->notify_on_prod;
 
 
@@ -122,13 +122,13 @@ typedef struct SPICE_ATTR_PACKED name {                   \
 #define RING_CONS_WAIT(r, wait)                 \
     if (((wait) = RING_IS_EMPTY(r))) {          \
         (r)->notify_on_prod = (r)->prod + 1;    \
-        mb();                                   \
+        spice_mb();                             \
         (wait) = RING_IS_EMPTY(r);              \
     }
 
 #define RING_POP(r, notify)                         \
     (r)->cons++;                                    \
-    mb();                                           \
+    spice_mb();                                     \
     (notify) = (r)->cons == (r)->notify_on_cons;
 
 
