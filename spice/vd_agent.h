@@ -32,16 +32,10 @@
 #define _H_VD_AGENT
 
 #include <spice/types.h>
-#ifdef __GNUC__
-#define ATTR_PACKED __attribute__ ((__packed__))
-#else
-#pragma pack(push)
-#pragma pack(1)
-#define ATTR_PACKED
-#endif
 
+#include <spice/start-packed.h>
 
-typedef struct ATTR_PACKED VDAgentMessage {
+typedef struct SPICE_ATTR_PACKED VDAgentMessage {
     uint32_t protocol;
     uint32_t type;
     uint64_t opaque;
@@ -57,7 +51,7 @@ enum {
     VD_AGENT_REPLY,
 };
 
-typedef struct ATTR_PACKED VDAgentMonConfig {
+typedef struct SPICE_ATTR_PACKED VDAgentMonConfig {
     uint32_t height;
     uint32_t width;
     uint32_t depth;
@@ -69,7 +63,7 @@ enum {
     VD_AGENT_CONFIG_MONITORS_FLAG_USE_POS = (1 << 0),
 };
 
-typedef struct ATTR_PACKED VDAgentMonitorsConfig {
+typedef struct SPICE_ATTR_PACKED VDAgentMonitorsConfig {
     uint32_t num_of_monitors;
     uint32_t flags;
     VDAgentMonConfig monitors[0];
@@ -81,14 +75,14 @@ typedef struct ATTR_PACKED VDAgentMonitorsConfig {
 #define VD_AGENT_UBUTTON_MASK (1 << 4)
 #define VD_AGENT_DBUTTON_MASK (1 << 5)
 
-typedef struct ATTR_PACKED VDAgentMouseState {
+typedef struct SPICE_ATTR_PACKED VDAgentMouseState {
     uint32_t x;
     uint32_t y;
     uint32_t buttons;
     uint8_t display_id;
 } VDAgentMouseState;
 
-typedef struct ATTR_PACKED VDAgentReply {
+typedef struct SPICE_ATTR_PACKED VDAgentReply {
     uint32_t type;
     uint32_t error;
 } VDAgentReply;
@@ -98,11 +92,7 @@ enum {
     VD_AGENT_ERROR,
 };
 
-#undef ATTR_PACKED
-
-#ifndef __GNUC__
-#pragma pack(pop)
-#endif
+#include <spice/end-packed.h>
 
 #endif
 

@@ -44,13 +44,11 @@
 //mfence
 #define mb() __asm__ __volatile__ ("lock; addl $0,0(%%rsp)": : :"memory")
 #endif
-#define ATTR_PACKED __attribute__ ((__packed__))
 #else
-#pragma pack(push)
-#pragma pack(1)
-#define ATTR_PACKED
 #define mb() __asm {lock add [esp], 0}
 #endif
+
+#include <spice/start-packed.h>
 
 #define REDHAT_PCI_VENDOR_ID 0x1b36
 #define QXL_DEVICE_ID 0x0100 /* 0x100-0x11f reserved for spice */
@@ -87,7 +85,7 @@ enum {
     QXL_IO_RANGE_SIZE
 };
 
-typedef struct ATTR_PACKED QXLRom {
+typedef struct SPICE_ATTR_PACKED QXLRom {
     uint32_t magic;
     uint32_t id;
     uint32_t update_id;
@@ -106,7 +104,7 @@ typedef struct ATTR_PACKED QXLRom {
     uint8_t slot_generation;
 } QXLRom;
 
-typedef struct ATTR_PACKED QXLMode {
+typedef struct SPICE_ATTR_PACKED QXLMode {
     uint32_t id;
     uint32_t x_res;
     uint32_t y_res;
@@ -117,7 +115,7 @@ typedef struct ATTR_PACKED QXLMode {
     uint32_t orientation;
 } QXLMode;
 
-typedef struct ATTR_PACKED QXLModes {
+typedef struct SPICE_ATTR_PACKED QXLModes {
     uint32_t n_modes;
     QXLMode modes[0];
 } QXLModes;
@@ -133,25 +131,25 @@ enum QXLCmdType {
     QXL_CMD_MESSAGE,
 };
 
-typedef struct ATTR_PACKED QXLCommand {
+typedef struct SPICE_ATTR_PACKED QXLCommand {
     PHYSICAL data;
     uint32_t type;
     uint32_t ped;
 } QXLCommand;
 
-typedef struct ATTR_PACKED QXLCommandExt {
+typedef struct SPICE_ATTR_PACKED QXLCommandExt {
     QXLCommand cmd;
     uint32_t group_id;
 } QXLCommandExt;
 
-typedef struct ATTR_PACKED QXLMemSlot {
+typedef struct SPICE_ATTR_PACKED QXLMemSlot {
     uint64_t mem_start;
     uint64_t mem_end;
 } QXLMemSlot;
 
 #define QXL_SURF_TYPE_PRIMARY 0
 
-typedef struct ATTR_PACKED QXLSurfaceCreate {
+typedef struct SPICE_ATTR_PACKED QXLSurfaceCreate {
     uint32_t width;
     uint32_t height;
     int32_t stride;
@@ -173,7 +171,7 @@ RING_DECLARE(QXLReleaseRing, uint64_t, 8);
 #define QXL_INTERRUPT_DISPLAY (1 << 0)
 #define QXL_INTERRUPT_CURSOR (1 << 1)
 
-typedef struct ATTR_PACKED QXLRam {
+typedef struct SPICE_ATTR_PACKED QXLRam {
     uint32_t magic;
     uint32_t int_pending;
     uint32_t int_mask;
@@ -197,25 +195,25 @@ typedef struct QXLReleaseInfoExt {
     uint32_t group_id;
 } QXLReleaseInfoExt;
 
-typedef struct  ATTR_PACKED QXLDataChunk {
+typedef struct  SPICE_ATTR_PACKED QXLDataChunk {
     uint32_t data_size;
     PHYSICAL prev_chunk;
     PHYSICAL next_chunk;
     uint8_t data[0];
 } QXLDataChunk;
 
-typedef struct ATTR_PACKED QXLMessage {
+typedef struct SPICE_ATTR_PACKED QXLMessage {
     QXLReleaseInfo release_info;
     uint8_t data[0];
 } QXLMessage;
 
-typedef struct ATTR_PACKED QXLUpdateCmd {
+typedef struct SPICE_ATTR_PACKED QXLUpdateCmd {
     QXLReleaseInfo release_info;
     Rect area;
     uint32_t update_id;
 } QXLUpdateCmd;
 
-typedef struct ATTR_PACKED QXLCursor {
+typedef struct SPICE_ATTR_PACKED QXLCursor {
     CursorHeader header;
     uint32_t data_size;
     QXLDataChunk chunk;
@@ -230,16 +228,16 @@ enum {
 
 #define QXL_CURSUR_DEVICE_DATA_SIZE 128
 
-typedef struct ATTR_PACKED QXLCursorCmd {
+typedef struct SPICE_ATTR_PACKED QXLCursorCmd {
     QXLReleaseInfo release_info;
     uint8_t type;
     union {
-        struct ATTR_PACKED {
+        struct SPICE_ATTR_PACKED {
             Point16 position;
             uint8_t visible;
             PHYSICAL shape;
         } set;
-        struct ATTR_PACKED {
+        struct SPICE_ATTR_PACKED {
             uint16_t length;
             uint16_t frequency;
         } trail;
@@ -265,14 +263,14 @@ enum {
     QXL_DRAW_ALPHA_BLEND,
 };
 
-typedef struct ATTR_PACKED QXLString {
+typedef struct SPICE_ATTR_PACKED QXLString {
     uint32_t data_size;
     uint16_t length;
     uint16_t flags;
     QXLDataChunk chunk;
 } QXLString;
 
-typedef struct ATTR_PACKED QXLCopyBits {
+typedef struct SPICE_ATTR_PACKED QXLCopyBits {
     Point src_pos;
 } QXLCopyBits;
 
@@ -285,7 +283,7 @@ typedef struct ATTR_PACKED QXLCopyBits {
 #define QXL_EFFECT_NOP 6
 #define QXL_EFFECT_OPAQUE_BRUSH 7
 
-typedef struct ATTR_PACKED QXLDrawable {
+typedef struct SPICE_ATTR_PACKED QXLDrawable {
     QXLReleaseInfo release_info;
     uint8_t effect;
     uint8_t type;
@@ -311,7 +309,7 @@ typedef struct ATTR_PACKED QXLDrawable {
     } u;
 } QXLDrawable;
 
-typedef struct ATTR_PACKED QXLClipRects {
+typedef struct SPICE_ATTR_PACKED QXLClipRects {
     uint32_t num_rects;
     QXLDataChunk chunk;
 } QXLClipRects;
@@ -323,7 +321,7 @@ enum {
     QXL_PATH_BEZIER = (1 << 4),
 };
 
-typedef struct ATTR_PACKED QXLPath {
+typedef struct SPICE_ATTR_PACKED QXLPath {
     uint32_t data_size;
     QXLDataChunk chunk;
 } QXLPath;
@@ -335,7 +333,7 @@ enum {
     QXL_IMAGE_GROUP_DRIVER_DONT_CACHE,
 };
 
-typedef struct ATTR_PACKED QXLImageID {
+typedef struct SPICE_ATTR_PACKED QXLImageID {
     uint32_t group;
     uint32_t unique;
 } QXLImageID;
@@ -357,7 +355,7 @@ enum {
     image_id->unique = _unique;                                 \
 }
 
-typedef struct ATTR_PACKED QXLImage {
+typedef struct SPICE_ATTR_PACKED QXLImage {
     ImageDescriptor descriptor;
     union { // variable length
         Bitmap bitmap;
@@ -365,10 +363,6 @@ typedef struct ATTR_PACKED QXLImage {
     };
 } QXLImage;
 
-#ifndef __GNUC__
-#pragma pack(pop)
-#endif
-
-#undef ATTR_PACKED
+#include <spice/end-packed.h>
 
 #endif

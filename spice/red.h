@@ -34,13 +34,8 @@
 #include <spice/types.h>
 
 #include "draw.h"
-#ifdef __GNUC__
-#define ATTR_PACKED __attribute__ ((__packed__))
-#else
-#pragma pack(push)
-#pragma pack(1)
-#define ATTR_PACKED
-#endif
+
+#include <spice/start-packed.h>
 
 #define RED_MAGIC (*(uint32_t*)"REDQ")
 #define RED_VERSION_MAJOR (~(uint32_t)0 - 1)
@@ -84,14 +79,14 @@ enum {
     RED_INFO_GENERAL,
 };
 
-typedef struct ATTR_PACKED RedLinkHeader {
+typedef struct SPICE_ATTR_PACKED RedLinkHeader {
     uint32_t magic;
     uint32_t major_version;
     uint32_t minor_version;
     uint32_t size;
 } RedLinkHeader;
 
-typedef struct ATTR_PACKED RedLinkMess {
+typedef struct SPICE_ATTR_PACKED RedLinkMess {
     uint32_t connection_id;
     uint8_t channel_type;
     uint8_t channel_id;
@@ -100,7 +95,7 @@ typedef struct ATTR_PACKED RedLinkMess {
     uint32_t caps_offset;
 } RedLinkMess;
 
-typedef struct ATTR_PACKED RedLinkReply {
+typedef struct SPICE_ATTR_PACKED RedLinkReply {
     uint32_t error;
     uint8_t pub_key[RED_TICKET_PUBKEY_BYTES];
     uint32_t num_common_caps;
@@ -108,23 +103,23 @@ typedef struct ATTR_PACKED RedLinkReply {
     uint32_t caps_offset;
 } RedLinkReply;
 
-typedef struct ATTR_PACKED RedLinkEncryptedTicket {
+typedef struct SPICE_ATTR_PACKED RedLinkEncryptedTicket {
     uint8_t encrypted_data[RED_TICKET_KEY_PAIR_LENGTH / 8];
 } RedLinkEncryptedTicket;
 
-typedef struct ATTR_PACKED RedDataHeader {
+typedef struct SPICE_ATTR_PACKED RedDataHeader {
     uint64_t serial;
     uint16_t type;
     uint32_t size;
     uint32_t sub_list; //offset to RedSubMessageList[]
 } RedDataHeader;
 
-typedef struct ATTR_PACKED RedSubMessage {
+typedef struct SPICE_ATTR_PACKED RedSubMessage {
     uint16_t type;
     uint32_t size;
 } RedSubMessage;
 
-typedef struct ATTR_PACKED RedSubMessageList {
+typedef struct SPICE_ATTR_PACKED RedSubMessageList {
     uint16_t size;
     uint32_t sub_messages[0]; //offsets to RedSubMessage
 } RedSubMessageList;
@@ -195,15 +190,15 @@ enum {
 #define RED_NUM_LOCK_MODIFIER (1 << 1)
 #define RED_CAPS_LOCK_MODIFIER (1 << 2)
 
-typedef struct ATTR_PACKED RedInputsInit {
+typedef struct SPICE_ATTR_PACKED RedInputsInit {
     uint32_t keyboard_modifiers;
 } RedInputsInit;
 
-typedef struct ATTR_PACKED RedKeyModifiers {
+typedef struct SPICE_ATTR_PACKED RedKeyModifiers {
     uint32_t modifiers;
 } RedKeyModifiers;
 
-typedef struct ATTR_PACKED RedMultiMediaTime {
+typedef struct SPICE_ATTR_PACKED RedMultiMediaTime {
     uint32_t time;
 } RedMultiMediaTime;
 
@@ -220,7 +215,7 @@ enum {
     RED_PUBKEY_TYPE_EC,
 };
 
-typedef struct ATTR_PACKED RedMigrationBegin {
+typedef struct SPICE_ATTR_PACKED RedMigrationBegin {
     uint16_t port;
     uint16_t sport;
     uint32_t host_offset;
@@ -235,7 +230,7 @@ enum {
     RED_MIGRATE_NEED_DATA_TRANSFER = (1 << 1),
 };
 
-typedef struct ATTR_PACKED RedMigrate {
+typedef struct SPICE_ATTR_PACKED RedMigrate {
     uint32_t flags;
 } RedMigrate;
 
@@ -244,38 +239,38 @@ enum {
     RED_RES_TYPE_PIXMAP,
 };
 
-typedef struct ATTR_PACKED RedResorceID {
+typedef struct SPICE_ATTR_PACKED RedResorceID {
     uint8_t type;
     uint64_t id;
 } RedResorceID;
 
-typedef struct ATTR_PACKED RedResorceList {
+typedef struct SPICE_ATTR_PACKED RedResorceList {
     uint16_t count;
     RedResorceID resorces[0];
 } RedResorceList;
 
-typedef struct ATTR_PACKED RedSetAck {
+typedef struct SPICE_ATTR_PACKED RedSetAck {
     uint32_t generation;
     uint32_t window;
 } RedSetAck;
 
-typedef struct ATTR_PACKED RedWaitForChannel {
+typedef struct SPICE_ATTR_PACKED RedWaitForChannel {
     uint8_t channel_type;
     uint8_t channel_id;
     uint64_t message_serial;
 } RedWaitForChannel;
 
-typedef struct ATTR_PACKED RedWaitForChannels {
+typedef struct SPICE_ATTR_PACKED RedWaitForChannels {
     uint8_t wait_count;
     RedWaitForChannel wait_list[0];
 } RedWaitForChannels;
 
-typedef struct ATTR_PACKED RedChannelInit {
+typedef struct SPICE_ATTR_PACKED RedChannelInit {
     uint8_t type;
     uint8_t id;
 } RedChannelInit;
 
-typedef struct ATTR_PACKED RedInit {
+typedef struct SPICE_ATTR_PACKED RedInit {
     uint32_t session_id;
     uint32_t display_channels_hint;
     uint32_t supported_mouse_modes;
@@ -286,7 +281,7 @@ typedef struct ATTR_PACKED RedInit {
     uint32_t ram_hint;
 } RedInit;
 
-typedef struct ATTR_PACKED RedDisconnect {
+typedef struct SPICE_ATTR_PACKED RedDisconnect {
     uint64_t time_stamp;
     uint32_t reason; // RED_ERR_?
 } RedDisconnect;
@@ -303,7 +298,7 @@ enum {
     RED_NOTIFY_VISIBILITY_HIGH,
 };
 
-typedef struct ATTR_PACKED RedNotify {
+typedef struct SPICE_ATTR_PACKED RedNotify {
     uint64_t time_stamp;
     uint32_t severty;
     uint32_t visibilty;
@@ -312,36 +307,36 @@ typedef struct ATTR_PACKED RedNotify {
     uint8_t message[0];
 } RedNotify;
 
-typedef struct ATTR_PACKED RedChannels {
+typedef struct SPICE_ATTR_PACKED RedChannels {
     uint32_t num_of_channels;
     RedChannelInit channels[0];
 } RedChannels;
 
-typedef struct ATTR_PACKED RedMouseMode {
+typedef struct SPICE_ATTR_PACKED RedMouseMode {
     uint32_t supported_modes;
     uint32_t current_mode;
 } RedMouseMode;
 
-typedef struct ATTR_PACKED RedPing {
+typedef struct SPICE_ATTR_PACKED RedPing {
     uint32_t id;
     uint64_t timestamp;
 } RedPing;
 
-typedef struct ATTR_PACKED RedAgentDisconnect {
+typedef struct SPICE_ATTR_PACKED RedAgentDisconnect {
     uint32_t error_code; // RED_ERR_?
 } RedAgentDisconnect;
 
 #define RED_AGENT_MAX_DATA_SIZE 2048
 
-typedef struct ATTR_PACKED RedAgentTokens {
+typedef struct SPICE_ATTR_PACKED RedAgentTokens {
     uint32_t num_tokens;
 } RedAgentTokens, RedcAgentTokens, RedcAgentStart;
 
-typedef struct ATTR_PACKED RedcClientInfo {
+typedef struct SPICE_ATTR_PACKED RedcClientInfo {
     uint64_t cache_size;
 } RedcClientInfo;
 
-typedef struct ATTR_PACKED RedcMouseModeRequest {
+typedef struct SPICE_ATTR_PACKED RedcMouseModeRequest {
     uint32_t mode;
 } RedcMouseModeRequest;
 
@@ -384,86 +379,86 @@ enum {
     RED_CURSOR_FROM_CACHE = (1 << 2),
 };
 
-typedef struct ATTR_PACKED RedCursor {
+typedef struct SPICE_ATTR_PACKED RedCursor {
     uint32_t flags;
     CursorHeader header;
     uint8_t data[0];
 } RedCursor;
 
-typedef struct ATTR_PACKED RedMode {
+typedef struct SPICE_ATTR_PACKED RedMode {
     uint32_t x_res;
     uint32_t y_res;
     uint32_t bits;
 } RedMode;
 
-typedef struct ATTR_PACKED RedDrawBase {
+typedef struct SPICE_ATTR_PACKED RedDrawBase {
     Rect box;
     Clip clip;
 } RedDrawBase;
 
-typedef struct ATTR_PACKED RedFill {
+typedef struct SPICE_ATTR_PACKED RedFill {
     RedDrawBase base;
     Fill data;
 } RedFill;
 
-typedef struct ATTR_PACKED RedOpaque {
+typedef struct SPICE_ATTR_PACKED RedOpaque {
     RedDrawBase base;
     Opaque data;
 } RedOpaque;
 
-typedef struct ATTR_PACKED RedCopy {
+typedef struct SPICE_ATTR_PACKED RedCopy {
     RedDrawBase base;
     Copy data;
 } RedCopy;
 
-typedef struct ATTR_PACKED RedTransparent {
+typedef struct SPICE_ATTR_PACKED RedTransparent {
     RedDrawBase base;
     Transparent data;
 } RedTransparent;
 
-typedef struct ATTR_PACKED RedAlphaBlend {
+typedef struct SPICE_ATTR_PACKED RedAlphaBlend {
     RedDrawBase base;
     AlphaBlnd data;
 } RedAlphaBlend;
 
-typedef struct ATTR_PACKED RedCopyBits {
+typedef struct SPICE_ATTR_PACKED RedCopyBits {
     RedDrawBase base;
     Point src_pos;
 } RedCopyBits;
 
 typedef RedCopy RedBlend;
 
-typedef struct ATTR_PACKED RedRop3 {
+typedef struct SPICE_ATTR_PACKED RedRop3 {
     RedDrawBase base;
     Rop3 data;
 } RedRop3;
 
-typedef struct ATTR_PACKED RedBlackness {
+typedef struct SPICE_ATTR_PACKED RedBlackness {
     RedDrawBase base;
     Blackness data;
 } RedBlackness;
 
-typedef struct ATTR_PACKED RedWhiteness {
+typedef struct SPICE_ATTR_PACKED RedWhiteness {
     RedDrawBase base;
     Whiteness data;
 } RedWhiteness;
 
-typedef struct ATTR_PACKED RedInvers {
+typedef struct SPICE_ATTR_PACKED RedInvers {
     RedDrawBase base;
     Invers data;
 } RedInvers;
 
-typedef struct ATTR_PACKED RedStroke {
+typedef struct SPICE_ATTR_PACKED RedStroke {
     RedDrawBase base;
     Stroke data;
 } RedStroke;
 
-typedef struct ATTR_PACKED RedText {
+typedef struct SPICE_ATTR_PACKED RedText {
     RedDrawBase base;
     Text data;
 } RedText;
 
-typedef struct ATTR_PACKED RedInvalOne {
+typedef struct SPICE_ATTR_PACKED RedInvalOne {
     uint64_t id;
 } RedInvalOne;
 
@@ -475,7 +470,7 @@ enum {
     STREAM_TOP_DOWN = (1 << 0),
 };
 
-typedef struct ATTR_PACKED RedStreamCreate {
+typedef struct SPICE_ATTR_PACKED RedStreamCreate {
     uint32_t id;
     uint32_t flags;
     uint32_t codec_type;
@@ -488,7 +483,7 @@ typedef struct ATTR_PACKED RedStreamCreate {
     Clip clip;
 } RedStreamCreate;
 
-typedef struct ATTR_PACKED RedStreamData {
+typedef struct SPICE_ATTR_PACKED RedStreamData {
     uint32_t id;
     uint32_t multi_media_time;
     uint32_t data_size;
@@ -496,12 +491,12 @@ typedef struct ATTR_PACKED RedStreamData {
     uint8_t data[0];
 } RedStreamData;
 
-typedef struct ATTR_PACKED RedStreamClip {
+typedef struct SPICE_ATTR_PACKED RedStreamClip {
     uint32_t id;
     Clip clip;
 } RedStreamClip;
 
-typedef struct ATTR_PACKED RedStreamDestroy {
+typedef struct SPICE_ATTR_PACKED RedStreamDestroy {
     uint32_t id;
 } RedStreamDestroy;
 
@@ -518,7 +513,7 @@ enum {
     RED_CURSOR_MESSAGES_END,
 };
 
-typedef struct ATTR_PACKED RedCursorInit {
+typedef struct SPICE_ATTR_PACKED RedCursorInit {
     Point16 position;
     uint16_t trail_length;
     uint16_t trail_frequency;
@@ -526,17 +521,17 @@ typedef struct ATTR_PACKED RedCursorInit {
     RedCursor cursor;
 } RedCursorInit;
 
-typedef struct ATTR_PACKED RedCursorSet {
+typedef struct SPICE_ATTR_PACKED RedCursorSet {
     Point16 postition;
     uint8_t visible;
     RedCursor cursor;
 } RedCursorSet;
 
-typedef struct ATTR_PACKED RedCursorMove {
+typedef struct SPICE_ATTR_PACKED RedCursorMove {
     Point16 postition;
 } RedCursorMove;
 
-typedef struct ATTR_PACKED RedCursorTrail {
+typedef struct SPICE_ATTR_PACKED RedCursorTrail {
     uint16_t length;
     uint16_t frequency;
 } RedCursorTrail;
@@ -547,7 +542,7 @@ enum {
     REDC_DISPLAY_MESSGES_END,
 };
 
-typedef struct ATTR_PACKED RedcDisplayInit {
+typedef struct SPICE_ATTR_PACKED RedcDisplayInit {
     uint8_t pixmap_cache_id;
     int64_t pixmap_cache_size; //in pixels
     uint8_t glz_dictionary_id;
@@ -567,11 +562,11 @@ enum {
     REDC_INPUTS_MESSGES_END,
 };
 
-typedef struct ATTR_PACKED RedcKeyDown {
+typedef struct SPICE_ATTR_PACKED RedcKeyDown {
     uint32_t code;
 } RedcKeyDown;
 
-typedef struct ATTR_PACKED RedcKeyUp {
+typedef struct SPICE_ATTR_PACKED RedcKeyUp {
     uint32_t code;
 } RedcKeyUp;
 
@@ -580,7 +575,7 @@ enum {
     RED_MOUSE_MODE_CLIENT = (1 << 1),
 };
 
-typedef struct ATTR_PACKED RedcKeyModifiers {
+typedef struct SPICE_ATTR_PACKED RedcKeyModifiers {
     uint32_t modifiers;
 } RedcKeyModifiers;
 
@@ -597,25 +592,25 @@ enum RedButton {
 #define REDC_MBUTTON_MASK (1 << (REDC_MOUSE_MBUTTON - 1))
 #define REDC_RBUTTON_MASK (1 << (REDC_MOUSE_RBUTTON - 1))
 
-typedef struct ATTR_PACKED RedcMouseMotion {
+typedef struct SPICE_ATTR_PACKED RedcMouseMotion {
     int32_t dx;
     int32_t dy;
     uint32_t buttons_state;
 } RedcMouseMotion;
 
-typedef struct ATTR_PACKED RedcMousePosition {
+typedef struct SPICE_ATTR_PACKED RedcMousePosition {
     uint32_t x;
     uint32_t y;
     uint32_t buttons_state;
     uint8_t display_id;
 } RedcMousePosition;
 
-typedef struct ATTR_PACKED RedcMousePress {
+typedef struct SPICE_ATTR_PACKED RedcMousePress {
     int32_t button;
     int32_t buttons_state;
 } RedcMousePress;
 
-typedef struct ATTR_PACKED RedcMouseRelease {
+typedef struct SPICE_ATTR_PACKED RedcMouseRelease {
     int32_t button;
     int32_t buttons_state;
 } RedcMouseRelease;
@@ -663,31 +658,31 @@ enum {
     RED_RECORD_CAP_CELT_0_5_1,
 };
 
-typedef struct ATTR_PACKED RedPlaybackMode {
+typedef struct SPICE_ATTR_PACKED RedPlaybackMode {
     uint32_t time;
     uint32_t mode; //RED_AUDIO_DATA_MODE_?
     uint8_t data[0];
 } RedPlaybackMode, RedcRecordMode;
 
-typedef struct ATTR_PACKED RedPlaybackStart {
+typedef struct SPICE_ATTR_PACKED RedPlaybackStart {
     uint32_t channels;
     uint32_t format; //RED_AUDIO_FMT_?
     uint32_t frequency;
     uint32_t time;
 } RedPlaybackStart;
 
-typedef struct ATTR_PACKED RedPlaybackPacket {
+typedef struct SPICE_ATTR_PACKED RedPlaybackPacket {
     uint32_t time;
     uint8_t data[0];
 } RedPlaybackPacket, RedcRecordPacket;
 
-typedef struct ATTR_PACKED RedRecordStart {
+typedef struct SPICE_ATTR_PACKED RedRecordStart {
     uint32_t channels;
     uint32_t format; //RED_AUDIO_FMT_?
     uint32_t frequency;
 } RedRecordStart;
 
-typedef struct ATTR_PACKED RedcRecordStartMark {
+typedef struct SPICE_ATTR_PACKED RedcRecordStartMark {
     uint32_t time;
 } RedcRecordStartMark;
 
@@ -710,7 +705,7 @@ enum {
     RED_TUNNEL_MESSAGES_END,
 };
 
-typedef struct ATTR_PACKED RedTunnelInit {
+typedef struct SPICE_ATTR_PACKED RedTunnelInit {
     uint16_t max_num_of_sockets;
     uint32_t max_socket_data_size;
 } RedTunnelInit;
@@ -720,19 +715,19 @@ enum {
     RED_TUNNEL_IP_TYPE_IPv4,
 };
 
-typedef struct ATTR_PACKED RedTunnelIpInfo {
+typedef struct SPICE_ATTR_PACKED RedTunnelIpInfo {
     uint16_t type;
     uint8_t data[0];
 } RedTunnelIpInfo;
 
 typedef uint8_t RedTunnelIPv4[4];
 
-typedef struct ATTR_PACKED RedTunnelServiceIpMap {
+typedef struct SPICE_ATTR_PACKED RedTunnelServiceIpMap {
     uint32_t service_id;
     RedTunnelIpInfo virtual_ip;
 } RedTunnelServiceIpMap;
 
-typedef struct ATTR_PACKED RedTunnelSocketOpen {
+typedef struct SPICE_ATTR_PACKED RedTunnelSocketOpen {
     uint16_t connection_id;
     uint32_t service_id;
     uint32_t tokens;
@@ -740,25 +735,25 @@ typedef struct ATTR_PACKED RedTunnelSocketOpen {
 
 /* connection id must be the first field in msgs directed to a specific connection */
 
-typedef struct ATTR_PACKED RedTunnelSocketFin {
+typedef struct SPICE_ATTR_PACKED RedTunnelSocketFin {
     uint16_t connection_id;
 } RedTunnelSocketFin;
 
-typedef struct ATTR_PACKED RedTunnelSocketClose {
+typedef struct SPICE_ATTR_PACKED RedTunnelSocketClose {
     uint16_t connection_id;
 } RedTunnelSocketClose;
 
-typedef struct ATTR_PACKED RedTunnelSocketData {
+typedef struct SPICE_ATTR_PACKED RedTunnelSocketData {
     uint16_t connection_id;
     uint8_t data[0];
 } RedTunnelSocketData;
 
-typedef struct ATTR_PACKED RedTunnelSocketTokens {
+typedef struct SPICE_ATTR_PACKED RedTunnelSocketTokens {
     uint16_t connection_id;
     uint32_t num_tokens;
 } RedTunnelSocketTokens;
 
-typedef struct ATTR_PACKED RedTunnelSocketClosedAck {
+typedef struct SPICE_ATTR_PACKED RedTunnelSocketClosedAck {
     uint16_t connection_id;
 } RedTunnelSocketClosedAck;
 
@@ -777,7 +772,7 @@ enum {
     REDC_TUNNEL_MESSGES_END,
 };
 
-typedef struct ATTR_PACKED RedcTunnelAddGenericService {
+typedef struct SPICE_ATTR_PACKED RedcTunnelAddGenericService {
     uint32_t type;
     uint32_t id;
     uint32_t group;
@@ -786,53 +781,49 @@ typedef struct ATTR_PACKED RedcTunnelAddGenericService {
     uint32_t description;
 } RedcTunnelAddGenericService;
 
-typedef struct ATTR_PACKED RedcTunnelAddPrintService {
+typedef struct SPICE_ATTR_PACKED RedcTunnelAddPrintService {
     RedcTunnelAddGenericService base;
     RedTunnelIpInfo ip;
 } RedcTunnelAddPrintService;
 
-typedef struct ATTR_PACKED RedcTunnelRemoveService {
+typedef struct SPICE_ATTR_PACKED RedcTunnelRemoveService {
     uint32_t id;
 } RedcTunnelRemoveService;
 
 /* connection id must be the first field in msgs directed to a specific connection */
 
-typedef struct ATTR_PACKED RedcTunnelSocketOpenAck {
+typedef struct SPICE_ATTR_PACKED RedcTunnelSocketOpenAck {
     uint16_t connection_id;
     uint32_t tokens;
 } RedcTunnelSocketOpenAck;
 
-typedef struct ATTR_PACKED RedcTunnelSocketOpenNack {
+typedef struct SPICE_ATTR_PACKED RedcTunnelSocketOpenNack {
     uint16_t connection_id;
 } RedcTunnelSocketOpenNack;
 
-typedef struct ATTR_PACKED RedcTunnelSocketData {
+typedef struct SPICE_ATTR_PACKED RedcTunnelSocketData {
     uint16_t connection_id;
     uint8_t data[0];
 } RedcTunnelSocketData;
 
-typedef struct ATTR_PACKED RedcTunnelSocketFin {
+typedef struct SPICE_ATTR_PACKED RedcTunnelSocketFin {
     uint16_t connection_id;
 } RedcTunnelSocketFin;
 
-typedef struct ATTR_PACKED RedcTunnelSocketClosed {
+typedef struct SPICE_ATTR_PACKED RedcTunnelSocketClosed {
     uint16_t connection_id;
 } RedcTunnelSocketClosed;
 
-typedef struct ATTR_PACKED RedcTunnelSocketClosedAck {
+typedef struct SPICE_ATTR_PACKED RedcTunnelSocketClosedAck {
     uint16_t connection_id;
 } RedcTunnelSocketClosedAck;
 
-typedef struct ATTR_PACKED RedcTunnelSocketTokens {
+typedef struct SPICE_ATTR_PACKED RedcTunnelSocketTokens {
     uint16_t connection_id;
     uint32_t num_tokens;
 } RedcTunnelSocketTokens;
 
-#undef ATTR_PACKED
-
-#ifndef __GNUC__
-#pragma pack(pop)
-#endif
+#include <spice/end-packed.h>
 
 #endif
 

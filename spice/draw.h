@@ -33,14 +33,7 @@
 
 #include <spice/types.h>
 
-#ifdef __GNUC__
-#define ATTR_PACKED __attribute__ ((__packed__))
-#else
-#pragma pack(push)
-#pragma pack(1)
-#define ATTR_PACKED
-#pragma warning(disable:4200)
-#endif
+#include <spice/start-packed.h>
 
 #define GET_ADDRESS(addr) ((void *)(unsigned long)(addr))
 #define SET_ADDRESS(addr, val) ((addr) = (unsigned long)(val))
@@ -60,29 +53,29 @@ enum {
     LINE_ATTR_STYLED = (1 << 3),
 };
 
-typedef struct ATTR_PACKED PointFix {
+typedef struct SPICE_ATTR_PACKED PointFix {
     FIXED28_4 x;
     FIXED28_4 y;
 } PointFix;
 
-typedef struct ATTR_PACKED Point {
+typedef struct SPICE_ATTR_PACKED Point {
     int32_t x;
     int32_t y;
 } Point;
 
-typedef struct ATTR_PACKED Point16 {
+typedef struct SPICE_ATTR_PACKED Point16 {
     int16_t x;
     int16_t y;
 } Point16;
 
-typedef struct ATTR_PACKED Rect {
+typedef struct SPICE_ATTR_PACKED Rect {
     int32_t top;
     int32_t left;
     int32_t bottom;
     int32_t right;
 } Rect;
 
-typedef struct ATTR_PACKED PathSeg {
+typedef struct SPICE_ATTR_PACKED PathSeg {
     uint32_t flags;
     uint32_t count;
     uint8_t data[0];
@@ -94,7 +87,7 @@ enum ClipType {
     CLIP_TYPE_PATH,
 };
 
-typedef struct ATTR_PACKED Clip {
+typedef struct SPICE_ATTR_PACKED Clip {
     uint32_t type;
     ADDRESS data;
 } Clip;
@@ -113,7 +106,7 @@ enum ROPDescriptor {
     ROPD_INVERS_RES = (1 << 10),
 };
 
-typedef struct ATTR_PACKED Pattern {
+typedef struct SPICE_ATTR_PACKED Pattern {
     ADDRESS pat;
     Point pos;
 } Pattern;
@@ -124,7 +117,7 @@ enum {
     BRUSH_TYPE_PATTERN,
 };
 
-typedef struct ATTR_PACKED Brush {
+typedef struct SPICE_ATTR_PACKED Brush {
     uint32_t type;
     union {
         uint32_t color;
@@ -136,19 +129,19 @@ enum {
     MASK_INVERS = (1 << 0),
 };
 
-typedef struct ATTR_PACKED QMask {
+typedef struct SPICE_ATTR_PACKED QMask {
     uint8_t flags;
     Point pos;
     ADDRESS bitmap;
 } QMask;
 
-typedef struct ATTR_PACKED Fill {
+typedef struct SPICE_ATTR_PACKED Fill {
     Brush brush;
     uint16_t rop_decriptor;
     QMask mask;
 } Fill;
 
-typedef struct ATTR_PACKED Palette {
+typedef struct SPICE_ATTR_PACKED Palette {
     uint64_t unique;
     uint16_t num_ents;
     uint32_t ents[0];
@@ -168,7 +161,7 @@ enum {
     IMAGE_CACHE_ME = (1 << 0),
 };
 
-typedef struct ATTR_PACKED ImageDescriptor {
+typedef struct SPICE_ATTR_PACKED ImageDescriptor {
     uint64_t id;
     uint8_t type;
     uint8_t flags;
@@ -195,7 +188,7 @@ enum {
     BITMAP_TOP_DOWN = (1 << 2),
 };
 
-typedef struct ATTR_PACKED Bitmap {
+typedef struct SPICE_ATTR_PACKED Bitmap {
     uint8_t format;
     uint8_t flags;
     uint32_t x;
@@ -205,34 +198,34 @@ typedef struct ATTR_PACKED Bitmap {
     ADDRESS data; //data[0] ?
 } Bitmap;
 
-typedef struct ATTR_PACKED BitmapImage {
+typedef struct SPICE_ATTR_PACKED BitmapImage {
     ImageDescriptor descriptor;
     Bitmap bitmap;
 } BitmapImage;
 
-typedef struct ATTR_PACKED QUICData {
+typedef struct SPICE_ATTR_PACKED QUICData {
     uint32_t data_size;
     uint8_t data[0];
 } QUICData, LZ_RGBData;
 
-typedef struct ATTR_PACKED QUICImage {
+typedef struct SPICE_ATTR_PACKED QUICImage {
     ImageDescriptor descriptor;
     QUICData quic;
 } QUICImage;
 
-typedef struct ATTR_PACKED LZ_RGBImage {
+typedef struct SPICE_ATTR_PACKED LZ_RGBImage {
     ImageDescriptor descriptor;
     LZ_RGBData lz_rgb;
 } LZ_RGBImage;
 
-typedef struct ATTR_PACKED LZ_PLTData {
+typedef struct SPICE_ATTR_PACKED LZ_PLTData {
     uint8_t flags;
     uint32_t data_size;
     ADDRESS palette;
     uint8_t data[0];
 } LZ_PLTData;
 
-typedef struct ATTR_PACKED LZ_PLTImage {
+typedef struct SPICE_ATTR_PACKED LZ_PLTImage {
     ImageDescriptor descriptor;
     LZ_PLTData lz_plt;
 } LZ_PLTImage;
@@ -242,7 +235,7 @@ enum {
     IMAGE_SCALE_NEAREST,
 };
 
-typedef struct ATTR_PACKED Opaque {
+typedef struct SPICE_ATTR_PACKED Opaque {
     ADDRESS src_bitmap;
     Rect src_area;
     Brush brush;
@@ -251,7 +244,7 @@ typedef struct ATTR_PACKED Opaque {
     QMask mask;
 } Opaque;
 
-typedef struct ATTR_PACKED Copy {
+typedef struct SPICE_ATTR_PACKED Copy {
     ADDRESS src_bitmap;
     Rect src_area;
     uint16_t rop_decriptor;
@@ -259,20 +252,20 @@ typedef struct ATTR_PACKED Copy {
     QMask mask;
 } Copy, Blend;
 
-typedef struct ATTR_PACKED Transparent {
+typedef struct SPICE_ATTR_PACKED Transparent {
     ADDRESS src_bitmap;
     Rect src_area;
     uint32_t src_color;
     uint32_t true_color;
 } Transparent;
 
-typedef struct ATTR_PACKED AlphaBlnd {
+typedef struct SPICE_ATTR_PACKED AlphaBlnd {
     uint8_t alpha;
     ADDRESS src_bitmap;
     Rect src_area;
 } AlphaBlnd;
 
-typedef struct ATTR_PACKED Rop3 {
+typedef struct SPICE_ATTR_PACKED Rop3 {
     ADDRESS src_bitmap;
     Rect src_area;
     Brush brush;
@@ -281,7 +274,7 @@ typedef struct ATTR_PACKED Rop3 {
     QMask mask;
 } Rop3;
 
-typedef struct ATTR_PACKED Blackness {
+typedef struct SPICE_ATTR_PACKED Blackness {
     QMask mask;
 } Blackness, Invers, Whiteness;
 
@@ -302,7 +295,7 @@ enum {
     LINE_JOIN_MITER,
 };
 
-typedef struct ATTR_PACKED LineAttr {
+typedef struct SPICE_ATTR_PACKED LineAttr {
     uint8_t flags;
     uint8_t join_style;
     uint8_t end_style;
@@ -312,7 +305,7 @@ typedef struct ATTR_PACKED LineAttr {
     ADDRESS style; //data[0] ?
 } LineAttr;
 
-typedef struct ATTR_PACKED Stroke {
+typedef struct SPICE_ATTR_PACKED Stroke {
     ADDRESS path;
     LineAttr attr;
     Brush brush;
@@ -320,7 +313,7 @@ typedef struct ATTR_PACKED Stroke {
     uint16_t back_mode;
 } Stroke;
 
-typedef struct ATTR_PACKED RasterGlyph {
+typedef struct SPICE_ATTR_PACKED RasterGlyph {
     Point render_pos;
     Point glyph_origin;
     uint16_t width;
@@ -328,7 +321,7 @@ typedef struct ATTR_PACKED RasterGlyph {
     uint8_t data[0];
 } RasterGlyph;
 
-typedef struct ATTR_PACKED VectotGlyph {
+typedef struct SPICE_ATTR_PACKED VectotGlyph {
     Point render_pos;
     uint32_t data_size;
     uint8_t data[0]; //PathSeg[]
@@ -341,13 +334,13 @@ enum {
     STRING_RASTER_TOP_DOWN = 1 << 3,
 };
 
-typedef struct ATTR_PACKED String {
+typedef struct SPICE_ATTR_PACKED String {
     uint16_t length;
     uint16_t flags;
     uint8_t data[0];
 } String;
 
-typedef struct ATTR_PACKED Text {
+typedef struct SPICE_ATTR_PACKED Text {
     ADDRESS str;
     Rect back_area;
     Brush fore_brush;
@@ -366,7 +359,7 @@ enum {
     CURSOR_TYPE_COLOR32,
 };
 
-typedef struct ATTR_PACKED CursorHeader {
+typedef struct SPICE_ATTR_PACKED CursorHeader {
     uint64_t unique;
     uint16_t type;
     uint16_t width;
@@ -375,11 +368,6 @@ typedef struct ATTR_PACKED CursorHeader {
     uint16_t hot_spot_y;
 } CursorHeader;
 
-
-#ifndef __GNUC__
-#pragma pack(pop)
-#endif
-
-#undef ATTR_PACKED
+#include <spice/end-packed.h>
 
 #endif

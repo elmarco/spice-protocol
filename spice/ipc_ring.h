@@ -69,14 +69,14 @@
 
 
 #define RING_DECLARE(name, el_type, size)               \
-typedef struct ATTR_PACKED name##_ring_el {             \
+typedef struct SPICE_ATTR_PACKED name##_ring_el {       \
     union {                                             \
         el_type el;                                     \
         uint8_t data[POWER2_ALIGN(sizeof(el_type))];      \
     } ;                                                 \
 } name##_ring_el;                                       \
                                                         \
-typedef struct ATTR_PACKED name {                       \
+typedef struct SPICE_ATTR_PACKED name {                   \
     uint32_t num_items;                                   \
     uint32_t prod;                                        \
     uint32_t notify_on_prod;                              \

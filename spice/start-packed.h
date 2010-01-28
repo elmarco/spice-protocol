@@ -1,3 +1,4 @@
+/* -*- Mode: C; tab-width: 4; c-basic-offset: 4; indent-tabs-mode: nil -*- */
 /*
    Copyright (C) 2009 Red Hat, Inc.
 
@@ -28,66 +29,31 @@
    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _H_VDI_DEV
-#define _H_VDI_DEV
-
-#include <spice/types.h>
-
-#include "ipc_ring.h"
+/* Ideally this should all have been macros in a common headers, but
+ * its not possible to put pragmas into header files, so we have
+ * to use include magic.
+ *
+ * Use it like this:
+ *
+ * #include <spice/start-packed.h>
+ *
+ * typedef struct SPICE_ATTR_PACKED {
+ *    ...
+ * } Type;
+ *
+ * #include <spice/end-packed.h>
+ *
+ */
 
 #ifdef __GNUC__
-#ifdef __i386__
-#define mb() __asm__ __volatile__ ("lock; addl $0,0(%%esp)": : :"memory")
+
+#define SPICE_ATTR_PACKED __attribute__ ((__packed__))
+
 #else
-//mfence
-#define mb() __asm__ __volatile__ ("lock; addl $0,0(%%rsp)": : :"memory")
-#endif
-#else
-#define mb() __asm {lock add [esp], 0}
-#endif
 
-#include <spice/start-packed.h>
-
-#define REDHAT_PCI_VENDOR_ID 0x1b36
-
-#define VDI_PORT_DEVICE_ID 0x0105
-#define VDI_PORT_REVISION 0x01
-
-#define VDI_PORT_INTERRUPT (1 << 0)
-
-#define VDI_PORT_MAGIC (*(uint32_t*)"VDIP")
-
-typedef struct SPICE_ATTR_PACKED VDIPortPacket {
-    uint32_t gen;
-    uint32_t size;
-    uint8_t data[512 - 2 * sizeof(uint32_t)];
-} VDIPortPacket;
-
-RING_DECLARE(VDIPortRing, VDIPortPacket, 32);
-
-enum {
-    VDI_PORT_IO_RANGE_INDEX,
-    VDI_PORT_RAM_RANGE_INDEX,
-};
-
-enum {
-    VDI_PORT_IO_CONNECTION,
-    VDI_PORT_IO_NOTIFY = 4,
-    VDI_PORT_IO_UPDATE_IRQ = 8,
-
-    VDI_PORT_IO_RANGE_SIZE = 12
-};
-
-typedef struct SPICE_ATTR_PACKED VDIPortRam {
-    uint32_t magic;
-    uint32_t generation;
-    uint32_t int_pending;
-    uint32_t int_mask;
-    VDIPortRing input;
-    VDIPortRing output;
-    uint32_t reserv[32];
-} VDIPortRam;
-
-#include <spice/end-packed.h>
+#pragma pack(push)
+#pragma pack(1)
+#define SPICE_ATTR_PACKED
+#pragma warning(disable:4200)
 
 #endif
