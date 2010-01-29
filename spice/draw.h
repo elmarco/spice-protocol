@@ -28,8 +28,8 @@
    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _H_DRAW
-#define _H_DRAW
+#ifndef _H_SPICE_DRAW
+#define _H_SPICE_DRAW
 
 #include <spice/types.h>
 
@@ -370,4 +370,4 @@ typedef struct SPICE_ATTR_PACKED SpiceCursorHeader {
 
 #include <spice/end-packed.h>
 
-#endif
+#endif /* _H_SPICE_DRAW */

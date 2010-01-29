@@ -37,4 +37,4 @@
  * include the right one here. */
 #include <stdint.h>
 
-#endif _H_SPICE_TYPES
+#endif /* _H_SPICE_TYPES */

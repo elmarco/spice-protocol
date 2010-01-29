@@ -355,4 +355,4 @@ typedef struct SPICE_ATTR_PACKED QXLImage {
 
 #include <spice/end-packed.h>
 
-#endif
+#endif /* _H_QXL_DEV */

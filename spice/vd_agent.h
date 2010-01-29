@@ -94,6 +94,4 @@ enum {
 
 #include <spice/end-packed.h>
 
-#endif
-
-
+#endif /* _H_VD_AGENT */

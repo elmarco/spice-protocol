@@ -28,8 +28,8 @@
    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _H_REDS_STAT
-#define _H_REDS_STAT
+#ifndef _H_SPICE_STATS
+#define _H_SPICE_STATS
 
 #include <spice/types.h>
 
@@ -64,5 +64,4 @@ typedef struct SpiceStat {
     SpiceStatNode nodes[];
 } SpiceStat;
 
-#endif
-
+#endif /* _H_SPICE_STATS */

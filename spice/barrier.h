@@ -43,4 +43,4 @@
 #define spice_mb() __asm {lock add [esp], 0}
 #endif
 
-#endif _H_SPICE_BARRIER
+#endif /* _H_SPICE_BARRIER */

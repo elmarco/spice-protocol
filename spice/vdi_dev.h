@@ -80,4 +80,4 @@ typedef struct SPICE_ATTR_PACKED VDIPortRam {
 
 #include <spice/end-packed.h>
 
-#endif
+#endif /* _H_VDI_DEV */

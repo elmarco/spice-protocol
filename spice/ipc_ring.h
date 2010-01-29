@@ -29,8 +29,8 @@
 */
 
 
-#ifndef _H_RING_
-#define _H_RING_
+#ifndef _H_SPICE_RING
+#define _H_SPICE_RING
 
 #include <spice/types.h>
 
@@ -133,4 +133,4 @@ typedef struct SPICE_ATTR_PACKED name {                   \
 
 
 
-#endif
+#endif /* _H_SPICE_RING */

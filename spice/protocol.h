@@ -28,8 +28,8 @@
    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _H_RED
-#define _H_RED
+#ifndef _H_SPICE_PROTOCOL
+#define _H_SPICE_PROTOCOL
 
 #include <spice/types.h>
 
@@ -825,5 +825,4 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgcTunnelSocketTokens {
 
 #include <spice/end-packed.h>
 
-#endif
-
+#endif /* _H_SPICE_PROTOCOL */
