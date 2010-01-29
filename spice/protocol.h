@@ -32,9 +32,7 @@
 #define _H_SPICE_PROTOCOL
 
 #include <spice/types.h>
-
-#include "draw.h"
-
+#include <spice/draw.h>
 #include <spice/start-packed.h>
 
 #define SPICE_MAGIC (*(uint32_t*)"REDQ")

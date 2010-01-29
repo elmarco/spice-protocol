@@ -33,8 +33,7 @@
 
 #include <spice/types.h>
 #include <spice/barrier.h>
-
-#include "ipc_ring.h"
+#include <spice/ipc_ring.h>
 
 #include <spice/start-packed.h>
 

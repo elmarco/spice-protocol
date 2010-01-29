@@ -34,9 +34,8 @@
 
 #include <spice/types.h>
 #include <spice/barrier.h>
-
-#include "ipc_ring.h"
-#include "draw.h"
+#include <spice/ipc_ring.h>
+#include <spice/draw.h>
 
 #include <spice/start-packed.h>
 
