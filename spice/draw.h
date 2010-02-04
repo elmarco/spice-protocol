@@ -35,338 +35,338 @@
 
 #include <spice/start-packed.h>
 
-#define GET_ADDRESS(addr) ((void *)(unsigned long)(addr))
-#define SET_ADDRESS(addr, val) ((addr) = (unsigned long)(val))
+#define SPICE_GET_ADDRESS(addr) ((void *)(unsigned long)(addr))
+#define SPICE_SET_ADDRESS(addr, val) ((addr) = (unsigned long)(val))
 
-typedef int32_t FIXED28_4;
-typedef uint64_t ADDRESS;
+typedef int32_t SPICE_FIXED28_4;
+typedef uint64_t SPICE_ADDRESS;
 
 enum {
-    PATH_BEGIN = (1 << 0),
-    PATH_END = (1 << 1),
-    PATH_CLOSE = (1 << 3),
-    PATH_BEZIER = (1 << 4),
+    SPICE_PATH_BEGIN = (1 << 0),
+    SPICE_PATH_END = (1 << 1),
+    SPICE_PATH_CLOSE = (1 << 3),
+    SPICE_PATH_BEZIER = (1 << 4),
 };
 
 enum {
-    LINE_ATTR_STARTGAP = (1 << 2),
-    LINE_ATTR_STYLED = (1 << 3),
+    SPICE_LINE_ATTR_STARTGAP = (1 << 2),
+    SPICE_LINE_ATTR_STYLED = (1 << 3),
 };
 
-typedef struct SPICE_ATTR_PACKED PointFix {
-    FIXED28_4 x;
-    FIXED28_4 y;
-} PointFix;
+typedef struct SPICE_ATTR_PACKED SpicePointFix {
+    SPICE_FIXED28_4 x;
+    SPICE_FIXED28_4 y;
+} SpicePointFix;
 
-typedef struct SPICE_ATTR_PACKED Point {
+typedef struct SPICE_ATTR_PACKED SpicePoint {
     int32_t x;
     int32_t y;
-} Point;
+} SpicePoint;
 
-typedef struct SPICE_ATTR_PACKED Point16 {
+typedef struct SPICE_ATTR_PACKED SpicePoint16 {
     int16_t x;
     int16_t y;
-} Point16;
+} SpicePoint16;
 
-typedef struct SPICE_ATTR_PACKED Rect {
+typedef struct SPICE_ATTR_PACKED SpiceRect {
     int32_t top;
     int32_t left;
     int32_t bottom;
     int32_t right;
-} Rect;
+} SpiceRect;
 
-typedef struct SPICE_ATTR_PACKED PathSeg {
+typedef struct SPICE_ATTR_PACKED SpicePathSeg {
     uint32_t flags;
     uint32_t count;
     uint8_t data[0];
-} PathSeg;
+} SpicePathSeg;
 
-enum ClipType {
-    CLIP_TYPE_NONE,
-    CLIP_TYPE_RECTS,
-    CLIP_TYPE_PATH,
+enum SpiceClipType {
+    SPICE_CLIP_TYPE_NONE,
+    SPICE_CLIP_TYPE_RECTS,
+    SPICE_CLIP_TYPE_PATH,
 };
 
-typedef struct SPICE_ATTR_PACKED Clip {
+typedef struct SPICE_ATTR_PACKED SpiceClip {
     uint32_t type;
-    ADDRESS data;
-} Clip;
+    SPICE_ADDRESS data;
+} SpiceClip;
 
-enum ROPDescriptor {
-    ROPD_INVERS_SRC = (1 << 0),
-    ROPD_INVERS_BRUSH = (1 << 1),
-    ROPD_INVERS_DEST = (1 << 2),
-    ROPD_OP_PUT = (1 << 3),
-    ROPD_OP_OR = (1 << 4),
-    ROPD_OP_AND = (1 << 5),
-    ROPD_OP_XOR = (1 << 6),
-    ROPD_OP_BLACKNESS = (1 << 7),
-    ROPD_OP_WHITENESS = (1 << 8),
-    ROPD_OP_INVERS = (1 << 9),
-    ROPD_INVERS_RES = (1 << 10),
+enum SpiceROPDescriptor {
+    SPICE_ROPD_INVERS_SRC = (1 << 0),
+    SPICE_ROPD_INVERS_BRUSH = (1 << 1),
+    SPICE_ROPD_INVERS_DEST = (1 << 2),
+    SPICE_ROPD_OP_PUT = (1 << 3),
+    SPICE_ROPD_OP_OR = (1 << 4),
+    SPICE_ROPD_OP_AND = (1 << 5),
+    SPICE_ROPD_OP_XOR = (1 << 6),
+    SPICE_ROPD_OP_BLACKNESS = (1 << 7),
+    SPICE_ROPD_OP_WHITENESS = (1 << 8),
+    SPICE_ROPD_OP_INVERS = (1 << 9),
+    SPICE_ROPD_INVERS_RES = (1 << 10),
 };
 
-typedef struct SPICE_ATTR_PACKED Pattern {
-    ADDRESS pat;
-    Point pos;
-} Pattern;
+typedef struct SPICE_ATTR_PACKED SpicePattern {
+    SPICE_ADDRESS pat;
+    SpicePoint pos;
+} SpicePattern;
 
 enum {
-    BRUSH_TYPE_NONE,
-    BRUSH_TYPE_SOLID,
-    BRUSH_TYPE_PATTERN,
+    SPICE_BRUSH_TYPE_NONE,
+    SPICE_BRUSH_TYPE_SOLID,
+    SPICE_BRUSH_TYPE_PATTERN,
 };
 
-typedef struct SPICE_ATTR_PACKED Brush {
+typedef struct SPICE_ATTR_PACKED SpiceBrush {
     uint32_t type;
     union {
         uint32_t color;
-        Pattern pattern;
+        SpicePattern pattern;
     } u;
-} Brush;
+} SpiceBrush;
 
 enum {
-    MASK_INVERS = (1 << 0),
+    SPICE_MASK_FLAGS_INVERS = (1 << 0),
 };
 
-typedef struct SPICE_ATTR_PACKED QMask {
+typedef struct SPICE_ATTR_PACKED SpiceQMask {
     uint8_t flags;
-    Point pos;
-    ADDRESS bitmap;
-} QMask;
+    SpicePoint pos;
+    SPICE_ADDRESS bitmap;
+} SpiceQMask;
 
-typedef struct SPICE_ATTR_PACKED Fill {
-    Brush brush;
+typedef struct SPICE_ATTR_PACKED SpiceFill {
+    SpiceBrush brush;
     uint16_t rop_decriptor;
-    QMask mask;
-} Fill;
+    SpiceQMask mask;
+} SpiceFill;
 
-typedef struct SPICE_ATTR_PACKED Palette {
+typedef struct SPICE_ATTR_PACKED SpicePalette {
     uint64_t unique;
     uint16_t num_ents;
     uint32_t ents[0];
-} Palette;
+} SpicePalette;
 
 enum {
-    IMAGE_TYPE_BITMAP,
-    IMAGE_TYPE_QUIC,
-    IMAGE_TYPE_RESERVED,
-    IMAGE_TYPE_LZ_PLT = 100,
-    IMAGE_TYPE_LZ_RGB,
-    IMAGE_TYPE_GLZ_RGB,
-    IMAGE_TYPE_FROM_CACHE,
+    SPICE_IMAGE_TYPE_BITMAP,
+    SPICE_IMAGE_TYPE_QUIC,
+    SPICE_IMAGE_TYPE_RESERVED,
+    SPICE_IMAGE_TYPE_LZ_PLT = 100,
+    SPICE_IMAGE_TYPE_LZ_RGB,
+    SPICE_IMAGE_TYPE_GLZ_RGB,
+    SPICE_IMAGE_TYPE_FROM_CACHE,
 };
 
 enum {
-    IMAGE_CACHE_ME = (1 << 0),
+    SPICE_IMAGE_FLAGS_CACHE_ME = (1 << 0),
 };
 
-typedef struct SPICE_ATTR_PACKED ImageDescriptor {
+typedef struct SPICE_ATTR_PACKED SpiceImageDescriptor {
     uint64_t id;
     uint8_t type;
     uint8_t flags;
     uint32_t width;
     uint32_t height;
-} ImageDescriptor;
+} SpiceImageDescriptor;
 
 enum {
-    BITMAP_FMT_INVALID,
-    BITMAP_FMT_1BIT_LE,
-    BITMAP_FMT_1BIT_BE,
-    BITMAP_FMT_4BIT_LE,
-    BITMAP_FMT_4BIT_BE,
-    BITMAP_FMT_8BIT,
-    BITMAP_FMT_16BIT,
-    BITMAP_FMT_24BIT,
-    BITMAP_FMT_32BIT,
-    BITMAP_FMT_RGBA,
+    SPICE_BITMAP_FMT_INVALID,
+    SPICE_BITMAP_FMT_1BIT_LE,
+    SPICE_BITMAP_FMT_1BIT_BE,
+    SPICE_BITMAP_FMT_4BIT_LE,
+    SPICE_BITMAP_FMT_4BIT_BE,
+    SPICE_BITMAP_FMT_8BIT,
+    SPICE_BITMAP_FMT_16BIT,
+    SPICE_BITMAP_FMT_24BIT,
+    SPICE_BITMAP_FMT_32BIT,
+    SPICE_BITMAP_FMT_RGBA,
 };
 
 enum {
-    BITMAP_PAL_CACHE_ME = (1 << 0),
-    BITMAP_PAL_FROM_CACHE = (1 << 1),
-    BITMAP_TOP_DOWN = (1 << 2),
+    SPICE_BITMAP_FLAGS_PAL_CACHE_ME = (1 << 0),
+    SPICE_BITMAP_FLAGS_PAL_FROM_CACHE = (1 << 1),
+    SPICE_BITMAP_FLAGS_TOP_DOWN = (1 << 2),
 };
 
-typedef struct SPICE_ATTR_PACKED Bitmap {
+typedef struct SPICE_ATTR_PACKED SpiceBitmap {
     uint8_t format;
     uint8_t flags;
     uint32_t x;
     uint32_t y;
     uint32_t stride;
-    ADDRESS palette;
-    ADDRESS data; //data[0] ?
-} Bitmap;
+    SPICE_ADDRESS palette;
+    SPICE_ADDRESS data; //data[0] ?
+} SpiceBitmap;
 
-typedef struct SPICE_ATTR_PACKED BitmapImage {
-    ImageDescriptor descriptor;
-    Bitmap bitmap;
-} BitmapImage;
+typedef struct SPICE_ATTR_PACKED SpiceBitmapImage {
+    SpiceImageDescriptor descriptor;
+    SpiceBitmap bitmap;
+} SpiceBitmapImage;
 
-typedef struct SPICE_ATTR_PACKED QUICData {
+typedef struct SPICE_ATTR_PACKED SpiceQUICData {
     uint32_t data_size;
     uint8_t data[0];
-} QUICData, LZ_RGBData;
+} SpiceQUICData, SpiceLZRGBData;
 
-typedef struct SPICE_ATTR_PACKED QUICImage {
-    ImageDescriptor descriptor;
-    QUICData quic;
-} QUICImage;
+typedef struct SPICE_ATTR_PACKED SpiceQUICImage {
+    SpiceImageDescriptor descriptor;
+    SpiceQUICData quic;
+} SpiceQUICImage;
 
-typedef struct SPICE_ATTR_PACKED LZ_RGBImage {
-    ImageDescriptor descriptor;
-    LZ_RGBData lz_rgb;
-} LZ_RGBImage;
+typedef struct SPICE_ATTR_PACKED SpiceLZRGBImage {
+    SpiceImageDescriptor descriptor;
+    SpiceLZRGBData lz_rgb;
+} SpiceLZRGBImage;
 
-typedef struct SPICE_ATTR_PACKED LZ_PLTData {
+typedef struct SPICE_ATTR_PACKED SpiceLZPLTData {
     uint8_t flags;
     uint32_t data_size;
-    ADDRESS palette;
+    SPICE_ADDRESS palette;
     uint8_t data[0];
-} LZ_PLTData;
+} SpiceLZPLTData;
 
-typedef struct SPICE_ATTR_PACKED LZ_PLTImage {
-    ImageDescriptor descriptor;
-    LZ_PLTData lz_plt;
-} LZ_PLTImage;
+typedef struct SPICE_ATTR_PACKED SpiceLZPLTImage {
+    SpiceImageDescriptor descriptor;
+    SpiceLZPLTData lz_plt;
+} SpiceLZPLTImage;
 
 enum {
-    IMAGE_SCALE_INTERPOLATE,
-    IMAGE_SCALE_NEAREST,
+    SPICE_IMAGE_SCALE_MODE_INTERPOLATE,
+    SPICE_IMAGE_SCALE_MODE_NEAREST,
 };
 
-typedef struct SPICE_ATTR_PACKED Opaque {
-    ADDRESS src_bitmap;
-    Rect src_area;
-    Brush brush;
+typedef struct SPICE_ATTR_PACKED SpiceOpaque {
+    SPICE_ADDRESS src_bitmap;
+    SpiceRect src_area;
+    SpiceBrush brush;
     uint16_t rop_decriptor;
     uint8_t scale_mode;
-    QMask mask;
-} Opaque;
+    SpiceQMask mask;
+} SpiceOpaque;
 
-typedef struct SPICE_ATTR_PACKED Copy {
-    ADDRESS src_bitmap;
-    Rect src_area;
+typedef struct SPICE_ATTR_PACKED SpiceCopy {
+    SPICE_ADDRESS src_bitmap;
+    SpiceRect src_area;
     uint16_t rop_decriptor;
     uint8_t scale_mode;
-    QMask mask;
-} Copy, Blend;
+    SpiceQMask mask;
+} SpiceCopy, SpiceBlend;
 
-typedef struct SPICE_ATTR_PACKED Transparent {
-    ADDRESS src_bitmap;
-    Rect src_area;
+typedef struct SPICE_ATTR_PACKED SpiceTransparent {
+    SPICE_ADDRESS src_bitmap;
+    SpiceRect src_area;
     uint32_t src_color;
     uint32_t true_color;
-} Transparent;
+} SpiceTransparent;
 
-typedef struct SPICE_ATTR_PACKED AlphaBlnd {
+typedef struct SPICE_ATTR_PACKED SpiceAlphaBlnd {
     uint8_t alpha;
-    ADDRESS src_bitmap;
-    Rect src_area;
-} AlphaBlnd;
+    SPICE_ADDRESS src_bitmap;
+    SpiceRect src_area;
+} SpiceAlphaBlnd;
 
-typedef struct SPICE_ATTR_PACKED Rop3 {
-    ADDRESS src_bitmap;
-    Rect src_area;
-    Brush brush;
+typedef struct SPICE_ATTR_PACKED SpiceRop3 {
+    SPICE_ADDRESS src_bitmap;
+    SpiceRect src_area;
+    SpiceBrush brush;
     uint8_t rop3;
     uint8_t scale_mode;
-    QMask mask;
-} Rop3;
+    SpiceQMask mask;
+} SpiceRop3;
 
-typedef struct SPICE_ATTR_PACKED Blackness {
-    QMask mask;
-} Blackness, Invers, Whiteness;
+typedef struct SPICE_ATTR_PACKED SpiceBlackness {
+    SpiceQMask mask;
+} SpiceBlackness, SpiceInvers, SpiceWhiteness;
 
 enum {
-    LINE_STYLED = (1 << 3),
-    LINE_START_WITH_GAP = (1 << 2),
+    SPICE_LINE_FLAGS_STYLED = (1 << 3),
+    SPICE_LINE_FLAGS_START_WITH_GAP = (1 << 2),
 };
 
 enum {
-    LINE_CAP_ROUND,
-    LINE_CAP_SQUARE,
-    LINE_CAP_BUTT,
+    SPICE_LINE_CAP_ROUND,
+    SPICE_LINE_CAP_SQUARE,
+    SPICE_LINE_CAP_BUTT,
 };
 
 enum {
-    LINE_JOIN_ROUND,
-    LINE_JOIN_BEVEL,
-    LINE_JOIN_MITER,
+    SPICE_LINE_JOIN_ROUND,
+    SPICE_LINE_JOIN_BEVEL,
+    SPICE_LINE_JOIN_MITER,
 };
 
-typedef struct SPICE_ATTR_PACKED LineAttr {
+typedef struct SPICE_ATTR_PACKED SpiceLineAttr {
     uint8_t flags;
     uint8_t join_style;
     uint8_t end_style;
     uint8_t style_nseg;
-    FIXED28_4 width;
-    FIXED28_4 miter_limit;
-    ADDRESS style; //data[0] ?
-} LineAttr;
+    SPICE_FIXED28_4 width;
+    SPICE_FIXED28_4 miter_limit;
+    SPICE_ADDRESS style; //data[0] ?
+} SpiceLineAttr;
 
-typedef struct SPICE_ATTR_PACKED Stroke {
-    ADDRESS path;
-    LineAttr attr;
-    Brush brush;
+typedef struct SPICE_ATTR_PACKED SpiceStroke {
+    SPICE_ADDRESS path;
+    SpiceLineAttr attr;
+    SpiceBrush brush;
     uint16_t fore_mode;
     uint16_t back_mode;
-} Stroke;
+} SpiceStroke;
 
-typedef struct SPICE_ATTR_PACKED RasterGlyph {
-    Point render_pos;
-    Point glyph_origin;
+typedef struct SPICE_ATTR_PACKED SpiceRasterGlyph {
+    SpicePoint render_pos;
+    SpicePoint glyph_origin;
     uint16_t width;
     uint16_t height;
     uint8_t data[0];
-} RasterGlyph;
+} SpiceRasterGlyph;
 
-typedef struct SPICE_ATTR_PACKED VectotGlyph {
-    Point render_pos;
+typedef struct SPICE_ATTR_PACKED SpiceVectorGlyph {
+    SpicePoint render_pos;
     uint32_t data_size;
-    uint8_t data[0]; //PathSeg[]
-} VectotGlyph;
+    uint8_t data[0]; //SpicePathSeg[]
+} SpiceVectorGlyph;
 
 enum {
-    STRING_RASTER_A1 = 1 << 0,
-    STRING_RASTER_A4 = 1 << 1,
-    STRING_RASTER_A8 = 1 << 2,
-    STRING_RASTER_TOP_DOWN = 1 << 3,
+    SPICE_STRING_FLAGS_RASTER_A1 = 1 << 0,
+    SPICE_STRING_FLAGS_RASTER_A4 = 1 << 1,
+    SPICE_STRING_FLAGS_RASTER_A8 = 1 << 2,
+    SPICE_STRING_FLAGS_RASTER_TOP_DOWN = 1 << 3,
 };
 
-typedef struct SPICE_ATTR_PACKED String {
+typedef struct SPICE_ATTR_PACKED SpiceString {
     uint16_t length;
     uint16_t flags;
     uint8_t data[0];
-} String;
+} SpiceString;
 
-typedef struct SPICE_ATTR_PACKED Text {
-    ADDRESS str;
-    Rect back_area;
-    Brush fore_brush;
-    Brush back_brush;
+typedef struct SPICE_ATTR_PACKED SpiceText {
+    SPICE_ADDRESS str;
+    SpiceRect back_area;
+    SpiceBrush fore_brush;
+    SpiceBrush back_brush;
     uint16_t fore_mode;
     uint16_t back_mode;
-} Text;
+} SpiceText;
 
 enum {
-    CURSOR_TYPE_ALPHA,
-    CURSOR_TYPE_MONO,
-    CURSOR_TYPE_COLOR4,
-    CURSOR_TYPE_COLOR8,
-    CURSOR_TYPE_COLOR16,
-    CURSOR_TYPE_COLOR24,
-    CURSOR_TYPE_COLOR32,
+    SPICE_CURSOR_TYPE_ALPHA,
+    SPICE_CURSOR_TYPE_MONO,
+    SPICE_CURSOR_TYPE_COLOR4,
+    SPICE_CURSOR_TYPE_COLOR8,
+    SPICE_CURSOR_TYPE_COLOR16,
+    SPICE_CURSOR_TYPE_COLOR24,
+    SPICE_CURSOR_TYPE_COLOR32,
 };
 
-typedef struct SPICE_ATTR_PACKED CursorHeader {
+typedef struct SPICE_ATTR_PACKED SpiceCursorHeader {
     uint64_t unique;
     uint16_t type;
     uint16_t width;
     uint16_t height;
     uint16_t hot_spot_x;
     uint16_t hot_spot_y;
-} CursorHeader;
+} SpiceCursorHeader;
 
 #include <spice/end-packed.h>
 

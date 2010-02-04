@@ -68,7 +68,7 @@
 
 
 
-#define RING_DECLARE(name, el_type, size)               \
+#define SPICE_RING_DECLARE(name, el_type, size)               \
 typedef struct SPICE_ATTR_PACKED name##_ring_el {       \
     union {                                             \
         el_type el;                                     \
@@ -86,7 +86,7 @@ typedef struct SPICE_ATTR_PACKED name {                   \
 } name;
 
 
-#define RING_INIT(r)                                                \
+#define SPICE_RING_INIT(r)                                                \
     (r)->num_items = sizeof((r)->items) >>                          \
                         PAWER2_TO_SHIFT(sizeof((r)->items[0]));     \
     (r)->prod = (r)->cons = 0;                                      \
@@ -94,39 +94,39 @@ typedef struct SPICE_ATTR_PACKED name {                   \
     (r)->notify_on_cons = 0;
 
 
-#define RING_INDEX_MASK(r) ((r)->num_items - 1)
+#define SPICE_RING_INDEX_MASK(r) ((r)->num_items - 1)
 
-#define RING_IS_PACKED(r) (sizeof((r)->items[0]) == sizeof((r)->items[0]).el)
+#define SPICE_RING_IS_PACKED(r) (sizeof((r)->items[0]) == sizeof((r)->items[0]).el)
 
-#define RING_IS_EMPTY(r) ((r)->cons == (r)->prod)
+#define SPICE_RING_IS_EMPTY(r) ((r)->cons == (r)->prod)
 
-#define RING_IS_FULL(r) (((r)->prod - (r)->cons) == (r)->num_items)
+#define SPICE_RING_IS_FULL(r) (((r)->prod - (r)->cons) == (r)->num_items)
 
-#define RING_PROD_ITEM(r) (&(r)->items[(r)->prod & RING_INDEX_MASK(r)].el)
+#define SPICE_RING_PROD_ITEM(r) (&(r)->items[(r)->prod & SPICE_RING_INDEX_MASK(r)].el)
 
-#define RING_PROD_WAIT(r, wait)                 \
-    if (((wait) = RING_IS_FULL(r))) {           \
+#define SPICE_RING_PROD_WAIT(r, wait)                 \
+    if (((wait) = SPICE_RING_IS_FULL(r))) {           \
         (r)->notify_on_cons = (r)->cons + 1;    \
         spice_mb();	                        \
-        (wait) = RING_IS_FULL(r);               \
+        (wait) = SPICE_RING_IS_FULL(r);               \
     }
 
-#define RING_PUSH(r, notify)                    \
+#define SPICE_RING_PUSH(r, notify)                    \
     (r)->prod++;                                \
     spice_mb();                                 \
     (notify) = (r)->prod == (r)->notify_on_prod;
 
 
-#define RING_CONS_ITEM(r) (&(r)->items[(r)->cons & RING_INDEX_MASK(r)].el)
+#define SPICE_RING_CONS_ITEM(r) (&(r)->items[(r)->cons & SPICE_RING_INDEX_MASK(r)].el)
 
-#define RING_CONS_WAIT(r, wait)                 \
-    if (((wait) = RING_IS_EMPTY(r))) {          \
+#define SPICE_RING_CONS_WAIT(r, wait)                 \
+    if (((wait) = SPICE_RING_IS_EMPTY(r))) {          \
         (r)->notify_on_prod = (r)->prod + 1;    \
         spice_mb();                             \
-        (wait) = RING_IS_EMPTY(r);              \
+        (wait) = SPICE_RING_IS_EMPTY(r);              \
     }
 
-#define RING_POP(r, notify)                         \
+#define SPICE_RING_POP(r, notify)                         \
     (r)->cons++;                                    \
     spice_mb();                                     \
     (notify) = (r)->cons == (r)->notify_on_cons;

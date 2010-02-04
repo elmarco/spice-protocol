@@ -33,36 +33,36 @@
 
 #include <spice/types.h>
 
-#define REDS_STAT_SHM_NAME "spice.%u"
-#define REDS_STAT_NODE_NAME_MAX_LENGTH 20
-#define REDS_STAT_MAGIC (*(uint32_t*)"STAT")
-#define REDS_STAT_VERSION 1
+#define SPICE_STAT_SHM_NAME "spice.%u"
+#define SPICE_STAT_NODE_NAME_MAX 20
+#define SPICE_STAT_MAGIC (*(uint32_t*)"STAT")
+#define SPICE_STAT_VERSION 1
 
 enum {
-    STAT_NODE_FLAG_ENABLED = (1 << 0),
-    STAT_NODE_FLAG_VISIBLE = (1 << 1),
-    STAT_NODE_FLAG_VALUE = (1 << 2),
+    SPICE_STAT_NODE_FLAG_ENABLED = (1 << 0),
+    SPICE_STAT_NODE_FLAG_VISIBLE = (1 << 1),
+    SPICE_STAT_NODE_FLAG_VALUE = (1 << 2),
 };
 
-#define STAT_NODE_MASK_SHOW (STAT_NODE_FLAG_ENABLED | STAT_NODE_FLAG_VISIBLE)
-#define STAT_NODE_MASK_SHOW_VALUE (STAT_NODE_MASK_SHOW | STAT_NODE_FLAG_VALUE)
+#define SPICE_STAT_NODE_MASK_SHOW (SPICE_STAT_NODE_FLAG_ENABLED | SPICE_STAT_NODE_FLAG_VISIBLE)
+#define SPICE_STAT_NODE_MASK_SHOW_VALUE (SPICE_STAT_NODE_MASK_SHOW | SPICE_STAT_NODE_FLAG_VALUE)
 
-typedef struct StatNode {
+typedef struct SpiceStatNode {
     uint64_t value;
     uint32_t flags;
     uint32_t next_sibling_index;
     uint32_t first_child_index;
-    char name[REDS_STAT_NODE_NAME_MAX_LENGTH];
-} StatNode;
+    char name[SPICE_STAT_NODE_NAME_MAX];
+} SpiceStatNode;
 
-typedef struct RedsStat {
+typedef struct SpiceStat {
     uint32_t magic;
     uint32_t version;
     uint32_t generation;
     uint32_t num_of_nodes;
     uint32_t root_index;
-    StatNode nodes[];
-} RedsStat;
+    SpiceStatNode nodes[];
+} SpiceStat;
 
 #endif
 

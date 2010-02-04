@@ -37,185 +37,185 @@
 
 #include <spice/start-packed.h>
 
-#define RED_MAGIC (*(uint32_t*)"REDQ")
-#define RED_VERSION_MAJOR (~(uint32_t)0 - 1)
-#define RED_VERSION_MINOR 2
+#define SPICE_MAGIC (*(uint32_t*)"REDQ")
+#define SPICE_VERSION_MAJOR (~(uint32_t)0 - 1)
+#define SPICE_VERSION_MINOR 2
 
 // Encryption & Ticketing Parameters
-#define RED_MAX_PASSWORD_LENGTH 60
-#define RED_TICKET_KEY_PAIR_LENGTH 1024
-#define RED_TICKET_PUBKEY_BYTES (RED_TICKET_KEY_PAIR_LENGTH / 8 + 34)
+#define SPICE_MAX_PASSWORD_LENGTH 60
+#define SPICE_TICKET_KEY_PAIR_LENGTH 1024
+#define SPICE_TICKET_PUBKEY_BYTES (SPICE_TICKET_KEY_PAIR_LENGTH / 8 + 34)
 
 enum {
-    RED_CHANNEL_MAIN = 1,
-    RED_CHANNEL_DISPLAY,
-    RED_CHANNEL_INPUTS,
-    RED_CHANNEL_CURSOR,
-    RED_CHANNEL_PLAYBACK,
-    RED_CHANNEL_RECORD,
-    RED_CHANNEL_TUNNEL,
+    SPICE_CHANNEL_MAIN = 1,
+    SPICE_CHANNEL_DISPLAY,
+    SPICE_CHANNEL_INPUTS,
+    SPICE_CHANNEL_CURSOR,
+    SPICE_CHANNEL_PLAYBACK,
+    SPICE_CHANNEL_RECORD,
+    SPICE_CHANNEL_TUNNEL,
 
-    RED_CHANNEL_END
+    SPICE_END_CHANNEL
 };
 
 enum {
-    RED_ERR_OK,
-    RED_ERR_ERROR,
-    RED_ERR_INVALID_MAGIC,
-    RED_ERR_INVALID_DATA,
-    RED_ERR_VERSION_MISMATCH,
-    RED_ERR_NEED_SECURED,
-    RED_ERR_NEED_UNSECURED,
-    RED_ERR_PERMISSION_DENIED,
-    RED_ERR_BAD_CONNECTION_ID,
-    RED_ERR_CHANNEL_NOT_AVAILABLE,
+    SPICE_LINK_ERR_OK,
+    SPICE_LINK_ERR_ERROR,
+    SPICE_LINK_ERR_INVALID_MAGIC,
+    SPICE_LINK_ERR_INVALID_DATA,
+    SPICE_LINK_ERR_VERSION_MISMATCH,
+    SPICE_LINK_ERR_NEED_SECURED,
+    SPICE_LINK_ERR_NEED_UNSECURED,
+    SPICE_LINK_ERR_PERMISSION_DENIED,
+    SPICE_LINK_ERR_BAD_CONNECTION_ID,
+    SPICE_LINK_ERR_CHANNEL_NOT_AVAILABLE,
 };
 
 enum {
-    RED_WARN_GENERAL,
+    SPICE_WARN_GENERAL,
 };
 
 enum {
-    RED_INFO_GENERAL,
+    SPICE_INFO_GENERAL,
 };
 
-typedef struct SPICE_ATTR_PACKED RedLinkHeader {
+typedef struct SPICE_ATTR_PACKED SpiceLinkHeader {
     uint32_t magic;
     uint32_t major_version;
     uint32_t minor_version;
     uint32_t size;
-} RedLinkHeader;
+} SpiceLinkHeader;
 
-typedef struct SPICE_ATTR_PACKED RedLinkMess {
+typedef struct SPICE_ATTR_PACKED SpiceLinkMess {
     uint32_t connection_id;
     uint8_t channel_type;
     uint8_t channel_id;
     uint32_t num_common_caps;
     uint32_t num_channel_caps;
     uint32_t caps_offset;
-} RedLinkMess;
+} SpiceLinkMess;
 
-typedef struct SPICE_ATTR_PACKED RedLinkReply {
+typedef struct SPICE_ATTR_PACKED SpiceLinkReply {
     uint32_t error;
-    uint8_t pub_key[RED_TICKET_PUBKEY_BYTES];
+    uint8_t pub_key[SPICE_TICKET_PUBKEY_BYTES];
     uint32_t num_common_caps;
     uint32_t num_channel_caps;
     uint32_t caps_offset;
-} RedLinkReply;
+} SpiceLinkReply;
 
-typedef struct SPICE_ATTR_PACKED RedLinkEncryptedTicket {
-    uint8_t encrypted_data[RED_TICKET_KEY_PAIR_LENGTH / 8];
-} RedLinkEncryptedTicket;
+typedef struct SPICE_ATTR_PACKED SpiceLinkEncryptedTicket {
+    uint8_t encrypted_data[SPICE_TICKET_KEY_PAIR_LENGTH / 8];
+} SpiceLinkEncryptedTicket;
 
-typedef struct SPICE_ATTR_PACKED RedDataHeader {
+typedef struct SPICE_ATTR_PACKED SpiceDataHeader {
     uint64_t serial;
     uint16_t type;
     uint32_t size;
-    uint32_t sub_list; //offset to RedSubMessageList[]
-} RedDataHeader;
+    uint32_t sub_list; //offset to SpiceSubMessageList[]
+} SpiceDataHeader;
 
-typedef struct SPICE_ATTR_PACKED RedSubMessage {
+typedef struct SPICE_ATTR_PACKED SpicedSubMessage {
     uint16_t type;
     uint32_t size;
-} RedSubMessage;
+} SpicedSubMessage;
 
-typedef struct SPICE_ATTR_PACKED RedSubMessageList {
+typedef struct SPICE_ATTR_PACKED SpiceSubMessageList {
     uint16_t size;
-    uint32_t sub_messages[0]; //offsets to RedSubMessage
-} RedSubMessageList;
+    uint32_t sub_messages[0]; //offsets to SpicedSubMessage
+} SpiceSubMessageList;
 
 enum {
-    RED_MIGRATE = 1,
-    RED_MIGRATE_DATA,
-    RED_SET_ACK,
-    RED_PING,
-    RED_WAIT_FOR_CHANNELS,
-    RED_DISCONNECTING,
-    RED_NOTIFY,
+    SPICE_MSG_MIGRATE = 1,
+    SPICE_MSG_MIGRATE_DATA,
+    SPICE_MSG_SET_ACK,
+    SPICE_MSG_PING,
+    SPICE_MSG_WAIT_FOR_CHANNELS,
+    SPICE_MSG_DISCONNECTING,
+    SPICE_MSG_NOTIFY,
 
-    RED_FIRST_AVAIL_MESSAGE = 101
+    SPICE_MSG_FIRST_AVAIL = 101
 };
 
 enum {
-    REDC_ACK_SYNC = 1,
-    REDC_ACK,
-    REDC_PONG,
-    REDC_MIGRATE_FLUSH_MARK,
-    REDC_MIGRATE_DATA,
-    REDC_DISCONNECTING,
+    SPICE_MSGC_ACK_SYNC = 1,
+    SPICE_MSGC_ACK,
+    SPICE_MSGC_PONG,
+    SPICE_MSGC_MIGRATE_FLUSH_MARK,
+    SPICE_MSGC_MIGRATE_DATA,
+    SPICE_MSGC_DISCONNECTING,
 
-    REDC_FIRST_AVAIL_MESSAGE = 101,
+    SPICE_MSGC_FIRST_AVAIL = 101,
 };
 
 enum {
-    RED_MIGRATE_BEGIN = RED_FIRST_AVAIL_MESSAGE,
-    RED_MIGRATE_CANCEL,
-    RED_INIT,
-    RED_CHANNELS_LIST,
-    RED_MOUSE_MODE,
-    RED_MULTI_MEDIA_TIME,
+    SPICE_MSG_MAIN_MIGRATE_BEGIN = SPICE_MSG_FIRST_AVAIL,
+    SPICE_MSG_MAIN_MIGRATE_CANCEL,
+    SPICE_MSG_MAIN_INIT,
+    SPICE_MSG_MAIN_CHANNELS_LIST,
+    SPICE_MSG_MAIN_MOUSE_MODE,
+    SPICE_MSG_MAIN_MULTI_MEDIA_TIME,
 
-    RED_AGENT_CONNECTED,
-    RED_AGENT_DISCONNECTED,
-    RED_AGENT_DATA,
-    RED_AGENT_TOKEN,
+    SPICE_MSG_MAIN_AGENT_CONNECTED,
+    SPICE_MSG_MAIN_AGENT_DISCONNECTED,
+    SPICE_MSG_MAIN_AGENT_DATA,
+    SPICE_MSG_MAIN_AGENT_TOKEN,
 
-    RED_MESSAGES_END,
+    SPICE_MSG_END_MAIN,
 };
 
 enum {
-    REDC_CLIENT_INFO = REDC_FIRST_AVAIL_MESSAGE,
-    REDC_MIGRATE_CONNECTED,
-    REDC_MIGRATE_CONNECT_ERROR,
-    REDC_ATTACH_CHANNELS,
-    REDC_MOUSE_MODE_REQUEST,
+    SPICE_MSGC_MAIN_CLIENT_INFO = SPICE_MSGC_FIRST_AVAIL,
+    SPICE_MSGC_MAIN_MIGRATE_CONNECTED,
+    SPICE_MSGC_MAIN_MIGRATE_CONNECT_ERROR,
+    SPICE_MSGC_MAIN_ATTACH_CHANNELS,
+    SPICE_MSGC_MAIN_MOUSE_MODE_REQUEST,
 
-    REDC_AGENT_START,
-    REDC_AGENT_DATA,
-    REDC_AGENT_TOKEN,
+    SPICE_MSGC_MAIN_AGENT_START,
+    SPICE_MSGC_MAIN_AGENT_DATA,
+    SPICE_MSGC_MAIN_AGENT_TOKEN,
 };
 
-#define RED_MOTION_ACK_BUNCH 4
+#define SPICE_INPUT_MOTION_ACK_BUNCH 4
 
 enum {
-    RED_INPUTS_INIT = RED_FIRST_AVAIL_MESSAGE,
-    RED_INPUTS_KEY_MODIFAIERS,
+    SPICE_MSG_INPUTS_INIT = SPICE_MSG_FIRST_AVAIL,
+    SPICE_MSG_INPUTS_KEY_MODIFAIERS,
 
-    RED_INPUTS_MOUSE_MOTION_ACK = RED_FIRST_AVAIL_MESSAGE + 10,
+    SPICE_MSG_INPUTS_MOUSE_MOTION_ACK = SPICE_MSG_FIRST_AVAIL + 10,
 
-    RED_INPUTS_MESSAGES_END,
+    SPICE_MSG_END_INPUTS,
 };
 
-#define RED_SCROLL_LOCK_MODIFIER (1 << 0)
-#define RED_NUM_LOCK_MODIFIER (1 << 1)
-#define RED_CAPS_LOCK_MODIFIER (1 << 2)
+#define SPICE_SCROLL_LOCK_MODIFIER (1 << 0)
+#define SPICE_NUM_LOCK_MODIFIER (1 << 1)
+#define SPICE_CAPS_LOCK_MODIFIER (1 << 2)
 
-typedef struct SPICE_ATTR_PACKED RedInputsInit {
+typedef struct SPICE_ATTR_PACKED SpiceMsgInputsInit {
     uint32_t keyboard_modifiers;
-} RedInputsInit;
+} SpiceMsgInputsInit;
 
-typedef struct SPICE_ATTR_PACKED RedKeyModifiers {
+typedef struct SPICE_ATTR_PACKED SpiceMsgInputsKeyModifiers {
     uint32_t modifiers;
-} RedKeyModifiers;
+} SpiceMsgInputsKeyModifiers;
 
-typedef struct SPICE_ATTR_PACKED RedMultiMediaTime {
+typedef struct SPICE_ATTR_PACKED SpiceMsgMainMultiMediaTime {
     uint32_t time;
-} RedMultiMediaTime;
+} SpiceMsgMainMultiMediaTime;
 
 enum {
-    RED_PUBKEY_TYPE_INVALID,
-    RED_PUBKEY_TYPE_RSA,
-    RED_PUBKEY_TYPE_RSA2,
-    RED_PUBKEY_TYPE_DSA,
-    RED_PUBKEY_TYPE_DSA1,
-    RED_PUBKEY_TYPE_DSA2,
-    RED_PUBKEY_TYPE_DSA3,
-    RED_PUBKEY_TYPE_DSA4,
-    RED_PUBKEY_TYPE_DH,
-    RED_PUBKEY_TYPE_EC,
+    SPICE_PUBKEY_TYPE_INVALID,
+    SPICE_PUBKEY_TYPE_RSA,
+    SPICE_PUBKEY_TYPE_RSA2,
+    SPICE_PUBKEY_TYPE_DSA,
+    SPICE_PUBKEY_TYPE_DSA1,
+    SPICE_PUBKEY_TYPE_DSA2,
+    SPICE_PUBKEY_TYPE_DSA3,
+    SPICE_PUBKEY_TYPE_DSA4,
+    SPICE_PUBKEY_TYPE_DH,
+    SPICE_PUBKEY_TYPE_EC,
 };
 
-typedef struct SPICE_ATTR_PACKED RedMigrationBegin {
+typedef struct SPICE_ATTR_PACKED SpiceMsgMainMigrationBegin {
     uint16_t port;
     uint16_t sport;
     uint32_t host_offset;
@@ -223,54 +223,54 @@ typedef struct SPICE_ATTR_PACKED RedMigrationBegin {
     uint16_t pub_key_type;
     uint32_t pub_key_offset;
     uint32_t pub_key_size;
-} RedMigrationBegin;
+} SpiceMsgMainMigrationBegin;
 
 enum {
-    RED_MIGRATE_NEED_FLUSH = (1 << 0),
-    RED_MIGRATE_NEED_DATA_TRANSFER = (1 << 1),
+    SPICE_MIGRATE_NEED_FLUSH = (1 << 0),
+    SPICE_MIGRATE_NEED_DATA_TRANSFER = (1 << 1),
 };
 
-typedef struct SPICE_ATTR_PACKED RedMigrate {
+typedef struct SPICE_ATTR_PACKED SpiceMsgMigrate {
     uint32_t flags;
-} RedMigrate;
+} SpiceMsgMigrate;
 
 enum {
-    RED_RES_TYPE_INVALID,
-    RED_RES_TYPE_PIXMAP,
+    SPICE_RES_TYPE_INVALID,
+    SPICE_RES_TYPE_PIXMAP,
 };
 
-typedef struct SPICE_ATTR_PACKED RedResorceID {
+typedef struct SPICE_ATTR_PACKED SpiceResorceID {
     uint8_t type;
     uint64_t id;
-} RedResorceID;
+} SpiceResorceID;
 
-typedef struct SPICE_ATTR_PACKED RedResorceList {
+typedef struct SPICE_ATTR_PACKED SpiceResorceList {
     uint16_t count;
-    RedResorceID resorces[0];
-} RedResorceList;
+    SpiceResorceID resorces[0];
+} SpiceResorceList;
 
-typedef struct SPICE_ATTR_PACKED RedSetAck {
+typedef struct SPICE_ATTR_PACKED SpiceMsgSetAck {
     uint32_t generation;
     uint32_t window;
-} RedSetAck;
+} SpiceMsgSetAck;
 
-typedef struct SPICE_ATTR_PACKED RedWaitForChannel {
+typedef struct SPICE_ATTR_PACKED SpiceWaitForChannel {
     uint8_t channel_type;
     uint8_t channel_id;
     uint64_t message_serial;
-} RedWaitForChannel;
+} SpiceWaitForChannel;
 
-typedef struct SPICE_ATTR_PACKED RedWaitForChannels {
+typedef struct SPICE_ATTR_PACKED SpiceMsgWaitForChannels {
     uint8_t wait_count;
-    RedWaitForChannel wait_list[0];
-} RedWaitForChannels;
+    SpiceWaitForChannel wait_list[0];
+} SpiceMsgWaitForChannels;
 
-typedef struct SPICE_ATTR_PACKED RedChannelInit {
+typedef struct SPICE_ATTR_PACKED SpiceChannelId {
     uint8_t type;
     uint8_t id;
-} RedChannelInit;
+} SpiceChannelId;
 
-typedef struct SPICE_ATTR_PACKED RedInit {
+typedef struct SPICE_ATTR_PACKED SpiceMsgMainInit {
     uint32_t session_id;
     uint32_t display_channels_hint;
     uint32_t supported_mouse_modes;
@@ -279,198 +279,198 @@ typedef struct SPICE_ATTR_PACKED RedInit {
     uint32_t agent_tokens;
     uint32_t multi_media_time;
     uint32_t ram_hint;
-} RedInit;
+} SpiceMsgMainInit;
 
-typedef struct SPICE_ATTR_PACKED RedDisconnect {
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisconnect {
     uint64_t time_stamp;
-    uint32_t reason; // RED_ERR_?
-} RedDisconnect;
+    uint32_t reason; // SPICE_ERR_?
+} SpiceMsgDisconnect;
 
 enum {
-    RED_NOTIFY_SEVERITY_INFO,
-    RED_NOTIFY_SEVERITY_WARN,
-    RED_NOTIFY_SEVERITY_ERROR,
+    SPICE_NOTIFY_SEVERITY_INFO,
+    SPICE_NOTIFY_SEVERITY_WARN,
+    SPICE_NOTIFY_SEVERITY_ERROR,
 };
 
 enum {
-    RED_NOTIFY_VISIBILITY_LOW,
-    RED_NOTIFY_VISIBILITY_MEDIUM,
-    RED_NOTIFY_VISIBILITY_HIGH,
+    SPICE_NOTIFY_VISIBILITY_LOW,
+    SPICE_NOTIFY_VISIBILITY_MEDIUM,
+    SPICE_NOTIFY_VISIBILITY_HIGH,
 };
 
-typedef struct SPICE_ATTR_PACKED RedNotify {
+typedef struct SPICE_ATTR_PACKED SpiceMsgNotify {
     uint64_t time_stamp;
     uint32_t severty;
     uint32_t visibilty;
     uint32_t what;
     uint32_t message_len;
     uint8_t message[0];
-} RedNotify;
+} SpiceMsgNotify;
 
-typedef struct SPICE_ATTR_PACKED RedChannels {
+typedef struct SPICE_ATTR_PACKED SpiceMsgChannels {
     uint32_t num_of_channels;
-    RedChannelInit channels[0];
-} RedChannels;
+    SpiceChannelId channels[0];
+} SpiceMsgChannels;
 
-typedef struct SPICE_ATTR_PACKED RedMouseMode {
+typedef struct SPICE_ATTR_PACKED SpiceMsgMainMouseMode {
     uint32_t supported_modes;
     uint32_t current_mode;
-} RedMouseMode;
+} SpiceMsgMainMouseMode;
 
-typedef struct SPICE_ATTR_PACKED RedPing {
+typedef struct SPICE_ATTR_PACKED SpiceMsgPing {
     uint32_t id;
     uint64_t timestamp;
-} RedPing;
+} SpiceMsgPing;
 
-typedef struct SPICE_ATTR_PACKED RedAgentDisconnect {
-    uint32_t error_code; // RED_ERR_?
-} RedAgentDisconnect;
+typedef struct SPICE_ATTR_PACKED SpiceMsgMainAgentDisconnect {
+    uint32_t error_code; // SPICE_ERR_?
+} SpiceMsgMainAgentDisconnect;
 
-#define RED_AGENT_MAX_DATA_SIZE 2048
+#define SPICE_AGENT_MAX_DATA_SIZE 2048
 
-typedef struct SPICE_ATTR_PACKED RedAgentTokens {
+typedef struct SPICE_ATTR_PACKED SpiceMsgMainAgentTokens {
     uint32_t num_tokens;
-} RedAgentTokens, RedcAgentTokens, RedcAgentStart;
+} SpiceMsgMainAgentTokens, SpiceMsgcMainAgentTokens, SpiceMsgcMainAgentStart;
 
-typedef struct SPICE_ATTR_PACKED RedcClientInfo {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcClientInfo {
     uint64_t cache_size;
-} RedcClientInfo;
+} SpiceMsgcClientInfo;
 
-typedef struct SPICE_ATTR_PACKED RedcMouseModeRequest {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcMainMouseModeRequest {
     uint32_t mode;
-} RedcMouseModeRequest;
+} SpiceMsgcMainMouseModeRequest;
 
 enum {
-    RED_DISPLAY_MODE = RED_FIRST_AVAIL_MESSAGE,
-    RED_DISPLAY_MARK,
-    RED_DISPLAY_RESET,
-    RED_DISPLAY_COPY_BITS,
+    SPICE_MSG_DISPLAY_MODE = SPICE_MSG_FIRST_AVAIL,
+    SPICE_MSG_DISPLAY_MARK,
+    SPICE_MSG_DISPLAY_RESET,
+    SPICE_MSG_DISPLAY_COPY_BITS,
 
-    RED_DISPLAY_INVAL_LIST,
-    RED_DISPLAY_INVAL_ALL_PIXMAPS,
-    RED_DISPLAY_INVAL_PALETTE,
-    RED_DISPLAY_INVAL_ALL_PALETTES,
+    SPICE_MSG_DISPLAY_INVAL_LIST,
+    SPICE_MSG_DISPLAY_INVAL_ALL_PIXMAPS,
+    SPICE_MSG_DISPLAY_INVAL_PALETTE,
+    SPICE_MSG_DISPLAY_INVAL_ALL_PALETTES,
 
-    RED_DISPLAY_STREAM_CREATE = RED_FIRST_AVAIL_MESSAGE + 21,
-    RED_DISPLAY_STREAM_DATA,
-    RED_DISPLAY_STREAM_CLIP,
-    RED_DISPLAY_STREAM_DESTROY,
-    RED_DISPLAY_STREAM_DESTROY_ALL,
+    SPICE_MSG_DISPLAY_STREAM_CREATE = SPICE_MSG_FIRST_AVAIL + 21,
+    SPICE_MSG_DISPLAY_STREAM_DATA,
+    SPICE_MSG_DISPLAY_STREAM_CLIP,
+    SPICE_MSG_DISPLAY_STREAM_DESTROY,
+    SPICE_MSG_DISPLAY_STREAM_DESTROY_ALL,
 
-    RED_DISPLAY_DRAW_FILL = RED_FIRST_AVAIL_MESSAGE + 201,
-    RED_DISPLAY_DRAW_OPAQUE,
-    RED_DISPLAY_DRAW_COPY,
-    RED_DISPLAY_DRAW_BLEND,
-    RED_DISPLAY_DRAW_BLACKNESS,
-    RED_DISPLAY_DRAW_WHITENESS,
-    RED_DISPLAY_DRAW_INVERS,
-    RED_DISPLAY_DRAW_ROP3,
-    RED_DISPLAY_DRAW_STROKE,
-    RED_DISPLAY_DRAW_TEXT,
-    RED_DISPLAY_DRAW_TRANSPARENT,
-    RED_DISPLAY_DRAW_ALPHA_BLEND,
+    SPICE_MSG_DISPLAY_DRAW_FILL = SPICE_MSG_FIRST_AVAIL + 201,
+    SPICE_MSG_DISPLAY_DRAW_OPAQUE,
+    SPICE_MSG_DISPLAY_DRAW_COPY,
+    SPICE_MSG_DISPLAY_DRAW_BLEND,
+    SPICE_MSG_DISPLAY_DRAW_BLACKNESS,
+    SPICE_MSG_DISPLAY_DRAW_WHITENESS,
+    SPICE_MSG_DISPLAY_DRAW_INVERS,
+    SPICE_MSG_DISPLAY_DRAW_ROP3,
+    SPICE_MSG_DISPLAY_DRAW_STROKE,
+    SPICE_MSG_DISPLAY_DRAW_TEXT,
+    SPICE_MSG_DISPLAY_DRAW_TRANSPARENT,
+    SPICE_MSG_DISPLAY_DRAW_ALPHA_BLEND,
 
-    RED_DISPLAY_MESSAGES_END,
+    SPICE_MSG_END_DISPLAY,
 };
 
 enum {
-    RED_CURSOR_NONE = (1 << 0),
-    RED_CURSOR_CACHE_ME = (1 << 1),
-    RED_CURSOR_FROM_CACHE = (1 << 2),
+    SPICE_CURSOR_FLAGS_NONE = (1 << 0),
+    SPICE_CURSOR_FLAGS_CACHE_ME = (1 << 1),
+    SPICE_CURSOR_FLAGS_FROM_CACHE = (1 << 2),
 };
 
-typedef struct SPICE_ATTR_PACKED RedCursor {
+typedef struct SPICE_ATTR_PACKED SpiceCursor {
     uint32_t flags;
-    CursorHeader header;
+    SpiceCursorHeader header;
     uint8_t data[0];
-} RedCursor;
+} SpiceCursor;
 
-typedef struct SPICE_ATTR_PACKED RedMode {
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayMode {
     uint32_t x_res;
     uint32_t y_res;
     uint32_t bits;
-} RedMode;
+} SpiceMsgDisplayMode;
 
-typedef struct SPICE_ATTR_PACKED RedDrawBase {
-    Rect box;
-    Clip clip;
-} RedDrawBase;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayBase {
+    SpiceRect box;
+    SpiceClip clip;
+} SpiceMsgDisplayBase;
 
-typedef struct SPICE_ATTR_PACKED RedFill {
-    RedDrawBase base;
-    Fill data;
-} RedFill;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayDrawFill {
+    SpiceMsgDisplayBase base;
+    SpiceFill data;
+} SpiceMsgDisplayDrawFill;
 
-typedef struct SPICE_ATTR_PACKED RedOpaque {
-    RedDrawBase base;
-    Opaque data;
-} RedOpaque;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayDrawOpaque {
+    SpiceMsgDisplayBase base;
+    SpiceOpaque data;
+} SpiceMsgDisplayDrawOpaque;
 
-typedef struct SPICE_ATTR_PACKED RedCopy {
-    RedDrawBase base;
-    Copy data;
-} RedCopy;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayDrawCopy {
+    SpiceMsgDisplayBase base;
+    SpiceCopy data;
+} SpiceMsgDisplayDrawCopy;
 
-typedef struct SPICE_ATTR_PACKED RedTransparent {
-    RedDrawBase base;
-    Transparent data;
-} RedTransparent;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayDrawTransparent {
+    SpiceMsgDisplayBase base;
+    SpiceTransparent data;
+} SpiceMsgDisplayDrawTransparent;
 
-typedef struct SPICE_ATTR_PACKED RedAlphaBlend {
-    RedDrawBase base;
-    AlphaBlnd data;
-} RedAlphaBlend;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayDrawAlphaBlend {
+    SpiceMsgDisplayBase base;
+    SpiceAlphaBlnd data;
+} SpiceMsgDisplayDrawAlphaBlend;
 
-typedef struct SPICE_ATTR_PACKED RedCopyBits {
-    RedDrawBase base;
-    Point src_pos;
-} RedCopyBits;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayCopyBits {
+    SpiceMsgDisplayBase base;
+    SpicePoint src_pos;
+} SpiceMsgDisplayCopyBits;
 
-typedef RedCopy RedBlend;
+typedef SpiceMsgDisplayDrawCopy SpiceMsgDisplayDrawBlend;
 
-typedef struct SPICE_ATTR_PACKED RedRop3 {
-    RedDrawBase base;
-    Rop3 data;
-} RedRop3;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayDrawRop3 {
+    SpiceMsgDisplayBase base;
+    SpiceRop3 data;
+} SpiceMsgDisplayDrawRop3;
 
-typedef struct SPICE_ATTR_PACKED RedBlackness {
-    RedDrawBase base;
-    Blackness data;
-} RedBlackness;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayDrawBlackness {
+    SpiceMsgDisplayBase base;
+    SpiceBlackness data;
+} SpiceMsgDisplayDrawBlackness;
 
-typedef struct SPICE_ATTR_PACKED RedWhiteness {
-    RedDrawBase base;
-    Whiteness data;
-} RedWhiteness;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayDrawWhiteness {
+    SpiceMsgDisplayBase base;
+    SpiceWhiteness data;
+} SpiceMsgDisplayDrawWhiteness;
 
-typedef struct SPICE_ATTR_PACKED RedInvers {
-    RedDrawBase base;
-    Invers data;
-} RedInvers;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayDrawInvers {
+    SpiceMsgDisplayBase base;
+    SpiceInvers data;
+} SpiceMsgDisplayDrawInvers;
 
-typedef struct SPICE_ATTR_PACKED RedStroke {
-    RedDrawBase base;
-    Stroke data;
-} RedStroke;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayDrawStroke {
+    SpiceMsgDisplayBase base;
+    SpiceStroke data;
+} SpiceMsgDisplayDrawStroke;
 
-typedef struct SPICE_ATTR_PACKED RedText {
-    RedDrawBase base;
-    Text data;
-} RedText;
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayDrawText {
+    SpiceMsgDisplayBase base;
+    SpiceText data;
+} SpiceMsgDisplayDrawText;
 
-typedef struct SPICE_ATTR_PACKED RedInvalOne {
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayInvalOne {
     uint64_t id;
-} RedInvalOne;
+} SpiceMsgDisplayInvalOne;
 
 enum {
-    RED_VIDEO_CODEC_TYPE_MJPEG = 1,
+    SPICE_VIDEO_CODEC_TYPE_MJPEG = 1,
 };
 
 enum {
-    STREAM_TOP_DOWN = (1 << 0),
+    SPICE_STREAM_FLAGS_TOP_DOWN = (1 << 0),
 };
 
-typedef struct SPICE_ATTR_PACKED RedStreamCreate {
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayStreamCreate {
     uint32_t id;
     uint32_t flags;
     uint32_t codec_type;
@@ -479,349 +479,349 @@ typedef struct SPICE_ATTR_PACKED RedStreamCreate {
     uint32_t stream_height;
     uint32_t src_width;
     uint32_t src_height;
-    Rect dest;
-    Clip clip;
-} RedStreamCreate;
+    SpiceRect dest;
+    SpiceClip clip;
+} SpiceMsgDisplayStreamCreate;
 
-typedef struct SPICE_ATTR_PACKED RedStreamData {
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayStreamData {
     uint32_t id;
     uint32_t multi_media_time;
     uint32_t data_size;
     uint32_t ped_size;
     uint8_t data[0];
-} RedStreamData;
+} SpiceMsgDisplayStreamData;
 
-typedef struct SPICE_ATTR_PACKED RedStreamClip {
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayStreamClip {
     uint32_t id;
-    Clip clip;
-} RedStreamClip;
+    SpiceClip clip;
+} SpiceMsgDisplayStreamClip;
 
-typedef struct SPICE_ATTR_PACKED RedStreamDestroy {
+typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayStreamDestroy {
     uint32_t id;
-} RedStreamDestroy;
+} SpiceMsgDisplayStreamDestroy;
 
 enum {
-    RED_CURSOR_INIT = RED_FIRST_AVAIL_MESSAGE,
-    RED_CURSOR_RESET,
-    RED_CURSOR_SET,
-    RED_CURSOR_MOVE,
-    RED_CURSOR_HIDE,
-    RED_CURSOR_TRAIL,
-    RED_CURSOR_INVAL_ONE,
-    RED_CURSOR_INVAL_ALL,
+    SPICE_MSG_CURSOR_INIT = SPICE_MSG_FIRST_AVAIL,
+    SPICE_MSG_CURSOR_RESET,
+    SPICE_MSG_CURSOR_SET,
+    SPICE_MSG_CURSOR_MOVE,
+    SPICE_MSG_CURSOR_HIDE,
+    SPICE_MSG_CURSOR_TRAIL,
+    SPICE_MSG_CURSOR_INVAL_ONE,
+    SPICE_MSG_CURSOR_INVAL_ALL,
 
-    RED_CURSOR_MESSAGES_END,
+    SPICE_MSG_END_CURSOR,
 };
 
-typedef struct SPICE_ATTR_PACKED RedCursorInit {
-    Point16 position;
+typedef struct SPICE_ATTR_PACKED SpiceMsgCursorInit {
+    SpicePoint16 position;
     uint16_t trail_length;
     uint16_t trail_frequency;
     uint8_t visible;
-    RedCursor cursor;
-} RedCursorInit;
+    SpiceCursor cursor;
+} SpiceMsgCursorInit;
 
-typedef struct SPICE_ATTR_PACKED RedCursorSet {
-    Point16 postition;
+typedef struct SPICE_ATTR_PACKED SpiceMsgCursorSet {
+    SpicePoint16 postition;
     uint8_t visible;
-    RedCursor cursor;
-} RedCursorSet;
+    SpiceCursor cursor;
+} SpiceMsgCursorSet;
 
-typedef struct SPICE_ATTR_PACKED RedCursorMove {
-    Point16 postition;
-} RedCursorMove;
+typedef struct SPICE_ATTR_PACKED SpiceMsgCursorMove {
+    SpicePoint16 postition;
+} SpiceMsgCursorMove;
 
-typedef struct SPICE_ATTR_PACKED RedCursorTrail {
+typedef struct SPICE_ATTR_PACKED SpiceMsgCursorTrail {
     uint16_t length;
     uint16_t frequency;
-} RedCursorTrail;
+} SpiceMsgCursorTrail;
 
 enum {
-    REDC_DISPLAY_INIT = REDC_FIRST_AVAIL_MESSAGE,
+    SPICE_MSGC_DISPLAY_INIT = SPICE_MSGC_FIRST_AVAIL,
 
-    REDC_DISPLAY_MESSGES_END,
+    SPICE_MSGC_END_DISPLAY,
 };
 
-typedef struct SPICE_ATTR_PACKED RedcDisplayInit {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcDisplayInit {
     uint8_t pixmap_cache_id;
     int64_t pixmap_cache_size; //in pixels
     uint8_t glz_dictionary_id;
     int glz_dictionary_window_size;       // in pixels
-} RedcDisplayInit;
+} SpiceMsgcDisplayInit;
 
 enum {
-    REDC_INPUTS_KEY_DOWN = REDC_FIRST_AVAIL_MESSAGE,
-    REDC_INPUTS_KEY_UP,
-    REDC_INPUTS_KEY_MODIFAIERS,
+    SPICE_MSGC_INPUTS_KEY_DOWN = SPICE_MSGC_FIRST_AVAIL,
+    SPICE_MSGC_INPUTS_KEY_UP,
+    SPICE_MSGC_INPUTS_KEY_MODIFAIERS,
 
-    REDC_INPUTS_MOUSE_MOTION = REDC_FIRST_AVAIL_MESSAGE + 10,
-    REDC_INPUTS_MOUSE_POSITION,
-    REDC_INPUTS_MOUSE_PRESS,
-    REDC_INPUTS_MOUSE_RELEASE,
+    SPICE_MSGC_INPUTS_MOUSE_MOTION = SPICE_MSGC_FIRST_AVAIL + 10,
+    SPICE_MSGC_INPUTS_MOUSE_POSITION,
+    SPICE_MSGC_INPUTS_MOUSE_PRESS,
+    SPICE_MSGC_INPUTS_MOUSE_RELEASE,
 
-    REDC_INPUTS_MESSGES_END,
+    SPICE_MSGC_END_INPUTS_MESSGES,
 };
 
-typedef struct SPICE_ATTR_PACKED RedcKeyDown {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcKeyDown {
     uint32_t code;
-} RedcKeyDown;
+} SpiceMsgcKeyDown;
 
-typedef struct SPICE_ATTR_PACKED RedcKeyUp {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcKeyUp {
     uint32_t code;
-} RedcKeyUp;
+} SpiceMsgcKeyUp;
 
 enum {
-    RED_MOUSE_MODE_SERVER = (1 << 0),
-    RED_MOUSE_MODE_CLIENT = (1 << 1),
+    SPICE_MOUSE_MODE_SERVER = (1 << 0),
+    SPICE_MOUSE_MODE_CLIENT = (1 << 1),
 };
 
-typedef struct SPICE_ATTR_PACKED RedcKeyModifiers {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcKeyModifiers {
     uint32_t modifiers;
-} RedcKeyModifiers;
+} SpiceMsgcKeyModifiers;
 
-enum RedButton {
-    REDC_MOUSE_INVALID_BUTTON,
-    REDC_MOUSE_LBUTTON,
-    REDC_MOUSE_MBUTTON,
-    REDC_MOUSE_RBUTTON,
-    REDC_MOUSE_UBUTTON,
-    REDC_MOUSE_DBUTTON,
+enum SpiceMouseButton {
+    SPICE_MOUSE_BUTTON_INVALID,
+    SPICE_MOUSE_BUTTON_LEFT,
+    SPICE_MOUSE_BUTTON_MIDDLE,
+    SPICE_MOUSE_BUTTON_RIGHT,
+    SPICE_MOUSE_BUTTON_UP,
+    SPICE_MOUSE_BUTTON_DOWN,
 };
 
-#define REDC_LBUTTON_MASK (1 << (REDC_MOUSE_LBUTTON - 1))
-#define REDC_MBUTTON_MASK (1 << (REDC_MOUSE_MBUTTON - 1))
-#define REDC_RBUTTON_MASK (1 << (REDC_MOUSE_RBUTTON - 1))
+#define SPICE_MOUSE_BUTTON_MASK_LEFT (1 << (SPICE_MOUSE_BUTTON_LEFT - 1))
+#define SPICE_MOUSE_BUTTON_MASK_MIDDLE (1 << (SPICE_MOUSE_BUTTON_MIDDLE - 1))
+#define SPICE_MOUSE_BUTTON_MASK_RIGHT (1 << (SPICE_MOUSE_BUTTON_RIGHT - 1))
 
-typedef struct SPICE_ATTR_PACKED RedcMouseMotion {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcMouseMotion {
     int32_t dx;
     int32_t dy;
     uint32_t buttons_state;
-} RedcMouseMotion;
+} SpiceMsgcMouseMotion;
 
-typedef struct SPICE_ATTR_PACKED RedcMousePosition {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcMousePosition {
     uint32_t x;
     uint32_t y;
     uint32_t buttons_state;
     uint8_t display_id;
-} RedcMousePosition;
+} SpiceMsgcMousePosition;
 
-typedef struct SPICE_ATTR_PACKED RedcMousePress {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcMousePress {
     int32_t button;
     int32_t buttons_state;
-} RedcMousePress;
+} SpiceMsgcMousePress;
 
-typedef struct SPICE_ATTR_PACKED RedcMouseRelease {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcMouseRelease {
     int32_t button;
     int32_t buttons_state;
-} RedcMouseRelease;
+} SpiceMsgcMouseRelease;
 
 enum {
-    RED_AUDIO_FMT_INVALD,
-    RED_AUDIO_FMT_S16,
+    SPICE_AUDIO_FMT_INVALD,
+    SPICE_AUDIO_FMT_S16,
 };
 
 enum {
-    RED_AUDIO_DATA_MODE_INVALD,
-    RED_AUDIO_DATA_MODE_RAW,
-    RED_AUDIO_DATA_MODE_CELT_0_5_1,
+    SPICE_AUDIO_DATA_MODE_INVALD,
+    SPICE_AUDIO_DATA_MODE_RAW,
+    SPICE_AUDIO_DATA_MODE_CELT_0_5_1,
 };
 
 enum {
-    RED_PLAYBACK_DATA = RED_FIRST_AVAIL_MESSAGE,
-    RED_PLAYBACK_MODE,
-    RED_PLAYBACK_START,
-    RED_PLAYBACK_STOP,
+    SPICE_MSG_PLAYBACK_DATA = SPICE_MSG_FIRST_AVAIL,
+    SPICE_MSG_PLAYBACK_MODE,
+    SPICE_MSG_PLAYBACK_START,
+    SPICE_MSG_PLAYBACK_STOP,
 
-    RED_PLAYBACK_MESSAGES_END,
+    SPICE_MSG_END_PLAYBACK,
 };
 
 enum {
-    RED_PLAYBACK_CAP_CELT_0_5_1,
+    SPICE_PLAYBACK_CAP_CELT_0_5_1,
 };
 
 enum {
-    RED_RECORD_START = RED_FIRST_AVAIL_MESSAGE,
-    RED_RECORD_STOP,
+    SPICE_MSG_RECORD_START = SPICE_MSG_FIRST_AVAIL,
+    SPICE_MSG_RECORD_STOP,
 
-    RED_RECORD_MESSAGES_END,
+    SPICE_MSG_END_RECORD,
 };
 
 enum {
-    REDC_RECORD_DATA = RED_FIRST_AVAIL_MESSAGE,
-    REDC_RECORD_MODE,
-    REDC_RECORD_START_MARK,
+    SPICE_MSGC_RECORD_DATA = SPICE_MSG_FIRST_AVAIL,
+    SPICE_MSGC_RECORD_MODE,
+    SPICE_MSGC_RECORD_START_MARK,
 
-    REDC_RECORD_MESSAGES_END,
+    SPICE_MSGC_END_RECORD,
 };
 
 enum {
-    RED_RECORD_CAP_CELT_0_5_1,
+    SPICE_RECORD_CAP_CELT_0_5_1,
 };
 
-typedef struct SPICE_ATTR_PACKED RedPlaybackMode {
+typedef struct SPICE_ATTR_PACKED SpiceMsgPlaybackMode {
     uint32_t time;
-    uint32_t mode; //RED_AUDIO_DATA_MODE_?
+    uint32_t mode; //SPICE_AUDIO_DATA_MODE_?
     uint8_t data[0];
-} RedPlaybackMode, RedcRecordMode;
+} SpiceMsgPlaybackMode, SpiceMsgcRecordMode;
 
-typedef struct SPICE_ATTR_PACKED RedPlaybackStart {
+typedef struct SPICE_ATTR_PACKED SpiceMsgPlaybackStart {
     uint32_t channels;
-    uint32_t format; //RED_AUDIO_FMT_?
+    uint32_t format; //SPICE_AUDIO_FMT_?
     uint32_t frequency;
     uint32_t time;
-} RedPlaybackStart;
+} SpiceMsgPlaybackStart;
 
-typedef struct SPICE_ATTR_PACKED RedPlaybackPacket {
+typedef struct SPICE_ATTR_PACKED SpiceMsgPlaybackPacket {
     uint32_t time;
     uint8_t data[0];
-} RedPlaybackPacket, RedcRecordPacket;
+} SpiceMsgPlaybackPacket, SpiceMsgcRecordPacket;
 
-typedef struct SPICE_ATTR_PACKED RedRecordStart {
+typedef struct SPICE_ATTR_PACKED SpiceMsgRecordStart {
     uint32_t channels;
-    uint32_t format; //RED_AUDIO_FMT_?
+    uint32_t format; //SPICE_AUDIO_FMT_?
     uint32_t frequency;
-} RedRecordStart;
+} SpiceMsgRecordStart;
 
-typedef struct SPICE_ATTR_PACKED RedcRecordStartMark {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcRecordStartMark {
     uint32_t time;
-} RedcRecordStartMark;
+} SpiceMsgcRecordStartMark;
 
 enum {
-    RED_TUNNEL_SERVICE_TYPE_INVALID,
-    RED_TUNNEL_SERVICE_TYPE_GENERIC,
-    RED_TUNNEL_SERVICE_TYPE_IPP,
+    SPICE_TUNNEL_SERVICE_TYPE_INVALID,
+    SPICE_TUNNEL_SERVICE_TYPE_GENERIC,
+    SPICE_TUNNEL_SERVICE_TYPE_IPP,
 };
 
 enum {
-    RED_TUNNEL_INIT = RED_FIRST_AVAIL_MESSAGE,
-    RED_TUNNEL_SERVICE_IP_MAP,
-    RED_TUNNEL_SOCKET_OPEN,
-    RED_TUNNEL_SOCKET_FIN,
-    RED_TUNNEL_SOCKET_CLOSE,
-    RED_TUNNEL_SOCKET_DATA,
-    RED_TUNNEL_SOCKET_CLOSED_ACK,
-    RED_TUNNEL_SOCKET_TOKEN,
+    SPICE_MSG_TUNNEL_INIT = SPICE_MSG_FIRST_AVAIL,
+    SPICE_MSG_TUNNEL_SERVICE_IP_MAP,
+    SPICE_MSG_TUNNEL_SOCKET_OPEN,
+    SPICE_MSG_TUNNEL_SOCKET_FIN,
+    SPICE_MSG_TUNNEL_SOCKET_CLOSE,
+    SPICE_MSG_TUNNEL_SOCKET_DATA,
+    SPICE_MSG_TUNNEL_SOCKET_CLOSED_ACK,
+    SPICE_MSG_TUNNEL_SOCKET_TOKEN,
 
-    RED_TUNNEL_MESSAGES_END,
+    SPICE_MSG_END_TUNNEL,
 };
 
-typedef struct SPICE_ATTR_PACKED RedTunnelInit {
+typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelInit {
     uint16_t max_num_of_sockets;
     uint32_t max_socket_data_size;
-} RedTunnelInit;
+} SpiceMsgTunnelInit;
 
 enum {
-    RED_TUNNEL_IP_TYPE_INVALID,
-    RED_TUNNEL_IP_TYPE_IPv4,
+    SPICE_TUNNEL_IP_TYPE_INVALID,
+    SPICE_TUNNEL_IP_TYPE_IPv4,
 };
 
-typedef struct SPICE_ATTR_PACKED RedTunnelIpInfo {
+typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelIpInfo {
     uint16_t type;
     uint8_t data[0];
-} RedTunnelIpInfo;
+} SpiceMsgTunnelIpInfo;
 
-typedef uint8_t RedTunnelIPv4[4];
+typedef uint8_t SpiceTunnelIPv4[4];
 
-typedef struct SPICE_ATTR_PACKED RedTunnelServiceIpMap {
+typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelServiceIpMap {
     uint32_t service_id;
-    RedTunnelIpInfo virtual_ip;
-} RedTunnelServiceIpMap;
+    SpiceMsgTunnelIpInfo virtual_ip;
+} SpiceMsgTunnelServiceIpMap;
 
-typedef struct SPICE_ATTR_PACKED RedTunnelSocketOpen {
+typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelSocketOpen {
     uint16_t connection_id;
     uint32_t service_id;
     uint32_t tokens;
-} RedTunnelSocketOpen;
+} SpiceMsgTunnelSocketOpen;
 
 /* connection id must be the first field in msgs directed to a specific connection */
 
-typedef struct SPICE_ATTR_PACKED RedTunnelSocketFin {
+typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelSocketFin {
     uint16_t connection_id;
-} RedTunnelSocketFin;
+} SpiceMsgTunnelSocketFin;
 
-typedef struct SPICE_ATTR_PACKED RedTunnelSocketClose {
+typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelSocketClose {
     uint16_t connection_id;
-} RedTunnelSocketClose;
+} SpiceMsgTunnelSocketClose;
 
-typedef struct SPICE_ATTR_PACKED RedTunnelSocketData {
+typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelSocketData {
     uint16_t connection_id;
     uint8_t data[0];
-} RedTunnelSocketData;
+} SpiceMsgTunnelSocketData;
 
-typedef struct SPICE_ATTR_PACKED RedTunnelSocketTokens {
+typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelSocketTokens {
     uint16_t connection_id;
     uint32_t num_tokens;
-} RedTunnelSocketTokens;
+} SpiceMsgTunnelSocketTokens;
 
-typedef struct SPICE_ATTR_PACKED RedTunnelSocketClosedAck {
+typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelSocketClosedAck {
     uint16_t connection_id;
-} RedTunnelSocketClosedAck;
+} SpiceMsgTunnelSocketClosedAck;
 
 enum {
-    REDC_TUNNEL_SERVICE_ADD = REDC_FIRST_AVAIL_MESSAGE,
-    REDC_TUNNEL_SERVICE_REMOVE,
-    REDC_TUNNEL_SOCKET_OPEN_ACK,
-    REDC_TUNNEL_SOCKET_OPEN_NACK,
-    REDC_TUNNEL_SOCKET_FIN,
-    REDC_TUNNEL_SOCKET_CLOSED,
-    REDC_TUNNEL_SOCKET_CLOSED_ACK,
-    REDC_TUNNEL_SOCKET_DATA,
+    SPICE_MSGC_TUNNEL_SERVICE_ADD = SPICE_MSGC_FIRST_AVAIL,
+    SPICE_MSGC_TUNNEL_SERVICE_REMOVE,
+    SPICE_MSGC_TUNNEL_SOCKET_OPEN_ACK,
+    SPICE_MSGC_TUNNEL_SOCKET_OPEN_NACK,
+    SPICE_MSGC_TUNNEL_SOCKET_FIN,
+    SPICE_MSGC_TUNNEL_SOCKET_CLOSED,
+    SPICE_MSGC_TUNNEL_SOCKET_CLOSED_ACK,
+    SPICE_MSGC_TUNNEL_SOCKET_DATA,
 
-    REDC_TUNNEL_SOCKET_TOKEN,
+    SPICE_MSGC_TUNNEL_SOCKET_TOKEN,
 
-    REDC_TUNNEL_MESSGES_END,
+    SPICE_MSGC_END_TUNNEL,
 };
 
-typedef struct SPICE_ATTR_PACKED RedcTunnelAddGenericService {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcTunnelAddGenericService {
     uint32_t type;
     uint32_t id;
     uint32_t group;
     uint32_t port;
     uint32_t name;
     uint32_t description;
-} RedcTunnelAddGenericService;
+} SpiceMsgcTunnelAddGenericService;
 
-typedef struct SPICE_ATTR_PACKED RedcTunnelAddPrintService {
-    RedcTunnelAddGenericService base;
-    RedTunnelIpInfo ip;
-} RedcTunnelAddPrintService;
+typedef struct SPICE_ATTR_PACKED SpiceMsgcTunnelAddPrintService {
+    SpiceMsgcTunnelAddGenericService base;
+    SpiceMsgTunnelIpInfo ip;
+} SpiceMsgcTunnelAddPrintService;
 
-typedef struct SPICE_ATTR_PACKED RedcTunnelRemoveService {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcTunnelRemoveService {
     uint32_t id;
-} RedcTunnelRemoveService;
+} SpiceMsgcTunnelRemoveService;
 
 /* connection id must be the first field in msgs directed to a specific connection */
 
-typedef struct SPICE_ATTR_PACKED RedcTunnelSocketOpenAck {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcTunnelSocketOpenAck {
     uint16_t connection_id;
     uint32_t tokens;
-} RedcTunnelSocketOpenAck;
+} SpiceMsgcTunnelSocketOpenAck;
 
-typedef struct SPICE_ATTR_PACKED RedcTunnelSocketOpenNack {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcTunnelSocketOpenNack {
     uint16_t connection_id;
-} RedcTunnelSocketOpenNack;
+} SpiceMsgcTunnelSocketOpenNack;
 
-typedef struct SPICE_ATTR_PACKED RedcTunnelSocketData {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcTunnelSocketData {
     uint16_t connection_id;
     uint8_t data[0];
-} RedcTunnelSocketData;
+} SpiceMsgcTunnelSocketData;
 
-typedef struct SPICE_ATTR_PACKED RedcTunnelSocketFin {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcTunnelSocketFin {
     uint16_t connection_id;
-} RedcTunnelSocketFin;
+} SpiceMsgcTunnelSocketFin;
 
-typedef struct SPICE_ATTR_PACKED RedcTunnelSocketClosed {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcTunnelSocketClosed {
     uint16_t connection_id;
-} RedcTunnelSocketClosed;
+} SpiceMsgcTunnelSocketClosed;
 
-typedef struct SPICE_ATTR_PACKED RedcTunnelSocketClosedAck {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcTunnelSocketClosedAck {
     uint16_t connection_id;
-} RedcTunnelSocketClosedAck;
+} SpiceMsgcTunnelSocketClosedAck;
 
-typedef struct SPICE_ATTR_PACKED RedcTunnelSocketTokens {
+typedef struct SPICE_ATTR_PACKED SpiceMsgcTunnelSocketTokens {
     uint16_t connection_id;
     uint32_t num_tokens;
-} RedcTunnelSocketTokens;
+} SpiceMsgcTunnelSocketTokens;
 
 #include <spice/end-packed.h>
 

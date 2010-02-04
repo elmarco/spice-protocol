@@ -110,7 +110,7 @@ typedef struct SPICE_ATTR_PACKED QXLModes {
     QXLMode modes[0];
 } QXLModes;
 
-typedef uint64_t PHYSICAL;
+typedef uint64_t QXLPHYSICAL;
 typedef uint32_t QXLFIXED; //fixed 28.4
 
 enum QXLCmdType {
@@ -122,7 +122,7 @@ enum QXLCmdType {
 };
 
 typedef struct SPICE_ATTR_PACKED QXLCommand {
-    PHYSICAL data;
+    QXLPHYSICAL data;
     uint32_t type;
     uint32_t ped;
 } QXLCommand;
@@ -148,13 +148,13 @@ typedef struct SPICE_ATTR_PACKED QXLSurfaceCreate {
     uint32_t mouse_mode;
     uint32_t flags;
     uint32_t type;
-    PHYSICAL mem;
+    QXLPHYSICAL mem;
 } QXLSurfaceCreate;
 
-RING_DECLARE(QXLCommandRing, QXLCommand, 32);
-RING_DECLARE(QXLCursorRing, QXLCommand, 32);
+SPICE_RING_DECLARE(QXLCommandRing, QXLCommand, 32);
+SPICE_RING_DECLARE(QXLCursorRing, QXLCommand, 32);
 
-RING_DECLARE(QXLReleaseRing, uint64_t, 8);
+SPICE_RING_DECLARE(QXLReleaseRing, uint64_t, 8);
 
 #define QXL_LOG_BUF_SIZE 4096
 
@@ -169,7 +169,7 @@ typedef struct SPICE_ATTR_PACKED QXLRam {
     QXLCommandRing cmd_ring;
     QXLCursorRing cursor_ring;
     QXLReleaseRing release_ring;
-    Rect update_area;
+    SpiceRect update_area;
     QXLMemSlot mem_slot;
     QXLSurfaceCreate create_surface;
     uint64_t flags;
@@ -187,8 +187,8 @@ typedef struct QXLReleaseInfoExt {
 
 typedef struct  SPICE_ATTR_PACKED QXLDataChunk {
     uint32_t data_size;
-    PHYSICAL prev_chunk;
-    PHYSICAL next_chunk;
+    QXLPHYSICAL prev_chunk;
+    QXLPHYSICAL next_chunk;
     uint8_t data[0];
 } QXLDataChunk;
 
@@ -199,12 +199,12 @@ typedef struct SPICE_ATTR_PACKED QXLMessage {
 
 typedef struct SPICE_ATTR_PACKED QXLUpdateCmd {
     QXLReleaseInfo release_info;
-    Rect area;
+    SpiceRect area;
     uint32_t update_id;
 } QXLUpdateCmd;
 
 typedef struct SPICE_ATTR_PACKED QXLCursor {
-    CursorHeader header;
+    SpiceCursorHeader header;
     uint32_t data_size;
     QXLDataChunk chunk;
 } QXLCursor;
@@ -223,15 +223,15 @@ typedef struct SPICE_ATTR_PACKED QXLCursorCmd {
     uint8_t type;
     union {
         struct SPICE_ATTR_PACKED {
-            Point16 position;
+            SpicePoint16 position;
             uint8_t visible;
-            PHYSICAL shape;
+            QXLPHYSICAL shape;
         } set;
         struct SPICE_ATTR_PACKED {
             uint16_t length;
             uint16_t frequency;
         } trail;
-        Point16 position;
+        SpicePoint16 position;
     } u;
     uint8_t device_data[QXL_CURSUR_DEVICE_DATA_SIZE]; //todo: dynamic size from rom
 } QXLCursorCmd;
@@ -261,7 +261,7 @@ typedef struct SPICE_ATTR_PACKED QXLString {
 } QXLString;
 
 typedef struct SPICE_ATTR_PACKED QXLCopyBits {
-    Point src_pos;
+    SpicePoint src_pos;
 } QXLCopyBits;
 
 #define QXL_EFFECT_BLEND 0
@@ -278,24 +278,24 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
     uint8_t effect;
     uint8_t type;
     uint8_t self_bitmap;
-    Rect self_bitmap_area;
-    Rect bbox;
-    Clip clip;
+    SpiceRect self_bitmap_area;
+    SpiceRect bbox;
+    SpiceClip clip;
     uint32_t mm_time;
     union {
-        Fill fill;
-        Opaque opaque;
-        Copy copy;
-        Transparent transparent;
-        AlphaBlnd alpha_blend;
+        SpiceFill fill;
+        SpiceOpaque opaque;
+        SpiceCopy copy;
+        SpiceTransparent transparent;
+        SpiceAlphaBlnd alpha_blend;
         QXLCopyBits copy_bits;
-        Blend blend;
-        Rop3 rop3;
-        Stroke stroke;
-        Text text;
-        Blackness blackness;
-        Invers invers;
-        Whiteness whiteness;
+        SpiceBlend blend;
+        SpiceRop3 rop3;
+        SpiceStroke stroke;
+        SpiceText text;
+        SpiceBlackness blackness;
+        SpiceInvers invers;
+        SpiceWhiteness whiteness;
     } u;
 } QXLDrawable;
 
@@ -335,7 +335,7 @@ enum {
 enum {
     QXL_BITMAP_DIRECT = (1 << 0),
     QXL_BITMAP_UNSTABLE = (1 << 1),
-    QXL_BITMAP_TOP_DOWN = (1 << 2), // == BITMAP_TOP_DOWN
+    QXL_BITMAP_TOP_DOWN = (1 << 2), // == SPICE_BITMAP_FLAGS_TOP_DOWN
 };
 
 #define QXL_SET_IMAGE_ID(image, _group, _unique) {              \
@@ -346,10 +346,10 @@ enum {
 }
 
 typedef struct SPICE_ATTR_PACKED QXLImage {
-    ImageDescriptor descriptor;
+    SpiceImageDescriptor descriptor;
     union { // variable length
-        Bitmap bitmap;
-        QUICData quic;
+        SpiceBitmap bitmap;
+        SpiceQUICData quic;
     };
 } QXLImage;
 

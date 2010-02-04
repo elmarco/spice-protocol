@@ -53,7 +53,7 @@ typedef struct SPICE_ATTR_PACKED VDIPortPacket {
     uint8_t data[512 - 2 * sizeof(uint32_t)];
 } VDIPortPacket;
 
-RING_DECLARE(VDIPortRing, VDIPortPacket, 32);
+SPICE_RING_DECLARE(VDIPortRing, VDIPortPacket, 32);
 
 enum {
     VDI_PORT_IO_RANGE_INDEX,
