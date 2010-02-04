@@ -47,7 +47,7 @@
     (((x) & 0xff00) ? _SPICE_MSB_MASK8((x) >> 8) << 8 : _SPICE_MSB_MASK8(x))
 
 #define _SPICE_MSB_MASK(x) \
-    (((x) & 0xffff0000) ? _SPICE__SPICE_MSB_MASK16((x) >> 16) << 16 : _SPICE__SPICE_MSB_MASK16(x))
+    (((x) & 0xffff0000) ? _SPICE_MSB_MASK16((x) >> 16) << 16 : _SPICE_MSB_MASK16(x))
 
 #define _SPICE_POWER2_ALIGN(x) _SPICE_MSB_MASK((x) * 2 - 1)
 
