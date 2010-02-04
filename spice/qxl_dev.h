@@ -32,6 +32,8 @@
 #ifndef _H_QXL_DEV
 #define _H_QXL_DEV
 
+#include <spice/types.h>
+
 #include "ipc_ring.h"
 #include "draw.h"
 
@@ -54,8 +56,8 @@
 #define QXL_DEVICE_ID 0x0100 /* 0x100-0x11f reserved for spice */
 #define QXL_REVISION 0x03
 
-#define QXL_ROM_MAGIC (*(UINT32*)"QXRO")
-#define QXL_RAM_MAGIC (*(UINT32*)"QXRA")
+#define QXL_ROM_MAGIC (*(uint32_t*)"QXRO")
+#define QXL_RAM_MAGIC (*(uint32_t*)"QXRA")
 
 enum {
     QXL_RAM_RANGE_INDEX,
@@ -86,42 +88,42 @@ enum {
 };
 
 typedef struct ATTR_PACKED QXLRom {
-    UINT32 magic;
-    UINT32 id;
-    UINT32 update_id;
-    UINT32 compression_level;
-    UINT32 log_level;
-    UINT32 modes_offset;
-    UINT32 num_pages;
-    UINT32 surface0_area_size;
-    UINT32 ram_header_offset;
-    UINT32 mm_clock;
-    UINT64 flags;
-    UINT8 slots_start;
-    UINT8 slots_end;
-    UINT8 slot_gen_bits;
-    UINT8 slot_id_bits;
-    UINT8 slot_generation;
+    uint32_t magic;
+    uint32_t id;
+    uint32_t update_id;
+    uint32_t compression_level;
+    uint32_t log_level;
+    uint32_t modes_offset;
+    uint32_t num_pages;
+    uint32_t surface0_area_size;
+    uint32_t ram_header_offset;
+    uint32_t mm_clock;
+    uint64_t flags;
+    uint8_t slots_start;
+    uint8_t slots_end;
+    uint8_t slot_gen_bits;
+    uint8_t slot_id_bits;
+    uint8_t slot_generation;
 } QXLRom;
 
 typedef struct ATTR_PACKED QXLMode {
-    UINT32 id;
-    UINT32 x_res;
-    UINT32 y_res;
-    UINT32 bits;
-    UINT32 stride;
-    UINT32 x_mili;
-    UINT32 y_mili;
-    UINT32 orientation;
+    uint32_t id;
+    uint32_t x_res;
+    uint32_t y_res;
+    uint32_t bits;
+    uint32_t stride;
+    uint32_t x_mili;
+    uint32_t y_mili;
+    uint32_t orientation;
 } QXLMode;
 
 typedef struct ATTR_PACKED QXLModes {
-    UINT32 n_modes;
+    uint32_t n_modes;
     QXLMode modes[0];
 } QXLModes;
 
-typedef UINT64 PHYSICAL;
-typedef UINT32 QXLFIXED; //fixed 28.4
+typedef uint64_t PHYSICAL;
+typedef uint32_t QXLFIXED; //fixed 28.4
 
 enum QXLCmdType {
     QXL_CMD_NOP,
@@ -133,38 +135,38 @@ enum QXLCmdType {
 
 typedef struct ATTR_PACKED QXLCommand {
     PHYSICAL data;
-    UINT32 type;
-    UINT32 ped;
+    uint32_t type;
+    uint32_t ped;
 } QXLCommand;
 
 typedef struct ATTR_PACKED QXLCommandExt {
     QXLCommand cmd;
-    UINT32 group_id;
+    uint32_t group_id;
 } QXLCommandExt;
 
 typedef struct ATTR_PACKED QXLMemSlot {
-    UINT64 mem_start;
-    UINT64 mem_end;
+    uint64_t mem_start;
+    uint64_t mem_end;
 } QXLMemSlot;
 
 #define QXL_SURF_TYPE_PRIMARY 0
 
 typedef struct ATTR_PACKED QXLSurfaceCreate {
-    UINT32 width;
-    UINT32 height;
-    INT32 stride;
-    UINT32 depth;
-    UINT32 position;
-    UINT32 mouse_mode;
-    UINT32 flags;
-    UINT32 type;
+    uint32_t width;
+    uint32_t height;
+    int32_t stride;
+    uint32_t depth;
+    uint32_t position;
+    uint32_t mouse_mode;
+    uint32_t flags;
+    uint32_t type;
     PHYSICAL mem;
 } QXLSurfaceCreate;
 
 RING_DECLARE(QXLCommandRing, QXLCommand, 32);
 RING_DECLARE(QXLCursorRing, QXLCommand, 32);
 
-RING_DECLARE(QXLReleaseRing, UINT64, 8);
+RING_DECLARE(QXLReleaseRing, uint64_t, 8);
 
 #define QXL_LOG_BUF_SIZE 4096
 
@@ -172,50 +174,50 @@ RING_DECLARE(QXLReleaseRing, UINT64, 8);
 #define QXL_INTERRUPT_CURSOR (1 << 1)
 
 typedef struct ATTR_PACKED QXLRam {
-    UINT32 magic;
-    UINT32 int_pending;
-    UINT32 int_mask;
-    UINT8 log_buf[QXL_LOG_BUF_SIZE];
+    uint32_t magic;
+    uint32_t int_pending;
+    uint32_t int_mask;
+    uint8_t log_buf[QXL_LOG_BUF_SIZE];
     QXLCommandRing cmd_ring;
     QXLCursorRing cursor_ring;
     QXLReleaseRing release_ring;
     Rect update_area;
     QXLMemSlot mem_slot;
     QXLSurfaceCreate create_surface;
-    UINT64 flags;
+    uint64_t flags;
 } QXLRam;
 
 typedef union QXLReleaseInfo {
-    UINT64 id;      // in
-    UINT64 next;    // out
+    uint64_t id;      // in
+    uint64_t next;    // out
 } QXLReleaseInfo;
 
 typedef struct QXLReleaseInfoExt {
     QXLReleaseInfo *info;
-    UINT32 group_id;
+    uint32_t group_id;
 } QXLReleaseInfoExt;
 
 typedef struct  ATTR_PACKED QXLDataChunk {
-    UINT32 data_size;
+    uint32_t data_size;
     PHYSICAL prev_chunk;
     PHYSICAL next_chunk;
-    UINT8 data[0];
+    uint8_t data[0];
 } QXLDataChunk;
 
 typedef struct ATTR_PACKED QXLMessage {
     QXLReleaseInfo release_info;
-    UINT8 data[0];
+    uint8_t data[0];
 } QXLMessage;
 
 typedef struct ATTR_PACKED QXLUpdateCmd {
     QXLReleaseInfo release_info;
     Rect area;
-    UINT32 update_id;
+    uint32_t update_id;
 } QXLUpdateCmd;
 
 typedef struct ATTR_PACKED QXLCursor {
     CursorHeader header;
-    UINT32 data_size;
+    uint32_t data_size;
     QXLDataChunk chunk;
 } QXLCursor;
 
@@ -230,20 +232,20 @@ enum {
 
 typedef struct ATTR_PACKED QXLCursorCmd {
     QXLReleaseInfo release_info;
-    UINT8 type;
+    uint8_t type;
     union {
         struct ATTR_PACKED {
             Point16 position;
-            UINT8 visible;
+            uint8_t visible;
             PHYSICAL shape;
         } set;
         struct ATTR_PACKED {
-            UINT16 length;
-            UINT16 frequency;
+            uint16_t length;
+            uint16_t frequency;
         } trail;
         Point16 position;
     } u;
-    UINT8 device_data[QXL_CURSUR_DEVICE_DATA_SIZE]; //todo: dynamic size from rom
+    uint8_t device_data[QXL_CURSUR_DEVICE_DATA_SIZE]; //todo: dynamic size from rom
 } QXLCursorCmd;
 
 enum {
@@ -264,9 +266,9 @@ enum {
 };
 
 typedef struct ATTR_PACKED QXLString {
-    UINT32 data_size;
-    UINT16 length;
-    UINT16 flags;
+    uint32_t data_size;
+    uint16_t length;
+    uint16_t flags;
     QXLDataChunk chunk;
 } QXLString;
 
@@ -285,13 +287,13 @@ typedef struct ATTR_PACKED QXLCopyBits {
 
 typedef struct ATTR_PACKED QXLDrawable {
     QXLReleaseInfo release_info;
-    UINT8 effect;
-    UINT8 type;
-    UINT8 self_bitmap;
+    uint8_t effect;
+    uint8_t type;
+    uint8_t self_bitmap;
     Rect self_bitmap_area;
     Rect bbox;
     Clip clip;
-    UINT32 mm_time;
+    uint32_t mm_time;
     union {
         Fill fill;
         Opaque opaque;
@@ -310,7 +312,7 @@ typedef struct ATTR_PACKED QXLDrawable {
 } QXLDrawable;
 
 typedef struct ATTR_PACKED QXLClipRects {
-    UINT32 num_rects;
+    uint32_t num_rects;
     QXLDataChunk chunk;
 } QXLClipRects;
 
@@ -322,7 +324,7 @@ enum {
 };
 
 typedef struct ATTR_PACKED QXLPath {
-    UINT32 data_size;
+    uint32_t data_size;
     QXLDataChunk chunk;
 } QXLPath;
 
@@ -334,8 +336,8 @@ enum {
 };
 
 typedef struct ATTR_PACKED QXLImageID {
-    UINT32 group;
-    UINT32 unique;
+    uint32_t group;
+    uint32_t unique;
 } QXLImageID;
 
 enum {
@@ -349,7 +351,7 @@ enum {
 };
 
 #define QXL_SET_IMAGE_ID(image, _group, _unique) {              \
-    UINT64* id_ptr = &(image)->descriptor.id;                   \
+    uint64_t* id_ptr = &(image)->descriptor.id;                   \
     QXLImageID *image_id = (QXLImageID *)id_ptr;                \
     image_id->group = _group;                                   \
     image_id->unique = _unique;                                 \

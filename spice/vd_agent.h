@@ -31,7 +31,7 @@
 #ifndef _H_VD_AGENT
 #define _H_VD_AGENT
 
-#include <stdint.h>
+#include <spice/types.h>
 #ifdef __GNUC__
 #define ATTR_PACKED __attribute__ ((__packed__))
 #else

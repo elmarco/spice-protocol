@@ -31,43 +31,22 @@
 #ifndef _H_DRAW
 #define _H_DRAW
 
-#ifndef _WIN32
-#include <stdint.h>
-#endif
+#include <spice/types.h>
 
 #ifdef __GNUC__
 #define ATTR_PACKED __attribute__ ((__packed__))
-typedef uint64_t UINT64;
-typedef uint32_t UINT32;
-typedef uint16_t UINT16;
-typedef uint8_t UINT8;
-
-typedef int16_t INT16;
-typedef int32_t INT32;
 #else
-#include <basetsd.h>
 #pragma pack(push)
 #pragma pack(1)
 #define ATTR_PACKED
 #pragma warning(disable:4200)
 #endif
 
-#ifdef _WIN32_WCE
-#include <stdint.h>
-typedef uint64_t UINT64;
-typedef uint32_t UINT32;
-typedef uint16_t UINT16;
-typedef uint8_t UINT8;
-
-typedef int16_t INT16;
-typedef int32_t INT32;
-#endif
-
 #define GET_ADDRESS(addr) ((void *)(unsigned long)(addr))
 #define SET_ADDRESS(addr, val) ((addr) = (unsigned long)(val))
 
-typedef INT32 FIXED28_4;
-typedef UINT64 ADDRESS;
+typedef int32_t FIXED28_4;
+typedef uint64_t ADDRESS;
 
 enum {
     PATH_BEGIN = (1 << 0),
@@ -87,26 +66,26 @@ typedef struct ATTR_PACKED PointFix {
 } PointFix;
 
 typedef struct ATTR_PACKED Point {
-    INT32 x;
-    INT32 y;
+    int32_t x;
+    int32_t y;
 } Point;
 
 typedef struct ATTR_PACKED Point16 {
-    INT16 x;
-    INT16 y;
+    int16_t x;
+    int16_t y;
 } Point16;
 
 typedef struct ATTR_PACKED Rect {
-    INT32 top;
-    INT32 left;
-    INT32 bottom;
-    INT32 right;
+    int32_t top;
+    int32_t left;
+    int32_t bottom;
+    int32_t right;
 } Rect;
 
 typedef struct ATTR_PACKED PathSeg {
-    UINT32 flags;
-    UINT32 count;
-    UINT8 data[0];
+    uint32_t flags;
+    uint32_t count;
+    uint8_t data[0];
 } PathSeg;
 
 enum ClipType {
@@ -116,7 +95,7 @@ enum ClipType {
 };
 
 typedef struct ATTR_PACKED Clip {
-    UINT32 type;
+    uint32_t type;
     ADDRESS data;
 } Clip;
 
@@ -146,9 +125,9 @@ enum {
 };
 
 typedef struct ATTR_PACKED Brush {
-    UINT32 type;
+    uint32_t type;
     union {
-        UINT32 color;
+        uint32_t color;
         Pattern pattern;
     } u;
 } Brush;
@@ -158,21 +137,21 @@ enum {
 };
 
 typedef struct ATTR_PACKED QMask {
-    UINT8 flags;
+    uint8_t flags;
     Point pos;
     ADDRESS bitmap;
 } QMask;
 
 typedef struct ATTR_PACKED Fill {
     Brush brush;
-    UINT16 rop_decriptor;
+    uint16_t rop_decriptor;
     QMask mask;
 } Fill;
 
 typedef struct ATTR_PACKED Palette {
-    UINT64 unique;
-    UINT16 num_ents;
-    UINT32 ents[0];
+    uint64_t unique;
+    uint16_t num_ents;
+    uint32_t ents[0];
 } Palette;
 
 enum {
@@ -190,11 +169,11 @@ enum {
 };
 
 typedef struct ATTR_PACKED ImageDescriptor {
-    UINT64 id;
-    UINT8 type;
-    UINT8 flags;
-    UINT32 width;
-    UINT32 height;
+    uint64_t id;
+    uint8_t type;
+    uint8_t flags;
+    uint32_t width;
+    uint32_t height;
 } ImageDescriptor;
 
 enum {
@@ -217,11 +196,11 @@ enum {
 };
 
 typedef struct ATTR_PACKED Bitmap {
-    UINT8 format;
-    UINT8 flags;
-    UINT32 x;
-    UINT32 y;
-    UINT32 stride;
+    uint8_t format;
+    uint8_t flags;
+    uint32_t x;
+    uint32_t y;
+    uint32_t stride;
     ADDRESS palette;
     ADDRESS data; //data[0] ?
 } Bitmap;
@@ -232,8 +211,8 @@ typedef struct ATTR_PACKED BitmapImage {
 } BitmapImage;
 
 typedef struct ATTR_PACKED QUICData {
-    UINT32 data_size;
-    UINT8 data[0];
+    uint32_t data_size;
+    uint8_t data[0];
 } QUICData, LZ_RGBData;
 
 typedef struct ATTR_PACKED QUICImage {
@@ -247,10 +226,10 @@ typedef struct ATTR_PACKED LZ_RGBImage {
 } LZ_RGBImage;
 
 typedef struct ATTR_PACKED LZ_PLTData {
-    UINT8 flags;
-    UINT32 data_size;
+    uint8_t flags;
+    uint32_t data_size;
     ADDRESS palette;
-    UINT8 data[0];
+    uint8_t data[0];
 } LZ_PLTData;
 
 typedef struct ATTR_PACKED LZ_PLTImage {
@@ -267,28 +246,28 @@ typedef struct ATTR_PACKED Opaque {
     ADDRESS src_bitmap;
     Rect src_area;
     Brush brush;
-    UINT16 rop_decriptor;
-    UINT8 scale_mode;
+    uint16_t rop_decriptor;
+    uint8_t scale_mode;
     QMask mask;
 } Opaque;
 
 typedef struct ATTR_PACKED Copy {
     ADDRESS src_bitmap;
     Rect src_area;
-    UINT16 rop_decriptor;
-    UINT8 scale_mode;
+    uint16_t rop_decriptor;
+    uint8_t scale_mode;
     QMask mask;
 } Copy, Blend;
 
 typedef struct ATTR_PACKED Transparent {
     ADDRESS src_bitmap;
     Rect src_area;
-    UINT32 src_color;
-    UINT32 true_color;
+    uint32_t src_color;
+    uint32_t true_color;
 } Transparent;
 
 typedef struct ATTR_PACKED AlphaBlnd {
-    UINT8 alpha;
+    uint8_t alpha;
     ADDRESS src_bitmap;
     Rect src_area;
 } AlphaBlnd;
@@ -297,8 +276,8 @@ typedef struct ATTR_PACKED Rop3 {
     ADDRESS src_bitmap;
     Rect src_area;
     Brush brush;
-    UINT8 rop3;
-    UINT8 scale_mode;
+    uint8_t rop3;
+    uint8_t scale_mode;
     QMask mask;
 } Rop3;
 
@@ -324,10 +303,10 @@ enum {
 };
 
 typedef struct ATTR_PACKED LineAttr {
-    UINT8 flags;
-    UINT8 join_style;
-    UINT8 end_style;
-    UINT8 style_nseg;
+    uint8_t flags;
+    uint8_t join_style;
+    uint8_t end_style;
+    uint8_t style_nseg;
     FIXED28_4 width;
     FIXED28_4 miter_limit;
     ADDRESS style; //data[0] ?
@@ -337,22 +316,22 @@ typedef struct ATTR_PACKED Stroke {
     ADDRESS path;
     LineAttr attr;
     Brush brush;
-    UINT16 fore_mode;
-    UINT16 back_mode;
+    uint16_t fore_mode;
+    uint16_t back_mode;
 } Stroke;
 
 typedef struct ATTR_PACKED RasterGlyph {
     Point render_pos;
     Point glyph_origin;
-    UINT16 width;
-    UINT16 height;
-    UINT8 data[0];
+    uint16_t width;
+    uint16_t height;
+    uint8_t data[0];
 } RasterGlyph;
 
 typedef struct ATTR_PACKED VectotGlyph {
     Point render_pos;
-    UINT32 data_size;
-    UINT8 data[0]; //PathSeg[]
+    uint32_t data_size;
+    uint8_t data[0]; //PathSeg[]
 } VectotGlyph;
 
 enum {
@@ -363,9 +342,9 @@ enum {
 };
 
 typedef struct ATTR_PACKED String {
-    UINT16 length;
-    UINT16 flags;
-    UINT8 data[0];
+    uint16_t length;
+    uint16_t flags;
+    uint8_t data[0];
 } String;
 
 typedef struct ATTR_PACKED Text {
@@ -373,8 +352,8 @@ typedef struct ATTR_PACKED Text {
     Rect back_area;
     Brush fore_brush;
     Brush back_brush;
-    UINT16 fore_mode;
-    UINT16 back_mode;
+    uint16_t fore_mode;
+    uint16_t back_mode;
 } Text;
 
 enum {
@@ -388,12 +367,12 @@ enum {
 };
 
 typedef struct ATTR_PACKED CursorHeader {
-    UINT64 unique;
-    UINT16 type;
-    UINT16 width;
-    UINT16 height;
-    UINT16 hot_spot_x;
-    UINT16 hot_spot_y;
+    uint64_t unique;
+    uint16_t type;
+    uint16_t width;
+    uint16_t height;
+    uint16_t hot_spot_x;
+    uint16_t hot_spot_y;
 } CursorHeader;
 
 

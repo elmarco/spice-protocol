@@ -31,6 +31,8 @@
 #ifndef _H_VDI_DEV
 #define _H_VDI_DEV
 
+#include <spice/types.h>
+
 #include "ipc_ring.h"
 
 #ifdef __GNUC__
@@ -55,12 +57,12 @@
 
 #define VDI_PORT_INTERRUPT (1 << 0)
 
-#define VDI_PORT_MAGIC (*(UINT32*)"VDIP")
+#define VDI_PORT_MAGIC (*(uint32_t*)"VDIP")
 
 typedef struct ATTR_PACKED VDIPortPacket {
-    UINT32 gen;
-    UINT32 size;
-    UINT8 data[512 - 2 * sizeof(UINT32)];
+    uint32_t gen;
+    uint32_t size;
+    uint8_t data[512 - 2 * sizeof(uint32_t)];
 } VDIPortPacket;
 
 RING_DECLARE(VDIPortRing, VDIPortPacket, 32);
@@ -79,13 +81,13 @@ enum {
 };
 
 typedef struct ATTR_PACKED VDIPortRam {
-    UINT32 magic;
-    UINT32 generation;
-    UINT32 int_pending;
-    UINT32 int_mask;
+    uint32_t magic;
+    uint32_t generation;
+    uint32_t int_pending;
+    uint32_t int_mask;
     VDIPortRing input;
     VDIPortRing output;
-    UINT32 reserv[32];
+    uint32_t reserv[32];
 } VDIPortRam;
 
 #ifndef __GNUC__

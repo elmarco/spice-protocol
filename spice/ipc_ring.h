@@ -32,6 +32,7 @@
 #ifndef _H_RING_
 #define _H_RING_
 
+#include <spice/types.h>
 
 #define MSB_MASK4(x)        \
     (((x) & 0x8) ? 0x8 :    \
@@ -71,16 +72,16 @@
 typedef struct ATTR_PACKED name##_ring_el {             \
     union {                                             \
         el_type el;                                     \
-        UINT8 data[POWER2_ALIGN(sizeof(el_type))];      \
+        uint8_t data[POWER2_ALIGN(sizeof(el_type))];      \
     } ;                                                 \
 } name##_ring_el;                                       \
                                                         \
 typedef struct ATTR_PACKED name {                       \
-    UINT32 num_items;                                   \
-    UINT32 prod;                                        \
-    UINT32 notify_on_prod;                              \
-    UINT32 cons;                                        \
-    UINT32 notify_on_cons;                              \
+    uint32_t num_items;                                   \
+    uint32_t prod;                                        \
+    uint32_t notify_on_prod;                              \
+    uint32_t cons;                                        \
+    uint32_t notify_on_cons;                              \
     name##_ring_el items[POWER2_ALIGN(size)];           \
 } name;
 

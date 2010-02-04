@@ -31,7 +31,7 @@
 #ifndef _H_REDS_STAT
 #define _H_REDS_STAT
 
-#include <stdint.h>
+#include <spice/types.h>
 
 #define REDS_STAT_SHM_NAME "spice.%u"
 #define REDS_STAT_NODE_NAME_MAX_LENGTH 20

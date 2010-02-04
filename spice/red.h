@@ -31,10 +31,8 @@
 #ifndef _H_RED
 #define _H_RED
 
-#include <stdint.h>
-#ifdef _WIN32
-#include <basetsd.h>
-#endif
+#include <spice/types.h>
+
 #include "draw.h"
 #ifdef __GNUC__
 #define ATTR_PACKED __attribute__ ((__packed__))
