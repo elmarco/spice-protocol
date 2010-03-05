@@ -55,5 +55,6 @@
 #pragma pack(1)
 #define SPICE_ATTR_PACKED
 #pragma warning(disable:4200)
+#pragma warning(disable:4103)
 
 #endif
