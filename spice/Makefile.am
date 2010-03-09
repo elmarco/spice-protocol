@@ -9,6 +9,7 @@ spice_protocol_include_HEADERS=		\
 	error_codes.h	\
 	ipc_ring.h	\
 	protocol.h	\
+	macros.h	\
 	qxl_dev.h	\
 	start-packed.h	\
 	stats.h		\
