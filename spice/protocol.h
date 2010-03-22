@@ -544,7 +544,7 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgcDisplayInit {
     uint8_t pixmap_cache_id;
     int64_t pixmap_cache_size; //in pixels
     uint8_t glz_dictionary_id;
-    int glz_dictionary_window_size;       // in pixels
+    int32_t glz_dictionary_window_size;       // in pixels
 } SpiceMsgcDisplayInit;
 
 enum {
