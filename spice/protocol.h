@@ -158,6 +158,8 @@ enum {
     SPICE_MSG_MAIN_AGENT_DATA,
     SPICE_MSG_MAIN_AGENT_TOKEN,
 
+    SPICE_MSG_MAIN_MIGRATE_SWITCH_HOST,
+
     SPICE_MSG_END_MAIN,
 };
 
@@ -222,6 +224,15 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgMainMigrationBegin {
     uint32_t pub_key_offset;
     uint32_t pub_key_size;
 } SpiceMsgMainMigrationBegin;
+
+typedef struct SPICE_ATTR_PACKED SpiceMsgMainMigrationSwitchHost {
+    uint16_t port;
+    uint16_t sport;
+    uint32_t host_offset;
+    uint32_t host_size;
+    uint32_t cert_subject_offset;
+    uint32_t cert_subject_size;
+} SpiceMsgMainMigrationSwitchHost;
 
 enum {
     SPICE_MIGRATE_NEED_FLUSH = (1 << 0),
