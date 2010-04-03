@@ -379,6 +379,9 @@ enum {
     SPICE_MSG_DISPLAY_DRAW_TRANSPARENT,
     SPICE_MSG_DISPLAY_DRAW_ALPHA_BLEND,
 
+    SPICE_MSG_DISPLAY_SURFACE_CREATE,
+    SPICE_MSG_DISPLAY_SURFACE_DESTROY,
+
     SPICE_MSG_END_DISPLAY,
 };
 
@@ -400,7 +403,25 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayMode {
     uint32_t bits;
 } SpiceMsgDisplayMode;
 
+enum {
+    SPICE_SURFACE_FLAGS_PRIMARY = (1 << 0),
+};
+
+typedef struct SPICE_ATTR_PACKED SpiceMsgSurfaceCreate {
+    uint32_t surface_id;
+    uint32_t width;
+    uint32_t height;
+    uint8_t depth;
+    uint32_t flags;
+    uint32_t type;
+} SpiceMsgSurfaceCreate;
+
+typedef struct SPICE_ATTR_PACKED SpiceMsgSurfaceDestroy {
+    uint32_t surface_id;
+} SpiceMsgSurfaceDestroy;
+
 typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayBase {
+    uint32_t surface_id;
     SpiceRect box;
     SpiceClip clip;
 } SpiceMsgDisplayBase;
@@ -480,6 +501,7 @@ enum {
 };
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayStreamCreate {
+    uint32_t surface_id;
     uint32_t id;
     uint32_t flags;
     uint32_t codec_type;
