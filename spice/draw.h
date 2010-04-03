@@ -155,6 +155,7 @@ enum {
     SPICE_IMAGE_TYPE_LZ_RGB,
     SPICE_IMAGE_TYPE_GLZ_RGB,
     SPICE_IMAGE_TYPE_FROM_CACHE,
+    SPICE_IMAGE_TYPE_SURFACE,
 };
 
 enum {
@@ -202,6 +203,15 @@ typedef struct SPICE_ATTR_PACKED SpiceBitmapImage {
     SpiceImageDescriptor descriptor;
     SpiceBitmap bitmap;
 } SpiceBitmapImage;
+
+typedef struct SPICE_ATTR_PACKED SpiceSurface {
+    uint32_t surface_id;
+} SpiceSurface;
+
+typedef struct SPICE_ATTR_PACKED SpiceSurfaceImage {
+    SpiceImageDescriptor descriptor; //?
+    SpiceSurface surface;
+} SpiceSurfaceImage;
 
 typedef struct SPICE_ATTR_PACKED SpiceQUICData {
     uint32_t data_size;

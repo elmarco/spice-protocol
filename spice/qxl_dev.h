@@ -70,6 +70,7 @@ enum {
     QXL_IO_CREATE_PRIMARY,
     QXL_IO_DESTROY_PRIMARY,
     QXL_IO_DESTROY_SURFACE_WAIT,
+    QXL_IO_DESTROY_ALL_SURFACES,
 
     QXL_IO_RANGE_SIZE
 };
@@ -91,6 +92,7 @@ typedef struct SPICE_ATTR_PACKED QXLRom {
     uint8_t slot_gen_bits;
     uint8_t slot_id_bits;
     uint8_t slot_generation;
+    uint32_t n_surfaces;
 } QXLRom;
 
 typedef struct SPICE_ATTR_PACKED QXLMode {
@@ -118,6 +120,7 @@ enum QXLCmdType {
     QXL_CMD_UPDATE,
     QXL_CMD_CURSOR,
     QXL_CMD_MESSAGE,
+    QXL_CMD_SURFACE,
 };
 
 typedef struct SPICE_ATTR_PACKED QXLCommand {
@@ -169,6 +172,7 @@ typedef struct SPICE_ATTR_PACKED QXLRam {
     QXLCursorRing cursor_ring;
     QXLReleaseRing release_ring;
     SpiceRect update_area;
+    uint32_t update_surface;
     QXLMemSlot mem_slot;
     QXLSurfaceCreate create_surface;
     uint64_t flags;
@@ -200,6 +204,7 @@ typedef struct SPICE_ATTR_PACKED QXLUpdateCmd {
     QXLReleaseInfo release_info;
     SpiceRect area;
     uint32_t update_id;
+    uint32_t surface_id;
 } QXLUpdateCmd;
 
 typedef struct SPICE_ATTR_PACKED QXLCursor {
@@ -274,6 +279,7 @@ typedef struct SPICE_ATTR_PACKED QXLCopyBits {
 
 typedef struct SPICE_ATTR_PACKED QXLDrawable {
     QXLReleaseInfo release_info;
+    uint32_t surface_id;
     uint8_t effect;
     uint8_t type;
     uint8_t self_bitmap;
@@ -281,6 +287,8 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
     SpiceRect bbox;
     SpiceClip clip;
     uint32_t mm_time;
+    int32_t surfaces_dest[3];
+    SpiceRect surfaces_rects[3];
     union {
         SpiceFill fill;
         SpiceOpaque opaque;
@@ -297,6 +305,29 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
         SpiceWhiteness whiteness;
     } u;
 } QXLDrawable;
+
+enum QXLSurfaceCmdType {
+    QXL_SURFACE_CMD_CREATE,
+    QXL_SURFACE_CMD_DESTROY,
+};
+
+typedef struct SPICE_ATTR_PACKED QXLSurface {
+    uint8_t depth;
+    uint32_t width;
+    uint32_t height;
+    int32_t stride;
+    QXLPHYSICAL data;
+} QXLSurface;
+
+typedef struct SPICE_ATTR_PACKED QXLSurfaceCmd {
+    QXLReleaseInfo release_info;
+    uint32_t surface_id;
+    uint8_t type;
+    uint32_t flags;
+    union {
+        QXLSurface surface_create;
+    } u;
+} QXLSurfaceCmd;
 
 typedef struct SPICE_ATTR_PACKED QXLClipRects {
     uint32_t num_rects;
@@ -349,6 +380,7 @@ typedef struct SPICE_ATTR_PACKED QXLImage {
     union { // variable length
         SpiceBitmap bitmap;
         SpiceQUICData quic;
+        SpiceSurface surface_image;
     };
 } QXLImage;
 
