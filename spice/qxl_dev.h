@@ -40,8 +40,8 @@
 #include <spice/start-packed.h>
 
 #define REDHAT_PCI_VENDOR_ID 0x1b36
-#define QXL_DEVICE_ID 0x0100 /* 0x100-0x11f reserved for spice */
-#define QXL_REVISION 0x03
+#define QXL_DEVICE_ID 0x01ff /* 0x100-0x11f reserved for spice, 0x1ff used for unstable work */
+#define QXL_REVISION 0x01
 
 #define QXL_ROM_MAGIC (*(uint32_t*)"QXRO")
 #define QXL_RAM_MAGIC (*(uint32_t*)"QXRA")
