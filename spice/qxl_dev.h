@@ -55,6 +55,7 @@ enum {
     QXL_PCI_RANGES
 };
 
+/* qxl-1 compat: append only */
 enum {
     QXL_IO_NOTIFY_CMD,
     QXL_IO_NOTIFY_CURSOR,
@@ -62,7 +63,9 @@ enum {
     QXL_IO_UPDATE_IRQ,
     QXL_IO_NOTIFY_OOM,
     QXL_IO_RESET,
+    QXL_IO_SET_MODE,                  /* qxl-1 */
     QXL_IO_LOG,
+    /* appended for qxl-2 */
     QXL_IO_MEMSLOT_ADD,
     QXL_IO_MEMSLOT_DEL,
     QXL_IO_DETACH_PRIMARY,
@@ -75,26 +78,33 @@ enum {
     QXL_IO_RANGE_SIZE
 };
 
+/* qxl-1 compat: append only */
 typedef struct SPICE_ATTR_PACKED QXLRom {
     uint32_t magic;
     uint32_t id;
     uint32_t update_id;
     uint32_t compression_level;
     uint32_t log_level;
+    uint32_t mode;                    /* qxl-1 */
     uint32_t modes_offset;
     uint32_t num_pages;
-    uint32_t surface0_area_size;
+    uint32_t pages_offset;            /* qxl-1 */
+    uint32_t draw_area_offset;        /* qxl-1 */
+    uint32_t surface0_area_size;      /* qxl-1 name: draw_area_size */
     uint32_t ram_header_offset;
     uint32_t mm_clock;
+    /* appended for qxl-2 */
+    uint32_t n_surfaces;
     uint64_t flags;
     uint8_t slots_start;
     uint8_t slots_end;
     uint8_t slot_gen_bits;
     uint8_t slot_id_bits;
     uint8_t slot_generation;
-    uint32_t n_surfaces;
+    uint8_t padding[3]; /* Padding to 32bit align */
 } QXLRom;
 
+/* qxl-1 compat: fixed */
 typedef struct SPICE_ATTR_PACKED QXLMode {
     uint32_t id;
     uint32_t x_res;
@@ -106,6 +116,7 @@ typedef struct SPICE_ATTR_PACKED QXLMode {
     uint32_t orientation;
 } QXLMode;
 
+/* qxl-1 compat: fixed */
 typedef struct SPICE_ATTR_PACKED QXLModes {
     uint32_t n_modes;
     QXLMode modes[0];
@@ -114,6 +125,7 @@ typedef struct SPICE_ATTR_PACKED QXLModes {
 typedef uint64_t QXLPHYSICAL;
 typedef uint32_t QXLFIXED; //fixed 28.4
 
+/* qxl-1 compat: append only */
 enum QXLCmdType {
     QXL_CMD_NOP,
     QXL_CMD_DRAW,
@@ -123,15 +135,19 @@ enum QXLCmdType {
     QXL_CMD_SURFACE,
 };
 
+/* qxl-1 compat: fixed */
 typedef struct SPICE_ATTR_PACKED QXLCommand {
     QXLPHYSICAL data;
     uint32_t type;
-    uint32_t ped;
+    uint32_t padding;
 } QXLCommand;
+
+#define QXL_COMMAND_FLAG_COMPAT (1<<0)
 
 typedef struct SPICE_ATTR_PACKED QXLCommandExt {
     QXLCommand cmd;
     uint32_t group_id;
+    uint32_t flags;
 } QXLCommandExt;
 
 typedef struct SPICE_ATTR_PACKED QXLMemSlot {
@@ -163,6 +179,7 @@ SPICE_RING_DECLARE(QXLReleaseRing, uint64_t, 8);
 #define QXL_INTERRUPT_DISPLAY (1 << 0)
 #define QXL_INTERRUPT_CURSOR (1 << 1)
 
+/* qxl-1 compat: append only */
 typedef struct SPICE_ATTR_PACKED QXLRam {
     uint32_t magic;
     uint32_t int_pending;
@@ -172,6 +189,7 @@ typedef struct SPICE_ATTR_PACKED QXLRam {
     QXLCursorRing cursor_ring;
     QXLReleaseRing release_ring;
     SpiceRect update_area;
+    /* appended for qxl-2 */
     uint32_t update_surface;
     QXLMemSlot mem_slot;
     QXLSurfaceCreate create_surface;
@@ -199,6 +217,12 @@ typedef struct SPICE_ATTR_PACKED QXLMessage {
     QXLReleaseInfo release_info;
     uint8_t data[0];
 } QXLMessage;
+
+typedef struct SPICE_ATTR_PACKED QXLCompatUpdateCmd {
+    QXLReleaseInfo release_info;
+    SpiceRect area;
+    uint32_t update_id;
+} QXLCompatUpdateCmd;
 
 typedef struct SPICE_ATTR_PACKED QXLUpdateCmd {
     QXLReleaseInfo release_info;
@@ -276,6 +300,32 @@ typedef struct SPICE_ATTR_PACKED QXLCopyBits {
 #define QXL_EFFECT_NOP_ON_DUP 5
 #define QXL_EFFECT_NOP 6
 #define QXL_EFFECT_OPAQUE_BRUSH 7
+
+typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
+    QXLReleaseInfo release_info;
+    uint8_t effect;
+    uint8_t type;
+    uint16_t bitmap_offset;
+    SpiceRect bitmap_area;
+    SpiceRect bbox;
+    SpiceClip clip;
+    uint32_t mm_time;
+    union {
+        SpiceFill fill;
+        SpiceOpaque opaque;
+        SpiceCopy copy;
+        SpiceTransparent transparent;
+        SpiceAlphaBlnd alpha_blend;
+        QXLCopyBits copy_bits;
+        SpiceBlend blend;
+        SpiceRop3 rop3;
+        SpiceStroke stroke;
+        SpiceText text;
+        SpiceBlackness blackness;
+        SpiceInvers invers;
+        SpiceWhiteness whiteness;
+    } u;
+} QXLCompatDrawable;
 
 typedef struct SPICE_ATTR_PACKED QXLDrawable {
     QXLReleaseInfo release_info;
