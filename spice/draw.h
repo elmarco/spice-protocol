@@ -148,6 +148,17 @@ typedef struct SPICE_ATTR_PACKED SpicePalette {
 } SpicePalette;
 
 enum {
+    SPICE_SURFACE_FMT_INVALID,
+    SPICE_SURFACE_FMT_1_A     = 1,
+    SPICE_SURFACE_FMT_8_A     = 8,
+    SPICE_SURFACE_FMT_16_555  = 16 + (0 << 6),
+    SPICE_SURFACE_FMT_16_565  = 16 + (1 << 6),
+    SPICE_SURFACE_FMT_32_xRGB = 32 + (0 << 6),
+    SPICE_SURFACE_FMT_32_ARGB = 32 + (1 << 6),
+};
+#define SPICE_SURFACE_FMT_DEPTH(_d) ((_d) & 0x3f)
+
+enum {
     SPICE_IMAGE_TYPE_BITMAP,
     SPICE_IMAGE_TYPE_QUIC,
     SPICE_IMAGE_TYPE_RESERVED,
