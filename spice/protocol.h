@@ -411,9 +411,8 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgSurfaceCreate {
     uint32_t surface_id;
     uint32_t width;
     uint32_t height;
-    uint8_t depth;
+    uint32_t format;
     uint32_t flags;
-    uint32_t type;
 } SpiceMsgSurfaceCreate;
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgSurfaceDestroy {
