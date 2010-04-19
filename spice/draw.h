@@ -183,15 +183,15 @@ typedef struct SPICE_ATTR_PACKED SpiceImageDescriptor {
 
 enum {
     SPICE_BITMAP_FMT_INVALID,
-    SPICE_BITMAP_FMT_1BIT_LE,
+    SPICE_BITMAP_FMT_1BIT_LE /* unused */,
     SPICE_BITMAP_FMT_1BIT_BE,
-    SPICE_BITMAP_FMT_4BIT_LE,
+    SPICE_BITMAP_FMT_4BIT_LE /* unused */,
     SPICE_BITMAP_FMT_4BIT_BE,
-    SPICE_BITMAP_FMT_8BIT,
-    SPICE_BITMAP_FMT_16BIT,
-    SPICE_BITMAP_FMT_24BIT,
-    SPICE_BITMAP_FMT_32BIT,
-    SPICE_BITMAP_FMT_RGBA,
+    SPICE_BITMAP_FMT_8BIT /* 8bit indexed mode */,
+    SPICE_BITMAP_FMT_16BIT /* 555 format */,
+    SPICE_BITMAP_FMT_24BIT /* 3 byte, brg */,
+    SPICE_BITMAP_FMT_32BIT /* 4 byte, xrgb in little endian format */,
+    SPICE_BITMAP_FMT_RGBA /* 4 byte, argb in little endian format */,
 };
 
 enum {
