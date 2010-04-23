@@ -280,7 +280,13 @@ typedef struct SPICE_ATTR_PACKED SpiceTransparent {
     uint32_t true_color;
 } SpiceTransparent;
 
+enum {
+    SPICE_ALPHA_FLAGS_DEST_HAS_ALPHA = (1 << 0),
+    SPICE_ALPHA_FLAGS_SRC_SURFACE_HAS_ALPHA = (1 << 1),
+};
+
 typedef struct SPICE_ATTR_PACKED SpiceAlphaBlnd {
+    uint16_t alpha_flags;
     uint8_t alpha;
     SPICE_ADDRESS src_bitmap;
     SpiceRect src_area;
