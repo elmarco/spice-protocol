@@ -410,6 +410,7 @@ typedef struct SPICE_ATTR_PACKED QXLImageID {
 
 enum {
     QXL_IMAGE_CACHE = (1 << 0),
+    QXL_IMAGE_HIGH_BITS_SET = (1 << 1),
 };
 
 enum {

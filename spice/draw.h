@@ -171,6 +171,7 @@ enum {
 
 enum {
     SPICE_IMAGE_FLAGS_CACHE_ME = (1 << 0),
+    SPICE_IMAGE_FLAGS_HIGH_BITS_SET = (1 << 1),
 };
 
 typedef struct SPICE_ATTR_PACKED SpiceImageDescriptor {
