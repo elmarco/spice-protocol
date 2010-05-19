@@ -36,5 +36,6 @@
  * If they are not in stdint.h on your system,
  * include the right one here. */
 #include <stdint.h>
+#include <limits.h>
 
 #endif /* _H_SPICE_TYPES */

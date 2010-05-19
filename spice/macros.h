@@ -183,4 +183,180 @@
 #define SPICE_UNLIKELY(expr) (expr)
 #endif
 
+#ifdef _MSC_VER
+#define SPICE_UINT64_CONSTANT(x) (x ## UI64)
+#define SPICE_INT64_CONSTANT(x) (x ## I64)
+#else
+#if LONG_MAX == 2147483647L
+#define SPICE_UINT64_CONSTANT(x) (x ## ULL)
+#define SPICE_INT64_CONSTANT(x) (x ## LL)
+#else
+#define SPICE_UINT64_CONSTANT(x) (x ## UL)
+#define SPICE_INT64_CONSTANT(x) (x ## L)
+#endif
+#endif
+
+/* Little/Bit endian byte swapping */
+
+#define SPICE_BYTESWAP16_CONSTANT(val)	((uint16_t) ( \
+    (uint16_t) ((uint16_t) (val) >> 8) |	\
+    (uint16_t) ((uint16_t) (val) << 8)))
+
+#define SPICE_BYTESWAP32_CONSTANT(val)	((uint32_t) ( \
+    (((uint32_t) (val) & (uint32_t) 0x000000ffU) << 24) | \
+    (((uint32_t) (val) & (uint32_t) 0x0000ff00U) <<  8) | \
+    (((uint32_t) (val) & (uint32_t) 0x00ff0000U) >>  8) | \
+    (((uint32_t) (val) & (uint32_t) 0xff000000U) >> 24)))
+
+#define SPICE_BYTESWAP64_CONSTANT(val)	((uint64_t) ( \
+      (((uint64_t) (val) &						\
+	(uint64_t) SPICE_UINT64_CONSTANT(0x00000000000000ff)) << 56) |	\
+      (((uint64_t) (val) &						\
+	(uint64_t) SPICE_UINT64_CONSTANT(0x000000000000ff00)) << 40) |	\
+      (((uint64_t) (val) &						\
+	(uint64_t) SPICE_UINT64_CONSTANT(0x0000000000ff0000)) << 24) |	\
+      (((uint64_t) (val) &						\
+	(uint64_t) SPICE_UINT64_CONSTANT(0x00000000ff000000)) <<  8) |	\
+      (((uint64_t) (val) &						\
+	(uint64_t) SPICE_UINT64_CONSTANT(0x000000ff00000000)) >>  8) |	\
+      (((uint64_t) (val) &						\
+	(uint64_t) SPICE_UINT64_CONSTANT(0x0000ff0000000000)) >> 24) |	\
+      (((uint64_t) (val) &						\
+	(uint64_t) SPICE_UINT64_CONSTANT(0x00ff000000000000)) >> 40) |	\
+      (((uint64_t) (val) &						\
+	(uint64_t) SPICE_UINT64_CONSTANT(0xff00000000000000)) >> 56)))
+
+/* Arch specific stuff for speed
+ */
+#if defined (__GNUC__) && (__GNUC__ >= 2) && defined (__OPTIMIZE__)
+#  if defined (__i386__)
+#    define SPICE_BYTESWAP16_IA32(val) \
+       (__extension__						\
+	({ register uint16_t __v, __x = ((uint16_t) (val));	\
+	   if (__builtin_constant_p (__x))			\
+	     __v = SPICE_BYTESWAP16_CONSTANT (__x);		\
+	   else							\
+	     __asm__ ("rorw $8, %w0"				\
+		      : "=r" (__v)				\
+		      : "0" (__x)				\
+		      : "cc");					\
+	    __v; }))
+#    if !defined (__i486__) && !defined (__i586__) \
+	&& !defined (__pentium__) && !defined (__i686__) \
+	&& !defined (__pentiumpro__) && !defined (__pentium4__)
+#       define SPICE_BYTESWAP32_IA32(val) \
+	  (__extension__					\
+	   ({ register uint32_t __v, __x = ((uint32_t) (val));	\
+	      if (__builtin_constant_p (__x))			\
+		__v = SPICE_BYTESWAP32_CONSTANT (__x);	\
+	      else						\
+		__asm__ ("rorw $8, %w0\n\t"			\
+			 "rorl $16, %0\n\t"			\
+			 "rorw $8, %w0"				\
+			 : "=r" (__v)				\
+			 : "0" (__x)				\
+			 : "cc");				\
+	      __v; }))
+#    else /* 486 and higher has bswap */
+#       define SPICE_BYTESWAP32_IA32(val) \
+	  (__extension__					\
+	   ({ register uint32_t __v, __x = ((uint32_t) (val));	\
+	      if (__builtin_constant_p (__x))			\
+		__v = SPICE_BYTESWAP32_CONSTANT (__x);	\
+	      else						\
+		__asm__ ("bswap %0"				\
+			 : "=r" (__v)				\
+			 : "0" (__x));				\
+	      __v; }))
+#    endif /* processor specific 32-bit stuff */
+#    define SPICE_BYTESWAP64_IA32(val) \
+       (__extension__							\
+	({ union { uint64_t __ll;					\
+		   uint32_t __l[2]; } __w, __r;				\
+	   __w.__ll = ((uint64_t) (val));				\
+	   if (__builtin_constant_p (__w.__ll))				\
+	     __r.__ll = SPICE_BYTESWAP64_CONSTANT (__w.__ll);		\
+	   else								\
+	     {								\
+	       __r.__l[0] = SPICE_BYTESWAP32 (__w.__l[1]);		\
+	       __r.__l[1] = SPICE_BYTESWAP32 (__w.__l[0]);		\
+	     }								\
+	   __r.__ll; }))
+     /* Possibly just use the constant version and let gcc figure it out? */
+#    define SPICE_BYTESWAP16(val) (SPICE_BYTESWAP16_IA32 (val))
+#    define SPICE_BYTESWAP32(val) (SPICE_BYTESWAP32_IA32 (val))
+#    define SPICE_BYTESWAP64(val) (SPICE_BYTESWAP64_IA32 (val))
+#  elif defined (__ia64__)
+#    define SPICE_BYTESWAP16_IA64(val) \
+       (__extension__						\
+	({ register uint16_t __v, __x = ((uint16_t) (val));	\
+	   if (__builtin_constant_p (__x))			\
+	     __v = SPICE_BYTESWAP16_CONSTANT (__x);		\
+	   else							\
+	     __asm__ __volatile__ ("shl %0 = %1, 48 ;;"		\
+				   "mux1 %0 = %0, @rev ;;"	\
+				    : "=r" (__v)		\
+				    : "r" (__x));		\
+	    __v; }))
+#    define SPICE_BYTESWAP32_IA64(val) \
+       (__extension__						\
+	 ({ register uint32_t __v, __x = ((uint32_t) (val));	\
+	    if (__builtin_constant_p (__x))			\
+	      __v = SPICE_BYTESWAP32_CONSTANT (__x);		\
+	    else						\
+	     __asm__ __volatile__ ("shl %0 = %1, 32 ;;"		\
+				   "mux1 %0 = %0, @rev ;;"	\
+				    : "=r" (__v)		\
+				    : "r" (__x));		\
+	    __v; }))
+#    define SPICE_BYTESWAP64_IA64(val) \
+       (__extension__						\
+	({ register uint64_t __v, __x = ((uint64_t) (val));	\
+	   if (__builtin_constant_p (__x))			\
+	     __v = SPICE_BYTESWAP64_CONSTANT (__x);		\
+	   else							\
+	     __asm__ __volatile__ ("mux1 %0 = %1, @rev ;;"	\
+				   : "=r" (__v)			\
+				   : "r" (__x));		\
+	   __v; }))
+#    define SPICE_BYTESWAP16(val) (SPICE_BYTESWAP16_IA64 (val))
+#    define SPICE_BYTESWAP32(val) (SPICE_BYTESWAP32_IA64 (val))
+#    define SPICE_BYTESWAP64(val) (SPICE_BYTESWAP64_IA64 (val))
+#  elif defined (__x86_64__)
+#    define SPICE_BYTESWAP32_X86_64(val) \
+       (__extension__						\
+	 ({ register uint32_t __v, __x = ((uint32_t) (val));	\
+	    if (__builtin_constant_p (__x))			\
+	      __v = SPICE_BYTESWAP32_CONSTANT (__x);		\
+	    else						\
+	     __asm__ ("bswapl %0"				\
+		      : "=r" (__v)				\
+		      : "0" (__x));				\
+	    __v; }))
+#    define SPICE_BYTESWAP64_X86_64(val) \
+       (__extension__						\
+	({ register uint64_t __v, __x = ((uint64_t) (val));	\
+	   if (__builtin_constant_p (__x))			\
+	     __v = SPICE_BYTESWAP64_CONSTANT (__x);		\
+	   else							\
+	     __asm__ ("bswapq %0"				\
+		      : "=r" (__v)				\
+		      : "0" (__x));				\
+	   __v; }))
+     /* gcc seems to figure out optimal code for this on its own */
+#    define SPICE_BYTESWAP16(val) (SPICE_BYTESWAP16_CONSTANT (val))
+#    define SPICE_BYTESWAP32(val) (SPICE_BYTESWAP32_X86_64 (val))
+#    define SPICE_BYTESWAP64(val) (SPICE_BYTESWAP64_X86_64 (val))
+#  else /* generic gcc */
+#    define SPICE_BYTESWAP16(val) (SPICE_BYTESWAP16_CONSTANT (val))
+#    define SPICE_BYTESWAP32(val) (SPICE_BYTESWAP32_CONSTANT (val))
+#    define SPICE_BYTESWAP64(val) (SPICE_BYTESWAP64_CONSTANT (val))
+#  endif
+#else /* generic */
+#  define SPICE_BYTESWAP16(val) (SPICE_BYTESWAP16_CONSTANT (val))
+#  define SPICE_BYTESWAP32(val) (SPICE_BYTESWAP32_CONSTANT (val))
+#  define SPICE_BYTESWAP64(val) (SPICE_BYTESWAP64_CONSTANT (val))
+#endif /* generic */
+
+
 #endif /* _H_SPICE_MACROS */
