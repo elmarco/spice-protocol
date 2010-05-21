@@ -248,15 +248,15 @@ enum {
     SPICE_RES_TYPE_PIXMAP,
 };
 
-typedef struct SPICE_ATTR_PACKED SpiceResorceID {
+typedef struct SPICE_ATTR_PACKED SpiceResourceID {
     uint8_t type;
     uint64_t id;
-} SpiceResorceID;
+} SpiceResourceID;
 
-typedef struct SPICE_ATTR_PACKED SpiceResorceList {
+typedef struct SPICE_ATTR_PACKED SpiceResourceList {
     uint16_t count;
-    SpiceResorceID resorces[0];
-} SpiceResorceList;
+    SpiceResourceID resources[0];
+} SpiceResourceList;
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgSetAck {
     uint32_t generation;
@@ -309,7 +309,7 @@ enum {
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgNotify {
     uint64_t time_stamp;
-    uint32_t severty;
+    uint32_t severity;
     uint32_t visibilty;
     uint32_t what;
     uint32_t message_len;
@@ -517,7 +517,7 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayStreamData {
     uint32_t id;
     uint32_t multi_media_time;
     uint32_t data_size;
-    uint32_t ped_size;
+    uint32_t pad_size;
     uint8_t data[0];
 } SpiceMsgDisplayStreamData;
 
@@ -552,13 +552,13 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgCursorInit {
 } SpiceMsgCursorInit;
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgCursorSet {
-    SpicePoint16 postition;
+    SpicePoint16 position;
     uint8_t visible;
     SpiceCursor cursor;
 } SpiceMsgCursorSet;
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgCursorMove {
-    SpicePoint16 postition;
+    SpicePoint16 position;
 } SpiceMsgCursorMove;
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgCursorTrail {
