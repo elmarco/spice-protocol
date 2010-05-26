@@ -410,6 +410,11 @@ typedef struct SPICE_ATTR_PACKED QXLImageID {
     uint32_t unique;
 } QXLImageID;
 
+typedef union {
+  QXLImageID id;
+  uint64_t value;
+} QXLImageIDUnion;
+
 enum {
     QXL_IMAGE_CACHE = (1 << 0),
     QXL_IMAGE_HIGH_BITS_SET = (1 << 1),
@@ -422,10 +427,7 @@ enum {
 };
 
 #define QXL_SET_IMAGE_ID(image, _group, _unique) {              \
-    uint64_t* id_ptr = &(image)->descriptor.id;                   \
-    QXLImageID *image_id = (QXLImageID *)id_ptr;                \
-    image_id->group = _group;                                   \
-    image_id->unique = _unique;                                 \
+    (image)->descriptor.id = (((uint64_t)_unique) << 32) | _group;	\
 }
 
 typedef struct SPICE_ATTR_PACKED QXLImage {

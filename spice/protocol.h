@@ -122,6 +122,14 @@ typedef struct SPICE_ATTR_PACKED SpiceSubMessageList {
     uint32_t sub_messages[0]; //offsets to SpicedSubMessage
 } SpiceSubMessageList;
 
+typedef struct SPICE_ATTR_PACKED SpiceMsgData {
+    uint32_t data_size;
+    uint8_t data[0];
+} SpiceMsgData;
+
+typedef struct SPICE_ATTR_PACKED SpiceMsgEmpty {
+} SpiceMsgEmpty;
+
 enum {
     SPICE_MSG_MIGRATE = 1,
     SPICE_MSG_MIGRATE_DATA,
@@ -262,6 +270,10 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgSetAck {
     uint32_t generation;
     uint32_t window;
 } SpiceMsgSetAck;
+
+typedef struct SPICE_ATTR_PACKED SpiceMsgcAckSync {
+  uint32_t generation;
+} SpiceMsgcAckSync;
 
 typedef struct SPICE_ATTR_PACKED SpiceWaitForChannel {
     uint8_t channel_type;

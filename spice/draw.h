@@ -81,11 +81,21 @@ typedef struct SPICE_ATTR_PACKED SpicePathSeg {
     uint8_t data[0];
 } SpicePathSeg;
 
+typedef struct SPICE_ATTR_PACKED SpicePath {
+  uint32_t size;
+  uint8_t segments[0];
+} SpicePath;
+
 enum SpiceClipType {
     SPICE_CLIP_TYPE_NONE,
     SPICE_CLIP_TYPE_RECTS,
     SPICE_CLIP_TYPE_PATH,
 };
+
+typedef struct SPICE_ATTR_PACKED SpiceClipRects {
+  uint32_t num_rects;
+  SpiceRect rects[0];
+} SpiceClipRects;
 
 typedef struct SPICE_ATTR_PACKED SpiceClip {
     uint32_t type;
