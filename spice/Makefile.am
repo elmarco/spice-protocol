@@ -6,6 +6,7 @@ spice_protocol_include_HEADERS=		\
 	barrier.h	\
 	draw.h		\
 	end-packed.h	\
+	enums.h	\
 	error_codes.h	\
 	ipc_ring.h	\
 	protocol.h	\

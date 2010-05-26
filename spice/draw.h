@@ -32,6 +32,7 @@
 #define _H_SPICE_DRAW
 
 #include <spice/types.h>
+#include <spice/enums.h>
 
 #include <spice/start-packed.h>
 
@@ -40,18 +41,6 @@
 
 typedef int32_t SPICE_FIXED28_4;
 typedef uint64_t SPICE_ADDRESS;
-
-enum {
-    SPICE_PATH_BEGIN = (1 << 0),
-    SPICE_PATH_END = (1 << 1),
-    SPICE_PATH_CLOSE = (1 << 3),
-    SPICE_PATH_BEZIER = (1 << 4),
-};
-
-enum {
-    SPICE_LINE_ATTR_STARTGAP = (1 << 2),
-    SPICE_LINE_ATTR_STYLED = (1 << 3),
-};
 
 typedef struct SPICE_ATTR_PACKED SpicePointFix {
     SPICE_FIXED28_4 x;
@@ -86,12 +75,6 @@ typedef struct SPICE_ATTR_PACKED SpicePath {
   uint8_t segments[0];
 } SpicePath;
 
-enum SpiceClipType {
-    SPICE_CLIP_TYPE_NONE,
-    SPICE_CLIP_TYPE_RECTS,
-    SPICE_CLIP_TYPE_PATH,
-};
-
 typedef struct SPICE_ATTR_PACKED SpiceClipRects {
   uint32_t num_rects;
   SpiceRect rects[0];
@@ -102,30 +85,10 @@ typedef struct SPICE_ATTR_PACKED SpiceClip {
     SPICE_ADDRESS data;
 } SpiceClip;
 
-enum SpiceROPDescriptor {
-    SPICE_ROPD_INVERS_SRC = (1 << 0),
-    SPICE_ROPD_INVERS_BRUSH = (1 << 1),
-    SPICE_ROPD_INVERS_DEST = (1 << 2),
-    SPICE_ROPD_OP_PUT = (1 << 3),
-    SPICE_ROPD_OP_OR = (1 << 4),
-    SPICE_ROPD_OP_AND = (1 << 5),
-    SPICE_ROPD_OP_XOR = (1 << 6),
-    SPICE_ROPD_OP_BLACKNESS = (1 << 7),
-    SPICE_ROPD_OP_WHITENESS = (1 << 8),
-    SPICE_ROPD_OP_INVERS = (1 << 9),
-    SPICE_ROPD_INVERS_RES = (1 << 10),
-};
-
 typedef struct SPICE_ATTR_PACKED SpicePattern {
     SPICE_ADDRESS pat;
     SpicePoint pos;
 } SpicePattern;
-
-enum {
-    SPICE_BRUSH_TYPE_NONE,
-    SPICE_BRUSH_TYPE_SOLID,
-    SPICE_BRUSH_TYPE_PATTERN,
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceBrush {
     uint32_t type;
@@ -134,10 +97,6 @@ typedef struct SPICE_ATTR_PACKED SpiceBrush {
         SpicePattern pattern;
     } u;
 } SpiceBrush;
-
-enum {
-    SPICE_MASK_FLAGS_INVERS = (1 << 0),
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceQMask {
     uint8_t flags;
@@ -157,35 +116,7 @@ typedef struct SPICE_ATTR_PACKED SpicePalette {
     uint32_t ents[0];
 } SpicePalette;
 
-enum {
-    SPICE_SURFACE_FMT_INVALID,
-    SPICE_SURFACE_FMT_1_A     = 1,
-    SPICE_SURFACE_FMT_8_A     = 8,
-    SPICE_SURFACE_FMT_16_555  = 16 + (0 << 6),
-    SPICE_SURFACE_FMT_16_565  = 16 + (1 << 6),
-    SPICE_SURFACE_FMT_32_xRGB = 32 + (0 << 6),
-    SPICE_SURFACE_FMT_32_ARGB = 32 + (1 << 6),
-};
 #define SPICE_SURFACE_FMT_DEPTH(_d) ((_d) & 0x3f)
-
-enum {
-    SPICE_IMAGE_TYPE_BITMAP,
-    SPICE_IMAGE_TYPE_QUIC,
-    SPICE_IMAGE_TYPE_RESERVED,
-    SPICE_IMAGE_TYPE_LZ_PLT = 100,
-    SPICE_IMAGE_TYPE_LZ_RGB,
-    SPICE_IMAGE_TYPE_GLZ_RGB,
-    SPICE_IMAGE_TYPE_FROM_CACHE,
-    SPICE_IMAGE_TYPE_SURFACE,
-    SPICE_IMAGE_TYPE_JPEG,
-    SPICE_IMAGE_TYPE_FROM_CACHE_LOSSLESS,
-};
-
-enum {
-    SPICE_IMAGE_FLAGS_CACHE_ME = (1 << 0),
-    SPICE_IMAGE_FLAGS_HIGH_BITS_SET = (1 << 1),
-    SPICE_IMAGE_FLAGS_CACHE_REPLACE_ME = (1 << 2),
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceImageDescriptor {
     uint64_t id;
@@ -194,25 +125,6 @@ typedef struct SPICE_ATTR_PACKED SpiceImageDescriptor {
     uint32_t width;
     uint32_t height;
 } SpiceImageDescriptor;
-
-enum {
-    SPICE_BITMAP_FMT_INVALID,
-    SPICE_BITMAP_FMT_1BIT_LE /* unused */,
-    SPICE_BITMAP_FMT_1BIT_BE,
-    SPICE_BITMAP_FMT_4BIT_LE /* unused */,
-    SPICE_BITMAP_FMT_4BIT_BE,
-    SPICE_BITMAP_FMT_8BIT /* 8bit indexed mode */,
-    SPICE_BITMAP_FMT_16BIT /* 555 format */,
-    SPICE_BITMAP_FMT_24BIT /* 3 byte, brg */,
-    SPICE_BITMAP_FMT_32BIT /* 4 byte, xrgb in little endian format */,
-    SPICE_BITMAP_FMT_RGBA /* 4 byte, argb in little endian format */,
-};
-
-enum {
-    SPICE_BITMAP_FLAGS_PAL_CACHE_ME = (1 << 0),
-    SPICE_BITMAP_FLAGS_PAL_FROM_CACHE = (1 << 1),
-    SPICE_BITMAP_FLAGS_TOP_DOWN = (1 << 2),
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceBitmap {
     uint8_t format;
@@ -270,11 +182,6 @@ typedef struct SPICE_ATTR_PACKED SpiceJPEGImage {
     SpiceJPEGData jpeg;
 } SpiceJPEGImage;
 
-enum {
-    SPICE_IMAGE_SCALE_MODE_INTERPOLATE,
-    SPICE_IMAGE_SCALE_MODE_NEAREST,
-};
-
 typedef struct SPICE_ATTR_PACKED SpiceOpaque {
     SPICE_ADDRESS src_bitmap;
     SpiceRect src_area;
@@ -299,11 +206,6 @@ typedef struct SPICE_ATTR_PACKED SpiceTransparent {
     uint32_t true_color;
 } SpiceTransparent;
 
-enum {
-    SPICE_ALPHA_FLAGS_DEST_HAS_ALPHA = (1 << 0),
-    SPICE_ALPHA_FLAGS_SRC_SURFACE_HAS_ALPHA = (1 << 1),
-};
-
 typedef struct SPICE_ATTR_PACKED SpiceAlphaBlnd {
     uint16_t alpha_flags;
     uint8_t alpha;
@@ -323,23 +225,6 @@ typedef struct SPICE_ATTR_PACKED SpiceRop3 {
 typedef struct SPICE_ATTR_PACKED SpiceBlackness {
     SpiceQMask mask;
 } SpiceBlackness, SpiceInvers, SpiceWhiteness;
-
-enum {
-    SPICE_LINE_FLAGS_STYLED = (1 << 3),
-    SPICE_LINE_FLAGS_START_WITH_GAP = (1 << 2),
-};
-
-enum {
-    SPICE_LINE_CAP_ROUND,
-    SPICE_LINE_CAP_SQUARE,
-    SPICE_LINE_CAP_BUTT,
-};
-
-enum {
-    SPICE_LINE_JOIN_ROUND,
-    SPICE_LINE_JOIN_BEVEL,
-    SPICE_LINE_JOIN_MITER,
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceLineAttr {
     uint8_t flags;
@@ -373,13 +258,6 @@ typedef struct SPICE_ATTR_PACKED SpiceVectorGlyph {
     uint8_t data[0]; //SpicePathSeg[]
 } SpiceVectorGlyph;
 
-enum {
-    SPICE_STRING_FLAGS_RASTER_A1 = 1 << 0,
-    SPICE_STRING_FLAGS_RASTER_A4 = 1 << 1,
-    SPICE_STRING_FLAGS_RASTER_A8 = 1 << 2,
-    SPICE_STRING_FLAGS_RASTER_TOP_DOWN = 1 << 3,
-};
-
 typedef struct SPICE_ATTR_PACKED SpiceString {
     uint16_t length;
     uint16_t flags;
@@ -394,16 +272,6 @@ typedef struct SPICE_ATTR_PACKED SpiceText {
     uint16_t fore_mode;
     uint16_t back_mode;
 } SpiceText;
-
-enum {
-    SPICE_CURSOR_TYPE_ALPHA,
-    SPICE_CURSOR_TYPE_MONO,
-    SPICE_CURSOR_TYPE_COLOR4,
-    SPICE_CURSOR_TYPE_COLOR8,
-    SPICE_CURSOR_TYPE_COLOR16,
-    SPICE_CURSOR_TYPE_COLOR24,
-    SPICE_CURSOR_TYPE_COLOR32,
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceCursorHeader {
     uint64_t unique;

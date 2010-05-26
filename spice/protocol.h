@@ -32,6 +32,7 @@
 #define _H_SPICE_PROTOCOL
 
 #include <spice/types.h>
+#include <spice/enums.h>
 #include <spice/draw.h>
 #include <spice/start-packed.h>
 
@@ -43,39 +44,6 @@
 #define SPICE_MAX_PASSWORD_LENGTH 60
 #define SPICE_TICKET_KEY_PAIR_LENGTH 1024
 #define SPICE_TICKET_PUBKEY_BYTES (SPICE_TICKET_KEY_PAIR_LENGTH / 8 + 34)
-
-enum {
-    SPICE_CHANNEL_MAIN = 1,
-    SPICE_CHANNEL_DISPLAY,
-    SPICE_CHANNEL_INPUTS,
-    SPICE_CHANNEL_CURSOR,
-    SPICE_CHANNEL_PLAYBACK,
-    SPICE_CHANNEL_RECORD,
-    SPICE_CHANNEL_TUNNEL,
-
-    SPICE_END_CHANNEL
-};
-
-enum {
-    SPICE_LINK_ERR_OK,
-    SPICE_LINK_ERR_ERROR,
-    SPICE_LINK_ERR_INVALID_MAGIC,
-    SPICE_LINK_ERR_INVALID_DATA,
-    SPICE_LINK_ERR_VERSION_MISMATCH,
-    SPICE_LINK_ERR_NEED_SECURED,
-    SPICE_LINK_ERR_NEED_UNSECURED,
-    SPICE_LINK_ERR_PERMISSION_DENIED,
-    SPICE_LINK_ERR_BAD_CONNECTION_ID,
-    SPICE_LINK_ERR_CHANNEL_NOT_AVAILABLE,
-};
-
-enum {
-    SPICE_WARN_GENERAL,
-};
-
-enum {
-    SPICE_INFO_GENERAL,
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceLinkHeader {
     uint32_t magic;
@@ -130,69 +98,8 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgData {
 typedef struct SPICE_ATTR_PACKED SpiceMsgEmpty {
 } SpiceMsgEmpty;
 
-enum {
-    SPICE_MSG_MIGRATE = 1,
-    SPICE_MSG_MIGRATE_DATA,
-    SPICE_MSG_SET_ACK,
-    SPICE_MSG_PING,
-    SPICE_MSG_WAIT_FOR_CHANNELS,
-    SPICE_MSG_DISCONNECTING,
-    SPICE_MSG_NOTIFY,
-
-    SPICE_MSG_FIRST_AVAIL = 101
-};
-
-enum {
-    SPICE_MSGC_ACK_SYNC = 1,
-    SPICE_MSGC_ACK,
-    SPICE_MSGC_PONG,
-    SPICE_MSGC_MIGRATE_FLUSH_MARK,
-    SPICE_MSGC_MIGRATE_DATA,
-    SPICE_MSGC_DISCONNECTING,
-
-    SPICE_MSGC_FIRST_AVAIL = 101,
-};
-
-enum {
-    SPICE_MSG_MAIN_MIGRATE_BEGIN = SPICE_MSG_FIRST_AVAIL,
-    SPICE_MSG_MAIN_MIGRATE_CANCEL,
-    SPICE_MSG_MAIN_INIT,
-    SPICE_MSG_MAIN_CHANNELS_LIST,
-    SPICE_MSG_MAIN_MOUSE_MODE,
-    SPICE_MSG_MAIN_MULTI_MEDIA_TIME,
-
-    SPICE_MSG_MAIN_AGENT_CONNECTED,
-    SPICE_MSG_MAIN_AGENT_DISCONNECTED,
-    SPICE_MSG_MAIN_AGENT_DATA,
-    SPICE_MSG_MAIN_AGENT_TOKEN,
-
-    SPICE_MSG_MAIN_MIGRATE_SWITCH_HOST,
-
-    SPICE_MSG_END_MAIN,
-};
-
-enum {
-    SPICE_MSGC_MAIN_CLIENT_INFO = SPICE_MSGC_FIRST_AVAIL,
-    SPICE_MSGC_MAIN_MIGRATE_CONNECTED,
-    SPICE_MSGC_MAIN_MIGRATE_CONNECT_ERROR,
-    SPICE_MSGC_MAIN_ATTACH_CHANNELS,
-    SPICE_MSGC_MAIN_MOUSE_MODE_REQUEST,
-
-    SPICE_MSGC_MAIN_AGENT_START,
-    SPICE_MSGC_MAIN_AGENT_DATA,
-    SPICE_MSGC_MAIN_AGENT_TOKEN,
-};
 
 #define SPICE_INPUT_MOTION_ACK_BUNCH 4
-
-enum {
-    SPICE_MSG_INPUTS_INIT = SPICE_MSG_FIRST_AVAIL,
-    SPICE_MSG_INPUTS_KEY_MODIFIERS,
-
-    SPICE_MSG_INPUTS_MOUSE_MOTION_ACK = SPICE_MSG_FIRST_AVAIL + 10,
-
-    SPICE_MSG_END_INPUTS,
-};
 
 #define SPICE_SCROLL_LOCK_MODIFIER (1 << 0)
 #define SPICE_NUM_LOCK_MODIFIER (1 << 1)
@@ -209,19 +116,6 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgInputsKeyModifiers {
 typedef struct SPICE_ATTR_PACKED SpiceMsgMainMultiMediaTime {
     uint32_t time;
 } SpiceMsgMainMultiMediaTime;
-
-enum {
-    SPICE_PUBKEY_TYPE_INVALID,
-    SPICE_PUBKEY_TYPE_RSA,
-    SPICE_PUBKEY_TYPE_RSA2,
-    SPICE_PUBKEY_TYPE_DSA,
-    SPICE_PUBKEY_TYPE_DSA1,
-    SPICE_PUBKEY_TYPE_DSA2,
-    SPICE_PUBKEY_TYPE_DSA3,
-    SPICE_PUBKEY_TYPE_DSA4,
-    SPICE_PUBKEY_TYPE_DH,
-    SPICE_PUBKEY_TYPE_EC,
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgMainMigrationBegin {
     uint16_t port;
@@ -242,19 +136,10 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgMainMigrationSwitchHost {
     uint32_t cert_subject_size;
 } SpiceMsgMainMigrationSwitchHost;
 
-enum {
-    SPICE_MIGRATE_NEED_FLUSH = (1 << 0),
-    SPICE_MIGRATE_NEED_DATA_TRANSFER = (1 << 1),
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgMigrate {
     uint32_t flags;
 } SpiceMsgMigrate;
-
-enum {
-    SPICE_RES_TYPE_INVALID,
-    SPICE_RES_TYPE_PIXMAP,
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceResourceID {
     uint8_t type;
@@ -307,18 +192,6 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgDisconnect {
     uint32_t reason; // SPICE_ERR_?
 } SpiceMsgDisconnect;
 
-enum {
-    SPICE_NOTIFY_SEVERITY_INFO,
-    SPICE_NOTIFY_SEVERITY_WARN,
-    SPICE_NOTIFY_SEVERITY_ERROR,
-};
-
-enum {
-    SPICE_NOTIFY_VISIBILITY_LOW,
-    SPICE_NOTIFY_VISIBILITY_MEDIUM,
-    SPICE_NOTIFY_VISIBILITY_HIGH,
-};
-
 typedef struct SPICE_ATTR_PACKED SpiceMsgNotify {
     uint64_t time_stamp;
     uint32_t severity;
@@ -361,48 +234,6 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgcMainMouseModeRequest {
     uint32_t mode;
 } SpiceMsgcMainMouseModeRequest;
 
-enum {
-    SPICE_MSG_DISPLAY_MODE = SPICE_MSG_FIRST_AVAIL,
-    SPICE_MSG_DISPLAY_MARK,
-    SPICE_MSG_DISPLAY_RESET,
-    SPICE_MSG_DISPLAY_COPY_BITS,
-
-    SPICE_MSG_DISPLAY_INVAL_LIST,
-    SPICE_MSG_DISPLAY_INVAL_ALL_PIXMAPS,
-    SPICE_MSG_DISPLAY_INVAL_PALETTE,
-    SPICE_MSG_DISPLAY_INVAL_ALL_PALETTES,
-
-    SPICE_MSG_DISPLAY_STREAM_CREATE = SPICE_MSG_FIRST_AVAIL + 21,
-    SPICE_MSG_DISPLAY_STREAM_DATA,
-    SPICE_MSG_DISPLAY_STREAM_CLIP,
-    SPICE_MSG_DISPLAY_STREAM_DESTROY,
-    SPICE_MSG_DISPLAY_STREAM_DESTROY_ALL,
-
-    SPICE_MSG_DISPLAY_DRAW_FILL = SPICE_MSG_FIRST_AVAIL + 201,
-    SPICE_MSG_DISPLAY_DRAW_OPAQUE,
-    SPICE_MSG_DISPLAY_DRAW_COPY,
-    SPICE_MSG_DISPLAY_DRAW_BLEND,
-    SPICE_MSG_DISPLAY_DRAW_BLACKNESS,
-    SPICE_MSG_DISPLAY_DRAW_WHITENESS,
-    SPICE_MSG_DISPLAY_DRAW_INVERS,
-    SPICE_MSG_DISPLAY_DRAW_ROP3,
-    SPICE_MSG_DISPLAY_DRAW_STROKE,
-    SPICE_MSG_DISPLAY_DRAW_TEXT,
-    SPICE_MSG_DISPLAY_DRAW_TRANSPARENT,
-    SPICE_MSG_DISPLAY_DRAW_ALPHA_BLEND,
-
-    SPICE_MSG_DISPLAY_SURFACE_CREATE,
-    SPICE_MSG_DISPLAY_SURFACE_DESTROY,
-
-    SPICE_MSG_END_DISPLAY,
-};
-
-enum {
-    SPICE_CURSOR_FLAGS_NONE = (1 << 0),
-    SPICE_CURSOR_FLAGS_CACHE_ME = (1 << 1),
-    SPICE_CURSOR_FLAGS_FROM_CACHE = (1 << 2),
-};
-
 typedef struct SPICE_ATTR_PACKED SpiceCursor {
     uint32_t flags;
     SpiceCursorHeader header;
@@ -414,10 +245,6 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayMode {
     uint32_t y_res;
     uint32_t bits;
 } SpiceMsgDisplayMode;
-
-enum {
-    SPICE_SURFACE_FLAGS_PRIMARY = (1 << 0),
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgSurfaceCreate {
     uint32_t surface_id;
@@ -503,14 +330,6 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayInvalOne {
     uint64_t id;
 } SpiceMsgDisplayInvalOne;
 
-enum {
-    SPICE_VIDEO_CODEC_TYPE_MJPEG = 1,
-};
-
-enum {
-    SPICE_STREAM_FLAGS_TOP_DOWN = (1 << 0),
-};
-
 typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayStreamCreate {
     uint32_t surface_id;
     uint32_t id;
@@ -542,19 +361,6 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgDisplayStreamDestroy {
     uint32_t id;
 } SpiceMsgDisplayStreamDestroy;
 
-enum {
-    SPICE_MSG_CURSOR_INIT = SPICE_MSG_FIRST_AVAIL,
-    SPICE_MSG_CURSOR_RESET,
-    SPICE_MSG_CURSOR_SET,
-    SPICE_MSG_CURSOR_MOVE,
-    SPICE_MSG_CURSOR_HIDE,
-    SPICE_MSG_CURSOR_TRAIL,
-    SPICE_MSG_CURSOR_INVAL_ONE,
-    SPICE_MSG_CURSOR_INVAL_ALL,
-
-    SPICE_MSG_END_CURSOR,
-};
-
 typedef struct SPICE_ATTR_PACKED SpiceMsgCursorInit {
     SpicePoint16 position;
     uint16_t trail_length;
@@ -578,31 +384,12 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgCursorTrail {
     uint16_t frequency;
 } SpiceMsgCursorTrail;
 
-enum {
-    SPICE_MSGC_DISPLAY_INIT = SPICE_MSGC_FIRST_AVAIL,
-
-    SPICE_MSGC_END_DISPLAY,
-};
-
 typedef struct SPICE_ATTR_PACKED SpiceMsgcDisplayInit {
     uint8_t pixmap_cache_id;
     int64_t pixmap_cache_size; //in pixels
     uint8_t glz_dictionary_id;
     int32_t glz_dictionary_window_size;       // in pixels
 } SpiceMsgcDisplayInit;
-
-enum {
-    SPICE_MSGC_INPUTS_KEY_DOWN = SPICE_MSGC_FIRST_AVAIL,
-    SPICE_MSGC_INPUTS_KEY_UP,
-    SPICE_MSGC_INPUTS_KEY_MODIFIERS,
-
-    SPICE_MSGC_INPUTS_MOUSE_MOTION = SPICE_MSGC_FIRST_AVAIL + 10,
-    SPICE_MSGC_INPUTS_MOUSE_POSITION,
-    SPICE_MSGC_INPUTS_MOUSE_PRESS,
-    SPICE_MSGC_INPUTS_MOUSE_RELEASE,
-
-    SPICE_MSGC_END_INPUTS_MESSGES,
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgcKeyDown {
     uint32_t code;
@@ -612,27 +399,9 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgcKeyUp {
     uint32_t code;
 } SpiceMsgcKeyUp;
 
-enum {
-    SPICE_MOUSE_MODE_SERVER = (1 << 0),
-    SPICE_MOUSE_MODE_CLIENT = (1 << 1),
-};
-
 typedef struct SPICE_ATTR_PACKED SpiceMsgcKeyModifiers {
     uint32_t modifiers;
 } SpiceMsgcKeyModifiers;
-
-enum SpiceMouseButton {
-    SPICE_MOUSE_BUTTON_INVALID,
-    SPICE_MOUSE_BUTTON_LEFT,
-    SPICE_MOUSE_BUTTON_MIDDLE,
-    SPICE_MOUSE_BUTTON_RIGHT,
-    SPICE_MOUSE_BUTTON_UP,
-    SPICE_MOUSE_BUTTON_DOWN,
-};
-
-#define SPICE_MOUSE_BUTTON_MASK_LEFT (1 << (SPICE_MOUSE_BUTTON_LEFT - 1))
-#define SPICE_MOUSE_BUTTON_MASK_MIDDLE (1 << (SPICE_MOUSE_BUTTON_MIDDLE - 1))
-#define SPICE_MOUSE_BUTTON_MASK_RIGHT (1 << (SPICE_MOUSE_BUTTON_RIGHT - 1))
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgcMouseMotion {
     int32_t dx;
@@ -658,42 +427,7 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgcMouseRelease {
 } SpiceMsgcMouseRelease;
 
 enum {
-    SPICE_AUDIO_FMT_INVALD,
-    SPICE_AUDIO_FMT_S16,
-};
-
-enum {
-    SPICE_AUDIO_DATA_MODE_INVALD,
-    SPICE_AUDIO_DATA_MODE_RAW,
-    SPICE_AUDIO_DATA_MODE_CELT_0_5_1,
-};
-
-enum {
-    SPICE_MSG_PLAYBACK_DATA = SPICE_MSG_FIRST_AVAIL,
-    SPICE_MSG_PLAYBACK_MODE,
-    SPICE_MSG_PLAYBACK_START,
-    SPICE_MSG_PLAYBACK_STOP,
-
-    SPICE_MSG_END_PLAYBACK,
-};
-
-enum {
     SPICE_PLAYBACK_CAP_CELT_0_5_1,
-};
-
-enum {
-    SPICE_MSG_RECORD_START = SPICE_MSG_FIRST_AVAIL,
-    SPICE_MSG_RECORD_STOP,
-
-    SPICE_MSG_END_RECORD,
-};
-
-enum {
-    SPICE_MSGC_RECORD_DATA = SPICE_MSG_FIRST_AVAIL,
-    SPICE_MSGC_RECORD_MODE,
-    SPICE_MSGC_RECORD_START_MARK,
-
-    SPICE_MSGC_END_RECORD,
 };
 
 enum {
@@ -728,34 +462,10 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgcRecordStartMark {
     uint32_t time;
 } SpiceMsgcRecordStartMark;
 
-enum {
-    SPICE_TUNNEL_SERVICE_TYPE_INVALID,
-    SPICE_TUNNEL_SERVICE_TYPE_GENERIC,
-    SPICE_TUNNEL_SERVICE_TYPE_IPP,
-};
-
-enum {
-    SPICE_MSG_TUNNEL_INIT = SPICE_MSG_FIRST_AVAIL,
-    SPICE_MSG_TUNNEL_SERVICE_IP_MAP,
-    SPICE_MSG_TUNNEL_SOCKET_OPEN,
-    SPICE_MSG_TUNNEL_SOCKET_FIN,
-    SPICE_MSG_TUNNEL_SOCKET_CLOSE,
-    SPICE_MSG_TUNNEL_SOCKET_DATA,
-    SPICE_MSG_TUNNEL_SOCKET_CLOSED_ACK,
-    SPICE_MSG_TUNNEL_SOCKET_TOKEN,
-
-    SPICE_MSG_END_TUNNEL,
-};
-
 typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelInit {
     uint16_t max_num_of_sockets;
     uint32_t max_socket_data_size;
 } SpiceMsgTunnelInit;
-
-enum {
-    SPICE_TUNNEL_IP_TYPE_INVALID,
-    SPICE_TUNNEL_IP_TYPE_IPv4,
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelIpInfo {
     uint16_t type;
@@ -798,21 +508,6 @@ typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelSocketTokens {
 typedef struct SPICE_ATTR_PACKED SpiceMsgTunnelSocketClosedAck {
     uint16_t connection_id;
 } SpiceMsgTunnelSocketClosedAck;
-
-enum {
-    SPICE_MSGC_TUNNEL_SERVICE_ADD = SPICE_MSGC_FIRST_AVAIL,
-    SPICE_MSGC_TUNNEL_SERVICE_REMOVE,
-    SPICE_MSGC_TUNNEL_SOCKET_OPEN_ACK,
-    SPICE_MSGC_TUNNEL_SOCKET_OPEN_NACK,
-    SPICE_MSGC_TUNNEL_SOCKET_FIN,
-    SPICE_MSGC_TUNNEL_SOCKET_CLOSED,
-    SPICE_MSGC_TUNNEL_SOCKET_CLOSED_ACK,
-    SPICE_MSGC_TUNNEL_SOCKET_DATA,
-
-    SPICE_MSGC_TUNNEL_SOCKET_TOKEN,
-
-    SPICE_MSGC_END_TUNNEL,
-};
 
 typedef struct SPICE_ATTR_PACKED SpiceMsgcTunnelAddGenericService {
     uint32_t type;
