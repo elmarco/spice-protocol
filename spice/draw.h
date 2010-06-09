@@ -167,6 +167,7 @@ enum {
     SPICE_IMAGE_TYPE_GLZ_RGB,
     SPICE_IMAGE_TYPE_FROM_CACHE,
     SPICE_IMAGE_TYPE_SURFACE,
+    SPICE_IMAGE_TYPE_JPEG,
 };
 
 enum {
@@ -228,7 +229,7 @@ typedef struct SPICE_ATTR_PACKED SpiceSurfaceImage {
 typedef struct SPICE_ATTR_PACKED SpiceQUICData {
     uint32_t data_size;
     uint8_t data[0];
-} SpiceQUICData, SpiceLZRGBData;
+} SpiceQUICData, SpiceLZRGBData, SpiceJPEGData;
 
 typedef struct SPICE_ATTR_PACKED SpiceQUICImage {
     SpiceImageDescriptor descriptor;
@@ -251,6 +252,11 @@ typedef struct SPICE_ATTR_PACKED SpiceLZPLTImage {
     SpiceImageDescriptor descriptor;
     SpiceLZPLTData lz_plt;
 } SpiceLZPLTImage;
+
+typedef struct SPICE_ATTR_PACKED SpiceJPEGImage {
+    SpiceImageDescriptor descriptor;
+    SpiceJPEGData jpeg;
+} SpiceJPEGImage;
 
 enum {
     SPICE_IMAGE_SCALE_MODE_INTERPOLATE,
