@@ -92,10 +92,6 @@ typedef struct SPICE_ATTR_PACKED SpiceSubMessageList {
 
 #define SPICE_INPUT_MOTION_ACK_BUNCH 4
 
-#define SPICE_SCROLL_LOCK_MODIFIER (1 << 0)
-#define SPICE_NUM_LOCK_MODIFIER (1 << 1)
-#define SPICE_CAPS_LOCK_MODIFIER (1 << 2)
-
 enum {
     SPICE_PLAYBACK_CAP_CELT_0_5_1,
 };
