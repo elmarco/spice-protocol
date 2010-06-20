@@ -130,6 +130,7 @@ enum SpiceImageType {
     SPICE_IMAGE_TYPE_JPEG,
     SPICE_IMAGE_TYPE_FROM_CACHE_LOSSLESS,
     SPICE_IMAGE_TYPE_ZLIB_GLZ_RGB,
+    SPICE_IMAGE_TYPE_JPEG_ALPHA,
 
     SPICE_IMAGE_TYPE_ENUM_END
 };
@@ -163,6 +164,12 @@ enum SpiceBitmapFlags {
     SPICE_BITMAP_FLAGS_TOP_DOWN = (1 << 2),
 
     SPICE_BITMAP_FLAGS_MASK = 0x7
+};
+
+enum SpiceJpegAlphaFlags {
+    SPICE_JPEG_ALPHA_FLAGS_TOP_DOWN = (1 << 0),
+
+    SPICE_JPEG_ALPHA_FLAGS_MASK = 0x1
 };
 
 enum SpiceImageScaleMode {
