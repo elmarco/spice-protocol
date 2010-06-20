@@ -182,6 +182,17 @@ typedef struct SPICE_ATTR_PACKED SpiceJPEGImage {
     SpiceJPEGData jpeg;
 } SpiceJPEGImage;
 
+typedef struct SPICE_ATTR_PACKED SpiceZlibGlzRGBData {
+    uint32_t glz_data_size;
+    uint32_t data_size;
+    uint8_t data[0];
+} SpiceZlibGlzRGBData;
+
+typedef struct SPICE_ATTR_PACKED SpiceZlibGlzRGBImage {
+    SpiceImageDescriptor descriptor;
+    SpiceZlibGlzRGBData zlib_glz;
+} SpiceZlibGlzRGBImage;
+
 typedef struct SPICE_ATTR_PACKED SpiceOpaque {
     SPICE_ADDRESS src_bitmap;
     SpiceRect src_area;
