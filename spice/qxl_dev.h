@@ -303,6 +303,19 @@ typedef struct SPICE_ATTR_PACKED QXLCopyBits {
 #define QXL_EFFECT_NOP 6
 #define QXL_EFFECT_OPAQUE_BRUSH 7
 
+typedef struct SPICE_ATTR_PACKED QXLAlphaBlnd {
+    uint16_t alpha_flags;
+    uint8_t alpha;
+    QXLPHYSICAL src_bitmap;
+    SpiceRect src_area;
+} QXLAlphaBlnd;
+
+typedef struct SPICE_ATTR_PACKED QXLCompatAlphaBlnd {
+    uint8_t alpha;
+    QXLPHYSICAL src_bitmap;
+    SpiceRect src_area;
+} QXLCompatAlphaBlnd;
+
 typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
     QXLReleaseInfo release_info;
     uint8_t effect;
@@ -317,7 +330,7 @@ typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
         SpiceOpaque opaque;
         SpiceCopy copy;
         SpiceTransparent transparent;
-        SpiceAlphaBlnd alpha_blend;
+        QXLCompatAlphaBlnd alpha_blend;
         QXLCopyBits copy_bits;
         SpiceBlend blend;
         SpiceRop3 rop3;
@@ -346,7 +359,7 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
         SpiceOpaque opaque;
         SpiceCopy copy;
         SpiceTransparent transparent;
-        SpiceAlphaBlnd alpha_blend;
+        QXLAlphaBlnd alpha_blend;
         QXLCopyBits copy_bits;
         SpiceBlend blend;
         SpiceRop3 rop3;
