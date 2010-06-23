@@ -303,6 +303,12 @@ typedef struct SPICE_ATTR_PACKED QXLCopyBits {
 #define QXL_EFFECT_NOP 6
 #define QXL_EFFECT_OPAQUE_BRUSH 7
 
+typedef struct SPICE_ATTR_PACKED QXLFill {
+    SpiceBrush brush;
+    uint16_t rop_descriptor;
+    SpiceQMask mask;
+} QXLFill;
+
 typedef struct SPICE_ATTR_PACKED QXLAlphaBlnd {
     uint16_t alpha_flags;
     uint8_t alpha;
@@ -326,7 +332,7 @@ typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
     SpiceClip clip;
     uint32_t mm_time;
     union {
-        SpiceFill fill;
+        QXLFill fill;
         SpiceOpaque opaque;
         SpiceCopy copy;
         SpiceTransparent transparent;
@@ -355,7 +361,7 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
     int32_t surfaces_dest[3];
     SpiceRect surfaces_rects[3];
     union {
-        SpiceFill fill;
+        QXLFill fill;
         SpiceOpaque opaque;
         SpiceCopy copy;
         SpiceTransparent transparent;

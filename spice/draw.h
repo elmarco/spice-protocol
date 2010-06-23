@@ -106,7 +106,7 @@ typedef struct SPICE_ATTR_PACKED SpiceQMask {
 
 typedef struct SPICE_ATTR_PACKED SpiceFill {
     SpiceBrush brush;
-    uint16_t rop_decriptor;
+    uint16_t rop_descriptor;
     SpiceQMask mask;
 } SpiceFill;
 
