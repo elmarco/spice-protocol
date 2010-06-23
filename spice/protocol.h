@@ -38,7 +38,7 @@
 
 #define SPICE_MAGIC (*(uint32_t*)"REDQ")
 #define SPICE_VERSION_MAJOR (~(uint32_t)0 - 1)
-#define SPICE_VERSION_MINOR 3
+#define SPICE_VERSION_MINOR 0
 
 // Encryption & Ticketing Parameters
 #define SPICE_MAX_PASSWORD_LENGTH 60
