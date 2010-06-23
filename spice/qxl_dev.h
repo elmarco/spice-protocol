@@ -372,6 +372,10 @@ typedef struct SPICE_ATTR_PACKED QXLText {
     uint16_t back_mode;
 } QXLText;
 
+typedef struct SPICE_ATTR_PACKED QXLBlackness {
+    SpiceQMask mask;
+} QXLBlackness, QXLInvers, QXLWhiteness;
+
 typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
     QXLReleaseInfo release_info;
     uint8_t effect;
@@ -392,9 +396,9 @@ typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
         QXLRop3 rop3;
         QXLStroke stroke;
         QXLText text;
-        SpiceBlackness blackness;
-        SpiceInvers invers;
-        SpiceWhiteness whiteness;
+        QXLBlackness blackness;
+        QXLInvers invers;
+        QXLWhiteness whiteness;
     } u;
 } QXLCompatDrawable;
 
@@ -421,9 +425,9 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
         QXLRop3 rop3;
         QXLStroke stroke;
         QXLText text;
-        SpiceBlackness blackness;
-        SpiceInvers invers;
-        SpiceWhiteness whiteness;
+        QXLBlackness blackness;
+        QXLInvers invers;
+        QXLWhiteness whiteness;
     } u;
 } QXLDrawable;
 
