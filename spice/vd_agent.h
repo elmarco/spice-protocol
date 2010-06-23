@@ -53,6 +53,7 @@ enum {
     VD_AGENT_MONITORS_CONFIG,
     VD_AGENT_REPLY,
     VD_AGENT_CLIPBOARD,
+    VD_AGENT_DISPLAY_CONFIG,
 };
 
 typedef struct SPICE_ATTR_PACKED VDAgentMonConfig {
@@ -72,6 +73,18 @@ typedef struct SPICE_ATTR_PACKED VDAgentMonitorsConfig {
     uint32_t flags;
     VDAgentMonConfig monitors[0];
 } VDAgentMonitorsConfig;
+
+enum {
+    VD_AGENT_DISPLAY_CONFIG_FLAG_DISABLE_WALLPAPER = (1 << 0),
+    VD_AGENT_DISPLAY_CONFIG_FLAG_DISABLE_FONT_SMOOTH = (1 << 1),
+    VD_AGENT_DISPLAY_CONFIG_FLAG_DISABLE_ANIMATION = (1 << 2),
+    VD_AGENT_DISPLAY_CONFIG_FLAG_SET_COLOR_DEPTH = (1 << 3),
+};
+
+typedef struct SPICE_ATTR_PACKED VDAgentDisplayConfig {
+    uint32_t flags;
+    uint32_t depth;
+} VDAgentDisplayConfig;
 
 #define VD_AGENT_LBUTTON_MASK (1 << 1)
 #define VD_AGENT_MBUTTON_MASK (1 << 2)
