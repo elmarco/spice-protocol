@@ -209,7 +209,7 @@ typedef struct SPICE_ATTR_PACKED SpiceOpaque {
     SPICE_ADDRESS src_bitmap;
     SpiceRect src_area;
     SpiceBrush brush;
-    uint16_t rop_decriptor;
+    uint16_t rop_descriptor;
     uint8_t scale_mode;
     SpiceQMask mask;
 } SpiceOpaque;

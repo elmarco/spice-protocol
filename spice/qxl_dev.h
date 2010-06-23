@@ -309,6 +309,15 @@ typedef struct SPICE_ATTR_PACKED QXLFill {
     SpiceQMask mask;
 } QXLFill;
 
+typedef struct SPICE_ATTR_PACKED QXLOpaque {
+    QXLPHYSICAL src_bitmap;
+    SpiceRect src_area;
+    SpiceBrush brush;
+    uint16_t rop_descriptor;
+    uint8_t scale_mode;
+    SpiceQMask mask;
+} QXLOpaque;
+
 typedef struct SPICE_ATTR_PACKED QXLAlphaBlnd {
     uint16_t alpha_flags;
     uint8_t alpha;
@@ -333,7 +342,7 @@ typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
     uint32_t mm_time;
     union {
         QXLFill fill;
-        SpiceOpaque opaque;
+        QXLOpaque opaque;
         SpiceCopy copy;
         SpiceTransparent transparent;
         QXLCompatAlphaBlnd alpha_blend;
@@ -362,7 +371,7 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
     SpiceRect surfaces_rects[3];
     union {
         QXLFill fill;
-        SpiceOpaque opaque;
+        QXLOpaque opaque;
         SpiceCopy copy;
         SpiceTransparent transparent;
         QXLAlphaBlnd alpha_blend;
