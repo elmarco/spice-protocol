@@ -346,6 +346,15 @@ typedef struct SPICE_ATTR_PACKED QXLCompatAlphaBlnd {
     SpiceRect src_area;
 } QXLCompatAlphaBlnd;
 
+typedef struct SPICE_ATTR_PACKED QXLRop3 {
+    QXLPHYSICAL src_bitmap;
+    SpiceRect src_area;
+    SpiceBrush brush;
+    uint8_t rop3;
+    uint8_t scale_mode;
+    SpiceQMask mask;
+} QXLRop3;
+
 typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
     QXLReleaseInfo release_info;
     uint8_t effect;
@@ -363,7 +372,7 @@ typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
         QXLCompatAlphaBlnd alpha_blend;
         QXLCopyBits copy_bits;
         QXLBlend blend;
-        SpiceRop3 rop3;
+        QXLRop3 rop3;
         SpiceStroke stroke;
         SpiceText text;
         SpiceBlackness blackness;
@@ -392,7 +401,7 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
         QXLAlphaBlnd alpha_blend;
         QXLCopyBits copy_bits;
         QXLBlend blend;
-        SpiceRop3 rop3;
+        QXLRop3 rop3;
         SpiceStroke stroke;
         SpiceText text;
         SpiceBlackness blackness;
