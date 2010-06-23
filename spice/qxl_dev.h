@@ -303,10 +303,16 @@ typedef struct SPICE_ATTR_PACKED QXLCopyBits {
 #define QXL_EFFECT_NOP 6
 #define QXL_EFFECT_OPAQUE_BRUSH 7
 
+typedef struct SPICE_ATTR_PACKED QXLQMask {
+    uint8_t flags;
+    SpicePoint pos;
+    QXLPHYSICAL bitmap;
+} QXLQMask;
+
 typedef struct SPICE_ATTR_PACKED QXLFill {
     SpiceBrush brush;
     uint16_t rop_descriptor;
-    SpiceQMask mask;
+    QXLQMask mask;
 } QXLFill;
 
 typedef struct SPICE_ATTR_PACKED QXLOpaque {
@@ -315,7 +321,7 @@ typedef struct SPICE_ATTR_PACKED QXLOpaque {
     SpiceBrush brush;
     uint16_t rop_descriptor;
     uint8_t scale_mode;
-    SpiceQMask mask;
+    QXLQMask mask;
 } QXLOpaque;
 
 typedef struct SPICE_ATTR_PACKED QXLCopy {
@@ -323,7 +329,7 @@ typedef struct SPICE_ATTR_PACKED QXLCopy {
     SpiceRect src_area;
     uint16_t rop_descriptor;
     uint8_t scale_mode;
-    SpiceQMask mask;
+    QXLQMask mask;
 } QXLCopy, QXLBlend;
 
 typedef struct SPICE_ATTR_PACKED QXLTransparent {
@@ -352,7 +358,7 @@ typedef struct SPICE_ATTR_PACKED QXLRop3 {
     SpiceBrush brush;
     uint8_t rop3;
     uint8_t scale_mode;
-    SpiceQMask mask;
+    QXLQMask mask;
 } QXLRop3;
 
 typedef struct SPICE_ATTR_PACKED QXLStroke {
@@ -373,7 +379,7 @@ typedef struct SPICE_ATTR_PACKED QXLText {
 } QXLText;
 
 typedef struct SPICE_ATTR_PACKED QXLBlackness {
-    SpiceQMask mask;
+    QXLQMask mask;
 } QXLBlackness, QXLInvers, QXLWhiteness;
 
 typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
