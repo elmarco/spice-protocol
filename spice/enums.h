@@ -78,7 +78,6 @@ enum SpicePubkeyType {
 enum SpiceClipType {
     SPICE_CLIP_TYPE_NONE,
     SPICE_CLIP_TYPE_RECTS,
-    SPICE_CLIP_TYPE_PATH,
 
     SPICE_CLIP_TYPE_ENUM_END
 };
