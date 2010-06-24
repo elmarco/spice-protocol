@@ -78,6 +78,21 @@ enum {
     QXL_IO_RANGE_SIZE
 };
 
+typedef struct SPICE_ATTR_PACKED QXLPointFix {
+    SPICE_FIXED28_4 x;
+    SPICE_FIXED28_4 y;
+} QXLPointFix;
+
+typedef struct SPICE_ATTR_PACKED QXLPoint {
+    int32_t x;
+    int32_t y;
+} QXLPoint;
+
+typedef struct SPICE_ATTR_PACKED QXLPoint16 {
+    int16_t x;
+    int16_t y;
+} QXLPoint16;
+
 /* qxl-1 compat: append only */
 typedef struct SPICE_ATTR_PACKED QXLRom {
     uint32_t magic;
@@ -253,7 +268,7 @@ typedef struct SPICE_ATTR_PACKED QXLCursorCmd {
     uint8_t type;
     union {
         struct SPICE_ATTR_PACKED {
-            SpicePoint16 position;
+            QXLPoint16 position;
             uint8_t visible;
             QXLPHYSICAL shape;
         } set;
@@ -261,7 +276,7 @@ typedef struct SPICE_ATTR_PACKED QXLCursorCmd {
             uint16_t length;
             uint16_t frequency;
         } trail;
-        SpicePoint16 position;
+        QXLPoint16 position;
     } u;
     uint8_t device_data[QXL_CURSUR_DEVICE_DATA_SIZE]; //todo: dynamic size from rom
 } QXLCursorCmd;
@@ -291,7 +306,7 @@ typedef struct SPICE_ATTR_PACKED QXLString {
 } QXLString;
 
 typedef struct SPICE_ATTR_PACKED QXLCopyBits {
-    SpicePoint src_pos;
+    QXLPoint src_pos;
 } QXLCopyBits;
 
 #define QXL_EFFECT_BLEND 0
@@ -305,7 +320,7 @@ typedef struct SPICE_ATTR_PACKED QXLCopyBits {
 
 typedef struct SPICE_ATTR_PACKED QXLPattern {
     QXLPHYSICAL pat;
-    SpicePoint pos;
+    QXLPoint pos;
 } QXLPattern;
 
 typedef struct SPICE_ATTR_PACKED QXLBrush {
@@ -318,7 +333,7 @@ typedef struct SPICE_ATTR_PACKED QXLBrush {
 
 typedef struct SPICE_ATTR_PACKED QXLQMask {
     uint8_t flags;
-    SpicePoint pos;
+    QXLPoint pos;
     QXLPHYSICAL bitmap;
 } QXLQMask;
 
