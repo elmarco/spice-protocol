@@ -374,9 +374,19 @@ typedef struct SPICE_ATTR_PACKED QXLRop3 {
     QXLQMask mask;
 } QXLRop3;
 
+typedef struct SPICE_ATTR_PACKED QXLLineAttr {
+    uint8_t flags;
+    uint8_t join_style;
+    uint8_t end_style;
+    uint8_t style_nseg;
+    SPICE_FIXED28_4 width;
+    SPICE_FIXED28_4 miter_limit;
+    QXLPHYSICAL style; //data[0] ?
+} QXLLineAttr;
+
 typedef struct SPICE_ATTR_PACKED QXLStroke {
     QXLPHYSICAL path;
-    SpiceLineAttr attr;
+    QXLLineAttr attr;
     QXLBrush brush;
     uint16_t fore_mode;
     uint16_t back_mode;
