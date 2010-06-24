@@ -93,6 +93,13 @@ typedef struct SPICE_ATTR_PACKED QXLPoint16 {
     int16_t y;
 } QXLPoint16;
 
+typedef struct SPICE_ATTR_PACKED QXLRect {
+    int32_t top;
+    int32_t left;
+    int32_t bottom;
+    int32_t right;
+} QXLRect;
+
 /* qxl-1 compat: append only */
 typedef struct SPICE_ATTR_PACKED QXLRom {
     uint32_t magic;
@@ -205,7 +212,7 @@ typedef struct SPICE_ATTR_PACKED QXLRam {
     QXLCommandRing cmd_ring;
     QXLCursorRing cursor_ring;
     QXLReleaseRing release_ring;
-    SpiceRect update_area;
+    QXLRect update_area;
     /* appended for qxl-2 */
     uint32_t update_surface;
     QXLMemSlot mem_slot;
@@ -237,13 +244,13 @@ typedef struct SPICE_ATTR_PACKED QXLMessage {
 
 typedef struct SPICE_ATTR_PACKED QXLCompatUpdateCmd {
     QXLReleaseInfo release_info;
-    SpiceRect area;
+    QXLRect area;
     uint32_t update_id;
 } QXLCompatUpdateCmd;
 
 typedef struct SPICE_ATTR_PACKED QXLUpdateCmd {
     QXLReleaseInfo release_info;
-    SpiceRect area;
+    QXLRect area;
     uint32_t update_id;
     uint32_t surface_id;
 } QXLUpdateCmd;
@@ -345,7 +352,7 @@ typedef struct SPICE_ATTR_PACKED QXLFill {
 
 typedef struct SPICE_ATTR_PACKED QXLOpaque {
     QXLPHYSICAL src_bitmap;
-    SpiceRect src_area;
+    QXLRect src_area;
     QXLBrush brush;
     uint16_t rop_descriptor;
     uint8_t scale_mode;
@@ -354,7 +361,7 @@ typedef struct SPICE_ATTR_PACKED QXLOpaque {
 
 typedef struct SPICE_ATTR_PACKED QXLCopy {
     QXLPHYSICAL src_bitmap;
-    SpiceRect src_area;
+    QXLRect src_area;
     uint16_t rop_descriptor;
     uint8_t scale_mode;
     QXLQMask mask;
@@ -362,7 +369,7 @@ typedef struct SPICE_ATTR_PACKED QXLCopy {
 
 typedef struct SPICE_ATTR_PACKED QXLTransparent {
     QXLPHYSICAL src_bitmap;
-    SpiceRect src_area;
+    QXLRect src_area;
     uint32_t src_color;
     uint32_t true_color;
 } QXLTransparent;
@@ -371,18 +378,18 @@ typedef struct SPICE_ATTR_PACKED QXLAlphaBlnd {
     uint16_t alpha_flags;
     uint8_t alpha;
     QXLPHYSICAL src_bitmap;
-    SpiceRect src_area;
+    QXLRect src_area;
 } QXLAlphaBlnd;
 
 typedef struct SPICE_ATTR_PACKED QXLCompatAlphaBlnd {
     uint8_t alpha;
     QXLPHYSICAL src_bitmap;
-    SpiceRect src_area;
+    QXLRect src_area;
 } QXLCompatAlphaBlnd;
 
 typedef struct SPICE_ATTR_PACKED QXLRop3 {
     QXLPHYSICAL src_bitmap;
-    SpiceRect src_area;
+    QXLRect src_area;
     QXLBrush brush;
     uint8_t rop3;
     uint8_t scale_mode;
@@ -409,7 +416,7 @@ typedef struct SPICE_ATTR_PACKED QXLStroke {
 
 typedef struct SPICE_ATTR_PACKED QXLText {
     QXLPHYSICAL str;
-    SpiceRect back_area;
+    QXLRect back_area;
     QXLBrush fore_brush;
     QXLBrush back_brush;
     uint16_t fore_mode;
@@ -430,8 +437,8 @@ typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
     uint8_t effect;
     uint8_t type;
     uint16_t bitmap_offset;
-    SpiceRect bitmap_area;
-    SpiceRect bbox;
+    QXLRect bitmap_area;
+    QXLRect bbox;
     QXLClip clip;
     uint32_t mm_time;
     union {
@@ -457,12 +464,12 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
     uint8_t effect;
     uint8_t type;
     uint8_t self_bitmap;
-    SpiceRect self_bitmap_area;
-    SpiceRect bbox;
+    QXLRect self_bitmap_area;
+    QXLRect bbox;
     QXLClip clip;
     uint32_t mm_time;
     int32_t surfaces_dest[3];
-    SpiceRect surfaces_rects[3];
+    QXLRect surfaces_rects[3];
     union {
         QXLFill fill;
         QXLOpaque opaque;
