@@ -303,11 +303,16 @@ typedef struct SPICE_ATTR_PACKED QXLCopyBits {
 #define QXL_EFFECT_NOP 6
 #define QXL_EFFECT_OPAQUE_BRUSH 7
 
+typedef struct SPICE_ATTR_PACKED QXLPattern {
+    QXLPHYSICAL pat;
+    SpicePoint pos;
+} QXLPattern;
+
 typedef struct SPICE_ATTR_PACKED QXLBrush {
     uint32_t type;
     union {
         uint32_t color;
-        SpicePattern pattern;
+        QXLPattern pattern;
     } u;
 } QXLBrush;
 
