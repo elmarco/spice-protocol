@@ -405,6 +405,11 @@ typedef struct SPICE_ATTR_PACKED QXLBlackness {
     QXLQMask mask;
 } QXLBlackness, QXLInvers, QXLWhiteness;
 
+typedef struct SPICE_ATTR_PACKED QXLClip {
+    uint32_t type;
+    QXLPHYSICAL data;
+} QXLClip;
+
 typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
     QXLReleaseInfo release_info;
     uint8_t effect;
@@ -412,7 +417,7 @@ typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
     uint16_t bitmap_offset;
     SpiceRect bitmap_area;
     SpiceRect bbox;
-    SpiceClip clip;
+    QXLClip clip;
     uint32_t mm_time;
     union {
         QXLFill fill;
@@ -439,7 +444,7 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
     uint8_t self_bitmap;
     SpiceRect self_bitmap_area;
     SpiceRect bbox;
-    SpiceClip clip;
+    QXLClip clip;
     uint32_t mm_time;
     int32_t surfaces_dest[3];
     SpiceRect surfaces_rects[3];
