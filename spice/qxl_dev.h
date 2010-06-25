@@ -522,6 +522,12 @@ enum {
     QXL_PATH_BEZIER = (1 << 4),
 };
 
+typedef struct SPICE_ATTR_PACKED QXLPathSeg {
+    uint32_t flags;
+    uint32_t count;
+    QXLPointFix points[0];
+} QXLPathSeg;
+
 typedef struct SPICE_ATTR_PACKED QXLPath {
     uint32_t data_size;
     QXLDataChunk chunk;

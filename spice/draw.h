@@ -67,12 +67,12 @@ typedef struct SPICE_ATTR_PACKED SpiceRect {
 typedef struct SPICE_ATTR_PACKED SpicePathSeg {
     uint32_t flags;
     uint32_t count;
-    uint8_t data[0];
+    SpicePointFix points[0];
 } SpicePathSeg;
 
 typedef struct SPICE_ATTR_PACKED SpicePath {
   uint32_t size;
-  uint8_t segments[0];
+  SpicePathSeg segments[0]; /* alert: variable size elements */
 } SpicePath;
 
 typedef struct SPICE_ATTR_PACKED SpiceClipRects {
@@ -82,7 +82,7 @@ typedef struct SPICE_ATTR_PACKED SpiceClipRects {
 
 typedef struct SPICE_ATTR_PACKED SpiceClip {
     uint32_t type;
-    SPICE_ADDRESS data;
+    SpiceClipRects *rects;
 } SpiceClip;
 
 typedef struct SPICE_ATTR_PACKED SpicePattern {
@@ -260,7 +260,7 @@ typedef struct SPICE_ATTR_PACKED SpiceLineAttr {
 } SpiceLineAttr;
 
 typedef struct SPICE_ATTR_PACKED SpiceStroke {
-    SPICE_ADDRESS path;
+    SpicePath *path;
     SpiceLineAttr attr;
     SpiceBrush brush;
     uint16_t fore_mode;
