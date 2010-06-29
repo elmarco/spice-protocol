@@ -58,10 +58,10 @@ typedef struct SPICE_ATTR_PACKED SpicePoint16 {
 } SpicePoint16;
 
 typedef struct SPICE_ATTR_PACKED SpiceRect {
-    int32_t top;
     int32_t left;
-    int32_t bottom;
+    int32_t top;
     int32_t right;
+    int32_t bottom;
 } SpiceRect;
 
 typedef struct SPICE_ATTR_PACKED SpicePathSeg {
