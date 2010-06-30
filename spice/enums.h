@@ -201,22 +201,6 @@ enum SpiceLineFlags {
     SPICE_LINE_FLAGS_MASK = 0xc
 };
 
-enum SpiceLineCap {
-    SPICE_LINE_CAP_ROUND,
-    SPICE_LINE_CAP_SQUARE,
-    SPICE_LINE_CAP_BUTT,
-
-    SPICE_LINE_CAP_ENUM_END
-};
-
-enum SpiceLineJoin {
-    SPICE_LINE_JOIN_ROUND,
-    SPICE_LINE_JOIN_BEVEL,
-    SPICE_LINE_JOIN_MITER,
-
-    SPICE_LINE_JOIN_ENUM_END
-};
-
 enum SpiceStringFlags {
     SPICE_STRING_FLAGS_RASTER_A1 = (1 << 0),
     SPICE_STRING_FLAGS_RASTER_A4 = (1 << 1),
