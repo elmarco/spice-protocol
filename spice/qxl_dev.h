@@ -305,6 +305,14 @@ enum {
     QXL_DRAW_ALPHA_BLEND,
 };
 
+typedef struct SPICE_ATTR_PACKED QXLRasterGlyph {
+    QXLPoint render_pos;
+    QXLPoint glyph_origin;
+    uint16_t width;
+    uint16_t height;
+    uint8_t data[0];
+} QXLRasterGlyph;
+
 typedef struct SPICE_ATTR_PACKED QXLString {
     uint32_t data_size;
     uint16_t length;

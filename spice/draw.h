@@ -271,20 +271,14 @@ typedef struct SPICE_ATTR_PACKED SpiceRasterGlyph {
     uint8_t data[0];
 } SpiceRasterGlyph;
 
-typedef struct SPICE_ATTR_PACKED SpiceVectorGlyph {
-    SpicePoint render_pos;
-    uint32_t data_size;
-    uint8_t data[0]; //SpicePathSeg[]
-} SpiceVectorGlyph;
-
 typedef struct SPICE_ATTR_PACKED SpiceString {
     uint16_t length;
     uint16_t flags;
-    uint8_t data[0];
+    SpiceRasterGlyph *glyphs[0];
 } SpiceString;
 
 typedef struct SPICE_ATTR_PACKED SpiceText {
-    SPICE_ADDRESS str;
+    SpiceString *str;
     SpiceRect back_area;
     SpiceBrush fore_brush;
     SpiceBrush back_brush;
