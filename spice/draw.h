@@ -72,7 +72,7 @@ typedef struct SPICE_ATTR_PACKED SpicePathSeg {
 
 typedef struct SPICE_ATTR_PACKED SpicePath {
   uint32_t num_segments;
-  SpicePathSeg segments[0]; /* alert: variable size elements */
+  uint32_t segments[0]; /* really SpicePathSeg, alert: variable size elements */
 } SpicePath;
 
 typedef struct SPICE_ATTR_PACKED SpiceClipRects {
