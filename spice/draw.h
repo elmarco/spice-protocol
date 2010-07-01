@@ -85,31 +85,6 @@ typedef struct SPICE_ATTR_PACKED SpiceClip {
     SpiceClipRects *rects;
 } SpiceClip;
 
-typedef struct SPICE_ATTR_PACKED SpicePattern {
-    SPICE_ADDRESS pat;
-    SpicePoint pos;
-} SpicePattern;
-
-typedef struct SPICE_ATTR_PACKED SpiceBrush {
-    uint32_t type;
-    union {
-        uint32_t color;
-        SpicePattern pattern;
-    } u;
-} SpiceBrush;
-
-typedef struct SPICE_ATTR_PACKED SpiceQMask {
-    uint8_t flags;
-    SpicePoint pos;
-    SPICE_ADDRESS bitmap;
-} SpiceQMask;
-
-typedef struct SPICE_ATTR_PACKED SpiceFill {
-    SpiceBrush brush;
-    uint16_t rop_descriptor;
-    SpiceQMask mask;
-} SpiceFill;
-
 typedef struct SPICE_ATTR_PACKED SpicePalette {
     uint64_t unique;
     uint16_t num_ents;
@@ -126,87 +101,106 @@ typedef struct SPICE_ATTR_PACKED SpiceImageDescriptor {
     uint32_t height;
 } SpiceImageDescriptor;
 
+typedef struct SPICE_ATTR_PACKED SpiceChunk {
+    uint8_t *data;
+    uint32_t len;
+} SpiceChunk;
+
+enum {
+    SPICE_CHUNKS_FLAGS_UNSTABLE = (1<<0),
+    SPICE_CHUNKS_FLAGS_FREE = (1<<1)
+};
+
+typedef struct SPICE_ATTR_PACKED SpiceChunks {
+    uint32_t     data_size;
+    uint32_t     num_chunks;
+    uint32_t     flags;
+    SpiceChunk   chunk[0];
+} SpiceChunks;
+
 typedef struct SPICE_ATTR_PACKED SpiceBitmap {
     uint8_t format;
     uint8_t flags;
     uint32_t x;
     uint32_t y;
     uint32_t stride;
-    SPICE_ADDRESS palette;
-    SPICE_ADDRESS data; //data[0] ?
+    SpicePalette *palette;
+    uint64_t palette_id;
+    SpiceChunks *data;
 } SpiceBitmap;
-
-typedef struct SPICE_ATTR_PACKED SpiceBitmapImage {
-    SpiceImageDescriptor descriptor;
-    SpiceBitmap bitmap;
-} SpiceBitmapImage;
 
 typedef struct SPICE_ATTR_PACKED SpiceSurface {
     uint32_t surface_id;
 } SpiceSurface;
 
-typedef struct SPICE_ATTR_PACKED SpiceSurfaceImage {
-    SpiceImageDescriptor descriptor; //?
-    SpiceSurface surface;
-} SpiceSurfaceImage;
-
 typedef struct SPICE_ATTR_PACKED SpiceQUICData {
     uint32_t data_size;
-    uint8_t data[0];
+    SpiceChunks *data;
 } SpiceQUICData, SpiceLZRGBData, SpiceJPEGData;
-
-typedef struct SPICE_ATTR_PACKED SpiceQUICImage {
-    SpiceImageDescriptor descriptor;
-    SpiceQUICData quic;
-} SpiceQUICImage;
-
-typedef struct SPICE_ATTR_PACKED SpiceLZRGBImage {
-    SpiceImageDescriptor descriptor;
-    SpiceLZRGBData lz_rgb;
-} SpiceLZRGBImage;
 
 typedef struct SPICE_ATTR_PACKED SpiceLZPLTData {
     uint8_t flags;
     uint32_t data_size;
-    SPICE_ADDRESS palette;
-    uint8_t data[0];
+    SpicePalette *palette;
+    uint64_t palette_id;
+    SpiceChunks *data;
 } SpiceLZPLTData;
-
-typedef struct SPICE_ATTR_PACKED SpiceLZPLTImage {
-    SpiceImageDescriptor descriptor;
-    SpiceLZPLTData lz_plt;
-} SpiceLZPLTImage;
-
-typedef struct SPICE_ATTR_PACKED SpiceJPEGImage {
-    SpiceImageDescriptor descriptor;
-    SpiceJPEGData jpeg;
-} SpiceJPEGImage;
 
 typedef struct SPICE_ATTR_PACKED SpiceZlibGlzRGBData {
     uint32_t glz_data_size;
     uint32_t data_size;
-    uint8_t data[0];
+    SpiceChunks *data;
 } SpiceZlibGlzRGBData;
-
-typedef struct SPICE_ATTR_PACKED SpiceZlibGlzRGBImage {
-    SpiceImageDescriptor descriptor;
-    SpiceZlibGlzRGBData zlib_glz;
-} SpiceZlibGlzRGBImage;
 
 typedef struct SPICE_ATTR_PACKED SpiceJPEGAlphaData {
     uint8_t flags;
     uint32_t jpeg_size;
     uint32_t data_size;
-    uint8_t data[0];
+    SpiceChunks *data;
 } SpiceJPEGAlphaData;
 
-typedef struct SPICE_ATTR_PACKED SpiceJPEGAlphaImage {
+
+typedef struct SPICE_ATTR_PACKED SpiceImage {
     SpiceImageDescriptor descriptor;
-    SpiceJPEGAlphaData jpeg_alpha;
-} SpiceJPEGAlphaImage;
+    union {
+        SpiceBitmap         bitmap;
+        SpiceQUICData       quic;
+        SpiceSurface        surface;
+        SpiceLZRGBData      lz_rgb;
+        SpiceLZPLTData      lz_plt;
+        SpiceJPEGData       jpeg;
+        SpiceZlibGlzRGBData zlib_glz;
+        SpiceJPEGAlphaData  jpeg_alpha;
+    } u;
+} SpiceImage;
+
+typedef struct SPICE_ATTR_PACKED SpicePattern {
+    SpiceImage *pat;
+    SpicePoint pos;
+} SpicePattern;
+
+typedef struct SPICE_ATTR_PACKED SpiceBrush {
+    uint32_t type;
+    union {
+        uint32_t color;
+        SpicePattern pattern;
+    } u;
+} SpiceBrush;
+
+typedef struct SPICE_ATTR_PACKED SpiceQMask {
+    uint8_t flags;
+    SpicePoint pos;
+    SpiceImage *bitmap;
+} SpiceQMask;
+
+typedef struct SPICE_ATTR_PACKED SpiceFill {
+    SpiceBrush brush;
+    uint16_t rop_descriptor;
+    SpiceQMask mask;
+} SpiceFill;
 
 typedef struct SPICE_ATTR_PACKED SpiceOpaque {
-    SPICE_ADDRESS src_bitmap;
+    SpiceImage *src_bitmap;
     SpiceRect src_area;
     SpiceBrush brush;
     uint16_t rop_descriptor;
@@ -215,7 +209,7 @@ typedef struct SPICE_ATTR_PACKED SpiceOpaque {
 } SpiceOpaque;
 
 typedef struct SPICE_ATTR_PACKED SpiceCopy {
-    SPICE_ADDRESS src_bitmap;
+    SpiceImage *src_bitmap;
     SpiceRect src_area;
     uint16_t rop_descriptor;
     uint8_t scale_mode;
@@ -223,7 +217,7 @@ typedef struct SPICE_ATTR_PACKED SpiceCopy {
 } SpiceCopy, SpiceBlend;
 
 typedef struct SPICE_ATTR_PACKED SpiceTransparent {
-    SPICE_ADDRESS src_bitmap;
+    SpiceImage *src_bitmap;
     SpiceRect src_area;
     uint32_t src_color;
     uint32_t true_color;
@@ -232,12 +226,12 @@ typedef struct SPICE_ATTR_PACKED SpiceTransparent {
 typedef struct SPICE_ATTR_PACKED SpiceAlphaBlnd {
     uint16_t alpha_flags;
     uint8_t alpha;
-    SPICE_ADDRESS src_bitmap;
+    SpiceImage *src_bitmap;
     SpiceRect src_area;
 } SpiceAlphaBlnd;
 
 typedef struct SPICE_ATTR_PACKED SpiceRop3 {
-    SPICE_ADDRESS src_bitmap;
+    SpiceImage *src_bitmap;
     SpiceRect src_area;
     SpiceBrush brush;
     uint8_t rop3;

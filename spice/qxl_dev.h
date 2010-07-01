@@ -573,12 +573,45 @@ enum {
     (image)->descriptor.id = (((uint64_t)_unique) << 32) | _group;	\
 }
 
+typedef struct SPICE_ATTR_PACKED QXLImageDescriptor {
+    uint64_t id;
+    uint8_t type;
+    uint8_t flags;
+    uint32_t width;
+    uint32_t height;
+} QXLImageDescriptor;
+
+typedef struct SPICE_ATTR_PACKED QXLPalette {
+    uint64_t unique;
+    uint16_t num_ents;
+    uint32_t ents[0];
+} QXLPalette;
+
+typedef struct SPICE_ATTR_PACKED QXLBitmap {
+    uint8_t format;
+    uint8_t flags;
+    uint32_t x;
+    uint32_t y;
+    uint32_t stride;
+    QXLPHYSICAL palette;
+    QXLPHYSICAL data; //data[0] ?
+} QXLBitmap;
+
+typedef struct SPICE_ATTR_PACKED QXLSurfaceId {
+    uint32_t surface_id;
+} QXLSurfaceId;
+
+typedef struct SPICE_ATTR_PACKED QXLQUICData {
+    uint32_t data_size;
+    uint8_t data[0];
+} QXLQUICData, QXLLZRGBData, QXLJPEGData;
+
 typedef struct SPICE_ATTR_PACKED QXLImage {
-    SpiceImageDescriptor descriptor;
+    QXLImageDescriptor descriptor;
     union { // variable length
-        SpiceBitmap bitmap;
-        SpiceQUICData quic;
-        SpiceSurface surface_image;
+        QXLBitmap bitmap;
+        QXLQUICData quic;
+        QXLSurfaceId surface_image;
     };
 } QXLImage;
 
