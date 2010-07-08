@@ -255,8 +255,17 @@ typedef struct SPICE_ATTR_PACKED QXLUpdateCmd {
     uint32_t surface_id;
 } QXLUpdateCmd;
 
+typedef struct SPICE_ATTR_PACKED QXLCursorHeader {
+    uint64_t unique;
+    uint16_t type;
+    uint16_t width;
+    uint16_t height;
+    uint16_t hot_spot_x;
+    uint16_t hot_spot_y;
+} QXLCursorHeader;
+
 typedef struct SPICE_ATTR_PACKED QXLCursor {
-    SpiceCursorHeader header;
+    QXLCursorHeader header;
     uint32_t data_size;
     QXLDataChunk chunk;
 } QXLCursor;
