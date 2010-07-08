@@ -78,9 +78,12 @@ enum {
     QXL_IO_RANGE_SIZE
 };
 
+typedef uint64_t QXLPHYSICAL;
+typedef int32_t QXLFIXED; //fixed 28.4
+
 typedef struct SPICE_ATTR_PACKED QXLPointFix {
-    SPICE_FIXED28_4 x;
-    SPICE_FIXED28_4 y;
+    QXLFIXED x;
+    QXLFIXED y;
 } QXLPointFix;
 
 typedef struct SPICE_ATTR_PACKED QXLPoint {
@@ -143,9 +146,6 @@ typedef struct SPICE_ATTR_PACKED QXLModes {
     uint32_t n_modes;
     QXLMode modes[0];
 } QXLModes;
-
-typedef uint64_t QXLPHYSICAL;
-typedef uint32_t QXLFIXED; //fixed 28.4
 
 /* qxl-1 compat: append only */
 enum QXLCmdType {
@@ -409,9 +409,9 @@ typedef struct SPICE_ATTR_PACKED QXLLineAttr {
     uint8_t join_style;
     uint8_t end_style;
     uint8_t style_nseg;
-    SPICE_FIXED28_4 width;
-    SPICE_FIXED28_4 miter_limit;
-    QXLPHYSICAL style; //data[0] ?
+    QXLFIXED width;
+    QXLFIXED miter_limit;
+    QXLPHYSICAL style;
 } QXLLineAttr;
 
 typedef struct SPICE_ATTR_PACKED QXLStroke {
