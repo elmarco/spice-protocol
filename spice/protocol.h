@@ -33,7 +33,6 @@
 
 #include <spice/types.h>
 #include <spice/enums.h>
-#include <spice/draw.h>
 #include <spice/start-packed.h>
 
 #define SPICE_MAGIC (*(uint32_t*)"REDQ")
