@@ -79,10 +79,10 @@ typedef struct SPICE_ATTR_PACKED SpiceDataHeader {
     uint32_t sub_list; //offset to SpiceSubMessageList[]
 } SpiceDataHeader;
 
-typedef struct SPICE_ATTR_PACKED SpicedSubMessage {
+typedef struct SPICE_ATTR_PACKED SpiceSubMessage {
     uint16_t type;
     uint32_t size;
-} SpicedSubMessage;
+} SpiceSubMessage;
 
 typedef struct SPICE_ATTR_PACKED SpiceSubMessageList {
     uint16_t size;

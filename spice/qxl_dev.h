@@ -397,18 +397,18 @@ typedef struct SPICE_ATTR_PACKED QXLTransparent {
     uint32_t true_color;
 } QXLTransparent;
 
-typedef struct SPICE_ATTR_PACKED QXLAlphaBlnd {
+typedef struct SPICE_ATTR_PACKED QXLAlphaBlend {
     uint16_t alpha_flags;
     uint8_t alpha;
     QXLPHYSICAL src_bitmap;
     QXLRect src_area;
-} QXLAlphaBlnd;
+} QXLAlphaBlend;
 
-typedef struct SPICE_ATTR_PACKED QXLCompatAlphaBlnd {
+typedef struct SPICE_ATTR_PACKED QXLCompatAlphaBlend {
     uint8_t alpha;
     QXLPHYSICAL src_bitmap;
     QXLRect src_area;
-} QXLCompatAlphaBlnd;
+} QXLCompatAlphaBlend;
 
 typedef struct SPICE_ATTR_PACKED QXLRop3 {
     QXLPHYSICAL src_bitmap;
@@ -469,7 +469,7 @@ typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
         QXLOpaque opaque;
         QXLCopy copy;
         QXLTransparent transparent;
-        QXLCompatAlphaBlnd alpha_blend;
+        QXLCompatAlphaBlend alpha_blend;
         QXLCopyBits copy_bits;
         QXLBlend blend;
         QXLRop3 rop3;
@@ -498,7 +498,7 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
         QXLOpaque opaque;
         QXLCopy copy;
         QXLTransparent transparent;
-        QXLAlphaBlnd alpha_blend;
+        QXLAlphaBlend alpha_blend;
         QXLCopyBits copy_bits;
         QXLBlend blend;
         QXLRop3 rop3;
