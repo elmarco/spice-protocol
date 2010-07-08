@@ -35,6 +35,7 @@
 #include <spice/types.h>
 #include <spice/barrier.h>
 #include <spice/ipc_ring.h>
+#include <spice/enums.h>
 
 #include <spice/start-packed.h>
 
