@@ -246,7 +246,7 @@ typedef struct SPICE_ATTR_PACKED SpiceBlackness {
 typedef struct SPICE_ATTR_PACKED SpiceLineAttr {
     uint8_t flags;
     uint8_t style_nseg;
-    SPICE_ADDRESS style; //data[0] ?
+    SPICE_FIXED28_4 *style;
 } SpiceLineAttr;
 
 typedef struct SPICE_ATTR_PACKED SpiceStroke {
