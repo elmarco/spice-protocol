@@ -1,0 +1,7 @@
+Major changes in 0.5.2:
+=======================
+
+This is the first release of the unstable 0.5.x series leading up to 0.6.
+This module was split out of spice so that e.g. drivers and qemu can
+get the types and constants they need without using the full spice
+codebase.
