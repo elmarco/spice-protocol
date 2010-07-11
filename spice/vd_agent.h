@@ -44,11 +44,13 @@ typedef struct SPICE_ATTR_PACKED VDAgentMessage {
 } VDAgentMessage;
 
 #define VD_AGENT_PROTOCOL 1
+#define VD_AGENT_MAX_DATA_SIZE 2048
 
 enum {
     VD_AGENT_MOUSE_STATE = 1,
     VD_AGENT_MONITORS_CONFIG,
     VD_AGENT_REPLY,
+    VD_AGENT_CLIPBOARD,
 };
 
 typedef struct SPICE_ATTR_PACKED VDAgentMonConfig {
@@ -91,6 +93,17 @@ enum {
     VD_AGENT_SUCCESS = 1,
     VD_AGENT_ERROR,
 };
+
+//FIXME: size required?
+typedef struct SPICE_ATTR_PACKED VDAgentClipboard {
+    uint32_t type;
+    uint8_t data[0];
+} VDAgentClipboard;
+
+enum {
+    VD_AGENT_CLIPBOARD_UTF8_TEXT = 1,
+};
+
 
 #include <spice/end-packed.h>
 
