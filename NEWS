@@ -1,3 +1,12 @@
+Major changes in 0.5.3:
+=======================
+
+Network major number changed to 2 to reflect that the network
+protocol is now stable and backwards compatible from this point.
+
+Some vdagent messages for display settings and clipboard sharing
+were added.
+
 Major changes in 0.5.2:
 =======================
 
