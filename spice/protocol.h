@@ -36,7 +36,7 @@
 #include <spice/start-packed.h>
 
 #define SPICE_MAGIC (*(uint32_t*)"REDQ")
-#define SPICE_VERSION_MAJOR (~(uint32_t)0 - 1)
+#define SPICE_VERSION_MAJOR 2
 #define SPICE_VERSION_MINOR 0
 
 // Encryption & Ticketing Parameters
