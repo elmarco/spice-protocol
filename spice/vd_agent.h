@@ -64,6 +64,8 @@ enum {
     VD_AGENT_REPLY,
     VD_AGENT_CLIPBOARD,
     VD_AGENT_DISPLAY_CONFIG,
+    VD_AGENT_ANNOUNCE_CAPABILITIES,
+    VD_AGENT_END_MESSAGE,
 };
 
 typedef struct SPICE_ATTR_PACKED VDAgentMonConfig {
@@ -129,6 +131,32 @@ enum {
     VD_AGENT_CLIPBOARD_UTF8_TEXT = 1,
 };
 
+enum {
+    VD_AGENT_CAP_MOUSE_STATE = 0,
+    VD_AGENT_CAP_MONITORS_CONFIG,
+    VD_AGENT_CAP_REPLY,
+    VD_AGENT_CAP_CLIPBOARD,
+    VD_AGENT_CAP_DISPLAY_CONFIG,
+    VD_AGENT_END_CAP,
+};
+
+typedef struct SPICE_ATTR_PACKED VDAgentAnnounceCapabilities {
+    uint32_t  request;
+    uint32_t caps[0];
+} VDAgentAnnounceCapabilities;
+
+#define VD_AGENT_CAPS_SIZE_FROM_MSG_SIZE(msg_size) \
+    (((msg_size) - sizeof(VDAgentAnnounceCapabilities)) / sizeof(uint32_t))
+
+#define VD_AGENT_CAPS_SIZE ((VD_AGENT_END_CAP + 31) / 32)
+
+#define VD_AGENT_CAPS_BYTES (((VD_AGENT_END_CAP + 31) / 8) & ~3)
+
+#define VD_AGENT_HAS_CAPABILITY(caps, caps_size, index) \
+    ((index) < (caps_size * 32) && ((caps)[(index) / 32] & (1 << ((index) % 32))))
+
+#define VD_AGENT_SET_CAPABILITY(caps, index) \
+    { (caps)[(index) / 32] |= (1 << ((index) % 32)); }
 
 #include <spice/end-packed.h>
 
