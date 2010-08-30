@@ -35,6 +35,16 @@
 
 #include <spice/start-packed.h>
 
+enum {
+    VDP_CLIENT_PORT = 1,
+    VDP_SERVER_PORT,
+};
+
+typedef struct SPICE_ATTR_PACKED VDIChunkHeader {
+    uint32_t port;
+    uint32_t size;
+} VDIChunkHeader;
+
 typedef struct SPICE_ATTR_PACKED VDAgentMessage {
     uint32_t protocol;
     uint32_t type;
