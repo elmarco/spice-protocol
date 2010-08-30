@@ -35,6 +35,16 @@
 
 #include <spice/start-packed.h>
 
+enum {
+    VDP_CLIENT_PORT = 1,
+    VDP_SERVER_PORT,
+};
+
+typedef struct SPICE_ATTR_PACKED VDIChunkHeader {
+    uint32_t port;
+    uint32_t size;
+} VDIChunkHeader;
+
 typedef struct SPICE_ATTR_PACKED VDAgentMessage {
     uint32_t protocol;
     uint32_t type;
@@ -45,6 +55,8 @@ typedef struct SPICE_ATTR_PACKED VDAgentMessage {
 
 #define VD_AGENT_PROTOCOL 1
 #define VD_AGENT_MAX_DATA_SIZE 2048
+#define VD_AGENT_CLIPBOARD_MAX_SIZE_DEFAULT 1024
+#define VD_AGENT_CLIPBOARD_MAX_SIZE_ENV "SPICE_CLIPBOARD_MAX_SIZE"
 
 enum {
     VD_AGENT_MOUSE_STATE = 1,
