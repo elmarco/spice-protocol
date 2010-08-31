@@ -1,3 +1,9 @@
+Major changes in 0.6.0:
+=======================
+* Initial messages for clipboard sharing
+* Move agent protocol structs from spice to spice-protocol
+* Add capabilities to agent protocol
+
 Major changes in 0.5.3:
 =======================
 
