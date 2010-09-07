@@ -170,7 +170,8 @@ typedef struct SPICE_ATTR_PACKED QXLCommand {
     uint32_t padding;
 } QXLCommand;
 
-#define QXL_COMMAND_FLAG_COMPAT (1<<0)
+#define QXL_COMMAND_FLAG_COMPAT          (1<<0)
+#define QXL_COMMAND_FLAG_COMPAT_16BPP    (2<<0)
 
 typedef struct SPICE_ATTR_PACKED QXLCommandExt {
     QXLCommand cmd;
