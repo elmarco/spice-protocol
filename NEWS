@@ -1,3 +1,7 @@
+Major changes in 0.6.1:
+=======================
+* Added compat flag for 16bpp commands
+
 Major changes in 0.6.0:
 =======================
 * Initial messages for clipboard sharing
