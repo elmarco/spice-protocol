@@ -132,11 +132,10 @@ typedef struct SPICE_ATTR_PACKED VDAgentClipboard {
 enum {
     VD_AGENT_CLIPBOARD_NONE = 0,
     VD_AGENT_CLIPBOARD_UTF8_TEXT,
-    VD_AGENT_CLIPBOARD_BITMAP,
 };
 
 typedef struct SPICE_ATTR_PACKED VDAgentClipboardGrab {
-    uint32_t type;
+    uint32_t types[0];
 } VDAgentClipboardGrab;
 
 typedef struct SPICE_ATTR_PACKED VDAgentClipboardRequest {
