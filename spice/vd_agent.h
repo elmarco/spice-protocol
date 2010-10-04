@@ -65,6 +65,9 @@ enum {
     VD_AGENT_CLIPBOARD,
     VD_AGENT_DISPLAY_CONFIG,
     VD_AGENT_ANNOUNCE_CAPABILITIES,
+    VD_AGENT_CLIPBOARD_GRAB,
+    VD_AGENT_CLIPBOARD_REQUEST,
+    VD_AGENT_CLIPBOARD_RELEASE,
     VD_AGENT_END_MESSAGE,
 };
 
@@ -121,7 +124,6 @@ enum {
     VD_AGENT_ERROR,
 };
 
-//FIXME: size required?
 typedef struct SPICE_ATTR_PACKED VDAgentClipboard {
     uint32_t type;
     uint8_t data[0];
@@ -129,7 +131,16 @@ typedef struct SPICE_ATTR_PACKED VDAgentClipboard {
 
 enum {
     VD_AGENT_CLIPBOARD_UTF8_TEXT = 1,
+    VD_AGENT_CLIPBOARD_BITMAP,
 };
+
+typedef struct SPICE_ATTR_PACKED VDAgentClipboardGrab {
+    uint32_t type;
+} VDAgentClipboardGrab;
+
+typedef struct SPICE_ATTR_PACKED VDAgentClipboardRequest {
+    uint32_t type;
+} VDAgentClipboardRequest;
 
 enum {
     VD_AGENT_CAP_MOUSE_STATE = 0,
