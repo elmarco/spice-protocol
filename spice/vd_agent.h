@@ -132,6 +132,10 @@ typedef struct SPICE_ATTR_PACKED VDAgentClipboard {
 enum {
     VD_AGENT_CLIPBOARD_NONE = 0,
     VD_AGENT_CLIPBOARD_UTF8_TEXT,
+    VD_AGENT_CLIPBOARD_IMAGE_PNG,  /* All clients with image support should support this one */
+    VD_AGENT_CLIPBOARD_IMAGE_BMP,  /* optional */
+    VD_AGENT_CLIPBOARD_IMAGE_TIFF, /* optional */
+    VD_AGENT_CLIPBOARD_IMAGE_JPG,  /* optional */
 };
 
 typedef struct SPICE_ATTR_PACKED VDAgentClipboardGrab {
