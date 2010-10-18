@@ -1,3 +1,12 @@
+Major changes in 0.6.3:
+=======================
+* Add support for copy and paste to the agent protocol
+* Add foreign-menu and external controller client protocol headers
+
+Major changes in 0.6.2:
+=======================
+* Skipped to stay in sync with spice
+
 Major changes in 0.6.1:
 =======================
 * Added compat flag for 16bpp commands
