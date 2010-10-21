@@ -96,8 +96,8 @@ typedef struct ATTR_PACKED ControllerData {
     uint8_t data[0];
 } ControllerData;
 
-#define CONTROLLER_MENU_ITEM_DELIMITER L"\n"
-#define CONTROLLER_MENU_PARAM_DELIMITER L"\r"
+#define CONTROLLER_MENU_ITEM_DELIMITER "\n"
+#define CONTROLLER_MENU_PARAM_DELIMITER "\r"
 
 enum {
     CONTROLLER_MENU_FLAGS_SEPARATOR    = 1 << 0,
