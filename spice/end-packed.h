@@ -33,8 +33,6 @@
 
 #undef SPICE_ATTR_PACKED
 
-#ifndef __GNUC__
-
+#if defined(__MINGW32__) || !defined(__GNUC__)
 #pragma pack(pop)
-
 #endif
