@@ -49,6 +49,10 @@
 
 #define SPICE_ATTR_PACKED __attribute__ ((__packed__))
 
+#ifdef __MINGW32__
+#pragma pack(push,1)
+#endif
+
 #else
 
 #pragma pack(push)
