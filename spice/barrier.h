@@ -33,14 +33,23 @@
 #define _H_SPICE_BARRIER
 
 #ifdef __GNUC__
+
 #ifdef __i386__
 #define spice_mb() __asm__ __volatile__ ("lock; addl $0,0(%%esp)": : :"memory")
 #else
 //mfence
 #define spice_mb() __asm__ __volatile__ ("lock; addl $0,0(%%rsp)": : :"memory")
 #endif
+
+#else
+
+#ifdef _WIN64
+//__asm not supported on _WIN64, so use macro instead.
+#define spice_mb MemoryBarrier
 #else
 #define spice_mb() __asm {lock add [esp], 0}
+#endif
+
 #endif
 
 #endif /* _H_SPICE_BARRIER */
