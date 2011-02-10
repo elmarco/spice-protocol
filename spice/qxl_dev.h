@@ -574,10 +574,10 @@ typedef union {
   uint64_t value;
 } QXLImageIDUnion;
 
-enum {
+typedef enum QXLImageFlags {
     QXL_IMAGE_CACHE = (1 << 0),
     QXL_IMAGE_HIGH_BITS_SET = (1 << 1),
-};
+} QXLImageFlags;
 
 enum {
     QXL_BITMAP_DIRECT = (1 << 0),
