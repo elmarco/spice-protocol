@@ -511,10 +511,10 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
     } u;
 } QXLDrawable;
 
-enum QXLSurfaceCmdType {
+typedef enum QXLSurfaceCmdType {
     QXL_SURFACE_CMD_CREATE,
     QXL_SURFACE_CMD_DESTROY,
-};
+} QXLSurfaceCmdType;
 
 typedef struct SPICE_ATTR_PACKED QXLSurface {
     uint32_t format;
