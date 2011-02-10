@@ -154,14 +154,14 @@ typedef struct SPICE_ATTR_PACKED QXLModes {
 } QXLModes;
 
 /* qxl-1 compat: append only */
-enum QXLCmdType {
+typedef enum QXLCmdType {
     QXL_CMD_NOP,
     QXL_CMD_DRAW,
     QXL_CMD_UPDATE,
     QXL_CMD_CURSOR,
     QXL_CMD_MESSAGE,
     QXL_CMD_SURFACE,
-};
+} QXLCmdType;
 
 /* qxl-1 compat: fixed */
 typedef struct SPICE_ATTR_PACKED QXLCommand {
