@@ -579,11 +579,11 @@ typedef enum QXLImageFlags {
     QXL_IMAGE_HIGH_BITS_SET = (1 << 1),
 } QXLImageFlags;
 
-enum {
+typedef enum QXLBitmapFlags {
     QXL_BITMAP_DIRECT = (1 << 0),
     QXL_BITMAP_UNSTABLE = (1 << 1),
     QXL_BITMAP_TOP_DOWN = (1 << 2), // == SPICE_BITMAP_FLAGS_TOP_DOWN
-};
+} QXLBitmapFlags;
 
 #define QXL_SET_IMAGE_ID(image, _group, _unique) {              \
     (image)->descriptor.id = (((uint64_t)_unique) << 32) | _group;	\
