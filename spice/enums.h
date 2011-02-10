@@ -142,7 +142,7 @@ enum SpiceImageFlags {
     SPICE_IMAGE_FLAGS_MASK = 0x7
 };
 
-enum SpiceBitmapFmt {
+typedef enum SpiceBitmapFmt {
     SPICE_BITMAP_FMT_INVALID,
     SPICE_BITMAP_FMT_1BIT_LE,
     SPICE_BITMAP_FMT_1BIT_BE,
@@ -155,7 +155,7 @@ enum SpiceBitmapFmt {
     SPICE_BITMAP_FMT_RGBA,
 
     SPICE_BITMAP_FMT_ENUM_END
-};
+} SpiceBitmapFmt;
 
 enum SpiceBitmapFlags {
     SPICE_BITMAP_FLAGS_PAL_CACHE_ME = (1 << 0),
