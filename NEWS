@@ -1,3 +1,9 @@
+Major changes in 0.6.4:
+=======================
+* Make controller client protocol menu text UTF8 rather then 16 bit unicode
+* Add some enums for the xorg qxl driver
+* Some other small fixes
+
 Major changes in 0.6.3:
 =======================
 * Add support for copy and paste to the agent protocol
