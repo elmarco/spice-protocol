@@ -125,6 +125,10 @@ enum {
 };
 
 typedef struct SPICE_ATTR_PACKED VDAgentClipboard {
+#if 0 /* VD_AGENT_CAP_CLIPBOARD_SELECTION */
+    uint8_t selection;
+    uint8_t __reserved[sizeof(uint32_t) - 1 * sizeof(uint8_t)];
+#endif
     uint32_t type;
     uint8_t data[0];
 } VDAgentClipboard;
@@ -139,12 +143,27 @@ enum {
 };
 
 typedef struct SPICE_ATTR_PACKED VDAgentClipboardGrab {
+#if 0 /* VD_AGENT_CAP_CLIPBOARD_SELECTION */
+    uint8_t selection;
+    uint8_t __reserved[sizeof(uint32_t) - 1 * sizeof(uint8_t)];
+#endif
     uint32_t types[0];
 } VDAgentClipboardGrab;
 
 typedef struct SPICE_ATTR_PACKED VDAgentClipboardRequest {
+#if 0 /* VD_AGENT_CAP_CLIPBOARD_SELECTION */
+    uint8_t selection;
+    uint8_t __reserved[sizeof(uint32_t) - 1 * sizeof(uint8_t)];
+#endif
     uint32_t type;
 } VDAgentClipboardRequest;
+
+typedef struct SPICE_ATTR_PACKED VDAgentClipboardRelease {
+#if 0 /* VD_AGENT_CAP_CLIPBOARD_SELECTION */
+    uint8_t selection;
+    uint8_t __reserved[sizeof(uint32_t) - 1 * sizeof(uint8_t)];
+#endif
+} VDAgentClipboardRelease;
 
 enum {
     VD_AGENT_CAP_MOUSE_STATE = 0,
@@ -153,7 +172,14 @@ enum {
     VD_AGENT_CAP_CLIPBOARD,
     VD_AGENT_CAP_DISPLAY_CONFIG,
     VD_AGENT_CAP_CLIPBOARD_BY_DEMAND,
+    VD_AGENT_CAP_CLIPBOARD_SELECTION,
     VD_AGENT_END_CAP,
+};
+
+enum {
+    VD_AGENT_CLIPBOARD_SELECTION_CLIPBOARD = 0,
+    VD_AGENT_CLIPBOARD_SELECTION_PRIMARY,
+    VD_AGENT_CLIPBOARD_SELECTION_SECONDARY,
 };
 
 typedef struct SPICE_ATTR_PACKED VDAgentAnnounceCapabilities {
