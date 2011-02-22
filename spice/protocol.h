@@ -51,6 +51,12 @@ typedef struct SPICE_ATTR_PACKED SpiceLinkHeader {
     uint32_t size;
 } SpiceLinkHeader;
 
+enum {
+    SPICE_COMMON_CAP_PROTOCOL_AUTH_SELECTION,
+    SPICE_COMMON_CAP_AUTH_SPICE,
+    SPICE_COMMON_CAP_AUTH_SASL,
+};
+
 typedef struct SPICE_ATTR_PACKED SpiceLinkMess {
     uint32_t connection_id;
     uint8_t channel_type;
@@ -71,6 +77,10 @@ typedef struct SPICE_ATTR_PACKED SpiceLinkReply {
 typedef struct SPICE_ATTR_PACKED SpiceLinkEncryptedTicket {
     uint8_t encrypted_data[SPICE_TICKET_KEY_PAIR_LENGTH / 8];
 } SpiceLinkEncryptedTicket;
+
+typedef struct SPICE_ATTR_PACKED SpiceLinkAuthMechanism {
+    uint32_t auth_mechanism;
+} SpiceLinkAuthMechanism;
 
 typedef struct SPICE_ATTR_PACKED SpiceDataHeader {
     uint64_t serial;
