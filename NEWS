@@ -1,3 +1,8 @@
+Major changes in 0.8.0
+======================
+* Add support for different clipboards (selections) to vd_agent copy paste
+* Add support for using different authentication mechanisms (just SASL for now)
+
 Major changes in 0.7.1
 ======================
 * Add some enums for the xorg qxl driver
