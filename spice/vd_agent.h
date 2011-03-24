@@ -38,6 +38,7 @@
 enum {
     VDP_CLIENT_PORT = 1,
     VDP_SERVER_PORT,
+    VDP_END_PORT
 };
 
 typedef struct SPICE_ATTR_PACKED VDIChunkHeader {
