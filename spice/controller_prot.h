@@ -19,23 +19,19 @@
 #define _H_CONTROLLER_PROT
 
 #include <spice/types.h>
+#include <spice/start-packed.h>
 
 #define CONTROLLER_MAGIC      (*(uint32_t*)"CTRL")
 #define CONTROLLER_VERSION    1
 
-#ifdef __GNUC__
-#define ATTR_PACKED __attribute__ ((__packed__))
-#else
-#define ATTR_PACKED __declspec(align(1))
-#endif
 
-typedef struct ATTR_PACKED ControllerInitHeader {
+typedef struct SPICE_ATTR_PACKED ControllerInitHeader {
     uint32_t magic;
     uint32_t version;
     uint32_t size;
 } ControllerInitHeader;
 
-typedef struct ATTR_PACKED ControllerInit {
+typedef struct SPICE_ATTR_PACKED ControllerInit {
     ControllerInitHeader base;
     uint64_t credentials;
     uint32_t flags;
@@ -45,7 +41,7 @@ enum {
     CONTROLLER_FLAG_EXCLUSIVE = 1 << 0,
 };
 
-typedef struct ATTR_PACKED ControllerMsg {
+typedef struct SPICE_ATTR_PACKED ControllerMsg {
     uint32_t id;
     uint32_t size;
 } ControllerMsg;
@@ -88,12 +84,12 @@ enum {
     CONTROLLER_AUTO_DISPLAY_RES = 1 << 1,
 };
 
-typedef struct ATTR_PACKED ControllerValue {
+typedef struct SPICE_ATTR_PACKED ControllerValue {
     ControllerMsg base;
     uint32_t value;
 } ControllerValue;
 
-typedef struct ATTR_PACKED ControllerData {
+typedef struct SPICE_ATTR_PACKED ControllerData {
     ControllerMsg base;
     uint8_t data[0];
 } ControllerData;
@@ -112,6 +108,6 @@ enum {
 #define SPICE_MENU_INTERNAL_ID_BASE   0x1300
 #define SPICE_MENU_INTERNAL_ID_SHIFT  8
 
-#undef ATTR_PACKED
+#include <spice/end-packed.h>
 
 #endif

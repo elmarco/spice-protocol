@@ -18,28 +18,24 @@
 #ifndef _H_FOREIGN_MENU_PROT
 #define _H_FOREIGN_MENU_PROT
 
+#include <spice/start-packed.h>
+
 #define FOREIGN_MENU_MAGIC      (*(uint32_t*)"FRGM")
 #define FOREIGN_MENU_VERSION    1
 
-#ifdef __GNUC__
-#define ATTR_PACKED __attribute__ ((__packed__))
-#else
-#define ATTR_PACKED __declspec(align(1))
-#endif
-
-typedef struct ATTR_PACKED FrgMenuInitHeader {
+typedef struct SPICE_ATTR_PACKED FrgMenuInitHeader {
     uint32_t magic;
     uint32_t version;
     uint32_t size;
 } FrgMenuInitHeader;
 
-typedef struct ATTR_PACKED FrgMenuInit {
+typedef struct SPICE_ATTR_PACKED FrgMenuInit {
     FrgMenuInitHeader base;
     uint64_t credentials;
     uint8_t title[0]; //UTF8
 } FrgMenuInit;
 
-typedef struct ATTR_PACKED FrgMenuMsg {
+typedef struct SPICE_ATTR_PACKED FrgMenuMsg {
     uint32_t id;
     uint32_t size;
 } FrgMenuMsg;
@@ -58,7 +54,7 @@ enum {
     FOREIGN_MENU_APP_DEACTIVATED,
 };
 
-typedef struct ATTR_PACKED FrgMenuSetTitle {
+typedef struct SPICE_ATTR_PACKED FrgMenuSetTitle {
     FrgMenuMsg base;
     uint8_t string[0]; //UTF8
 } FrgMenuSetTitle;
@@ -71,7 +67,7 @@ enum {
 
 #define FOREIGN_MENU_INVALID_ID 0
 
-typedef struct ATTR_PACKED FrgMenuAddItem {
+typedef struct SPICE_ATTR_PACKED FrgMenuAddItem {
     FrgMenuMsg base;
     uint32_t id;
     uint32_t type;
@@ -79,7 +75,7 @@ typedef struct ATTR_PACKED FrgMenuAddItem {
     uint8_t string[0]; //UTF8
 } FrgMenuAddItem, FrgMenuModItem;
 
-typedef struct ATTR_PACKED FrgMenuRmItem {
+typedef struct SPICE_ATTR_PACKED FrgMenuRmItem {
     FrgMenuMsg base;
     uint32_t id;
 } FrgMenuRmItem;
@@ -93,7 +89,7 @@ enum {
     FOREIGN_MENU_EVENT_UNCHECKED
 };
 
-typedef struct ATTR_PACKED FrgMenuEvent {
+typedef struct SPICE_ATTR_PACKED FrgMenuEvent {
     FrgMenuMsg base;
     uint32_t id;
     uint32_t action; //FOREIGN_MENU_EVENT_?
@@ -102,6 +98,6 @@ typedef struct ATTR_PACKED FrgMenuEvent {
 typedef struct FrgMenuMsg FrgMenuActivate;
 typedef struct FrgMenuMsg FrgMenuDeactivate;
 
-#undef ATTR_PACKED
+#include <spice/end-packed.h>
 
 #endif
