@@ -18,6 +18,8 @@
 #ifndef _H_CONTROLLER_PROT
 #define _H_CONTROLLER_PROT
 
+#include <spice/types.h>
+
 #define CONTROLLER_MAGIC      (*(uint32_t*)"CTRL")
 #define CONTROLLER_VERSION    1
 
