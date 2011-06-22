@@ -103,10 +103,12 @@ typedef struct SPICE_ATTR_PACKED SpiceSubMessageList {
 
 enum {
     SPICE_PLAYBACK_CAP_CELT_0_5_1,
+    SPICE_PLAYBACK_CAP_VOLUME,
 };
 
 enum {
     SPICE_RECORD_CAP_CELT_0_5_1,
+    SPICE_RECORD_CAP_VOLUME,
 };
 
 #include <spice/end-packed.h>
