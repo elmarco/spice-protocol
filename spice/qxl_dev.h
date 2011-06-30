@@ -223,6 +223,7 @@ SPICE_RING_DECLARE(QXLReleaseRing, uint64_t, QXL_RELEASE_RING_SIZE);
 #define QXL_INTERRUPT_DISPLAY (1 << 0)
 #define QXL_INTERRUPT_CURSOR (1 << 1)
 #define QXL_INTERRUPT_IO_CMD (1 << 2)
+#define QXL_INTERRUPT_ERROR  (1 << 3)
 
 /* qxl-1 compat: append only */
 typedef struct SPICE_ATTR_PACKED QXLRam {
