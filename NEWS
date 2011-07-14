@@ -1,3 +1,10 @@
+Major changes in 0.8.1
+======================
+* Add support for volume change
+* Add support for async guest io writes and interrupt
+* Add support for suspend related guest io writes
+* Add support for interrupt indicating guest bug
+
 Major changes in 0.8.0
 ======================
 * Add support for different clipboards (selections) to vd_agent copy paste
