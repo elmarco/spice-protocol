@@ -1,3 +1,28 @@
+Major changes in 0.8.1
+======================
+* Add support for volume change
+* Add support for async guest io writes and interrupt
+* Add support for suspend related guest io writes
+* Add support for interrupt indicating guest bug
+
+Major changes in 0.8.0
+======================
+* Add support for different clipboards (selections) to vd_agent copy paste
+* Add support for using different authentication mechanisms (just SASL for now)
+
+Major changes in 0.7.1
+======================
+* Add some enums for the xorg qxl driver
+* Some other small fixes
+
+Major changes in 0.7.0
+======================
+* Add smartcard channel
+
+Major changes in 0.6.4
+======================
+* Make controller client protocol menu text UTF8 rather then 16 bit unicode
+
 Major changes in 0.6.3:
 =======================
 * Add support for copy and paste to the agent protocol
