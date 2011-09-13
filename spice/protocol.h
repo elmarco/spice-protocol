@@ -37,7 +37,7 @@
 
 #define SPICE_MAGIC (*(uint32_t*)"REDQ")
 #define SPICE_VERSION_MAJOR 2
-#define SPICE_VERSION_MINOR 0
+#define SPICE_VERSION_MINOR 1
 
 // Encryption & Ticketing Parameters
 #define SPICE_MAX_PASSWORD_LENGTH 60
@@ -109,6 +109,10 @@ enum {
 enum {
     SPICE_RECORD_CAP_CELT_0_5_1,
     SPICE_RECORD_CAP_VOLUME,
+};
+
+enum {
+    SPICE_MAIN_CAP_SEMI_SEAMLESS_MIGRATE,
 };
 
 #include <spice/end-packed.h>
