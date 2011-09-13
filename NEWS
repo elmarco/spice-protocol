@@ -1,3 +1,7 @@
+Major changes in 0.9.1 (same as 0.8.2 in 0.8 branch)
+======================
+* Add support for semi-seamless migration
+
 Major changes in 0.9.0
 ======================
 * Add support for generic spicevmc chardev passthrough messages
