@@ -200,7 +200,6 @@ typedef struct SPICE_ATTR_PACKED QXLMemSlot {
 #define QXL_SURF_TYPE_PRIMARY      0
 
 #define QXL_SURF_FLAG_KEEP_DATA    (1 << 0)
-#define QXL_SURF_FLAG_GUEST_MEM    (1 << 1)
 
 typedef struct SPICE_ATTR_PACKED QXLSurfaceCreate {
     uint32_t width;
