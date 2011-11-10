@@ -157,7 +157,7 @@ do_cmd $AUTOHEADER
 do_cmd $AUTOMAKE $AUTOMAKE_FLAGS
 do_cmd $AUTOCONF
 
-cd $ORIGDIR || exit $?
+cd "$ORIGDIR" || exit $?
 rm -f config.cache
 
 do_cmd $srcdir/configure --enable-maintainer-mode ${1+"$@"} || exit 1
