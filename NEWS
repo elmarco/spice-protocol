@@ -1,3 +1,7 @@
+Major changes in 0.10.1
+=======================
+* Add support for a header without sublist and serial (mini header)
+
 Major changes in 0.10.0
 =======================
 * no changes, released to match version with spice
