@@ -37,7 +37,7 @@
 
 #define SPICE_MAGIC (*(uint32_t*)"REDQ")
 #define SPICE_VERSION_MAJOR 2
-#define SPICE_VERSION_MINOR 1
+#define SPICE_VERSION_MINOR 2
 
 // Encryption & Ticketing Parameters
 #define SPICE_MAX_PASSWORD_LENGTH 60
@@ -55,6 +55,7 @@ enum {
     SPICE_COMMON_CAP_PROTOCOL_AUTH_SELECTION,
     SPICE_COMMON_CAP_AUTH_SPICE,
     SPICE_COMMON_CAP_AUTH_SASL,
+    SPICE_COMMON_CAP_MINI_HEADER,
 };
 
 typedef struct SPICE_ATTR_PACKED SpiceLinkMess {
@@ -88,6 +89,11 @@ typedef struct SPICE_ATTR_PACKED SpiceDataHeader {
     uint32_t size;
     uint32_t sub_list; //offset to SpiceSubMessageList[]
 } SpiceDataHeader;
+
+typedef struct SPICE_ATTR_PACKED SpiceMiniDataHeader {
+    uint16_t type;
+    uint32_t size;
+} SpiceMiniDataHeader;
 
 typedef struct SPICE_ATTR_PACKED SpiceSubMessage {
     uint16_t type;
