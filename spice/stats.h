@@ -33,7 +33,7 @@
 
 #include <spice/types.h>
 
-#define SPICE_STAT_SHM_NAME "spice.%u"
+#define SPICE_STAT_SHM_NAME "/spice.%u"
 #define SPICE_STAT_NODE_NAME_MAX 20
 #define SPICE_STAT_MAGIC (*(uint32_t*)"STAT")
 #define SPICE_STAT_VERSION 1
