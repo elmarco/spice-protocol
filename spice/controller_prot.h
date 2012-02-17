@@ -73,6 +73,8 @@ enum {
     CONTROLLER_SHOW,
     CONTROLLER_HIDE,
 
+    CONTROLLER_ENABLE_SMARTCARD,
+
     //spice client -> extrenal app
     CONTROLLER_MENU_ITEM_CLICK = 1001,
 };
