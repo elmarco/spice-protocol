@@ -18,6 +18,7 @@
 #ifndef _H_FOREIGN_MENU_PROT
 #define _H_FOREIGN_MENU_PROT
 
+#include <spice/types.h>
 #include <spice/start-packed.h>
 
 #define FOREIGN_MENU_MAGIC      (*(uint32_t*)"FRGM")
