@@ -119,6 +119,7 @@ enum {
 
 enum {
     SPICE_MAIN_CAP_SEMI_SEAMLESS_MIGRATE,
+    SPICE_MAIN_CAP_NAME_AND_UUID,
 };
 
 #include <spice/end-packed.h>
