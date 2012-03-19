@@ -12,6 +12,8 @@ AM_CONFIG_HEADER([config.h])
 AM_INIT_AUTOMAKE([dist-bzip2])
 AM_MAINTAINER_MODE
 
+m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
+
 AC_OUTPUT([
 Makefile
 spice-protocol.pc
