@@ -122,6 +122,10 @@ enum {
     SPICE_MAIN_CAP_NAME_AND_UUID,
 };
 
+enum {
+    SPICE_DISPLAY_CAP_SIZED_STREAM,
+};
+
 #include <spice/end-packed.h>
 
 #endif /* _H_SPICE_PROTOCOL */
