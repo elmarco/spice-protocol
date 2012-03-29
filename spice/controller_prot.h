@@ -78,7 +78,7 @@ enum {
     CONTROLLER_COLOR_DEPTH,
     CONTROLLER_DISABLE_EFFECTS,
 
-    //spice client -> extrenal app
+    //spice client -> external app
     CONTROLLER_MENU_ITEM_CLICK = 1001,
 };
 
