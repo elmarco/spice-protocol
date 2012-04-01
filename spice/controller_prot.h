@@ -75,6 +75,9 @@ enum {
 
     CONTROLLER_ENABLE_SMARTCARD,
 
+    CONTROLLER_COLOR_DEPTH,
+    CONTROLLER_DISABLE_EFFECTS,
+
     //spice client -> extrenal app
     CONTROLLER_MENU_ITEM_CLICK = 1001,
 };
