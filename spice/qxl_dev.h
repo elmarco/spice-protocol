@@ -53,8 +53,8 @@ enum {
 #define QXL_DEVICE_ID_DEVEL 0x01ff
 #define QXL_REVISION_DEVEL 0x01
 
-#define QXL_ROM_MAGIC (*(uint32_t*)"QXRO")
-#define QXL_RAM_MAGIC (*(uint32_t*)"QXRA")
+#define QXL_ROM_MAGIC (*(const uint32_t*)"QXRO")
+#define QXL_RAM_MAGIC (*(const uint32_t*)"QXRA")
 
 enum {
     QXL_RAM_RANGE_INDEX,
