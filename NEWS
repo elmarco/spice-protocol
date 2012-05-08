@@ -1,3 +1,12 @@
+Major changes in 0.10.3 (0.10.2 was never released)
+===================================================
+* Add support for video streams with differently sized (wxh) data
+* Add controller messages for USB redirection, COLOR_DEPTH, DISABLE_EFFECTS,
+  and ENABLE_SMARTCARD
+* Add name & uuid messages on main channel
+* some cleanups
+* Fixes RHBZ#815422, RHBZ#807295, RHBZ#787447
+
 Major changes in 0.10.1
 =======================
 * Add support for a header without sublist and serial (mini header)
