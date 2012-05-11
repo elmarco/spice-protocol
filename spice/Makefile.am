@@ -13,6 +13,7 @@ spice_protocol_include_HEADERS =		\
 	macros.h				\
 	protocol.h				\
 	qxl_dev.h				\
+	qxl_windows.h				\
 	start-packed.h				\
 	stats.h					\
 	types.h					\
