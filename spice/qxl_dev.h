@@ -47,7 +47,8 @@
 enum {
     QXL_REVISION_STABLE_V04=0x01,
     QXL_REVISION_STABLE_V06=0x02,
-    QXL_REVISION_STABLE_V10=0x03
+    QXL_REVISION_STABLE_V10=0x03,
+    QXL_REVISION_STABLE_V12=0x04,
 };
 
 #define QXL_DEVICE_ID_DEVEL 0x01ff
@@ -93,6 +94,8 @@ enum {
     QXL_IO_DESTROY_ALL_SURFACES_ASYNC,
     QXL_IO_FLUSH_SURFACES_ASYNC,
     QXL_IO_FLUSH_RELEASE,
+    /* appended for qxl-4 */
+    QXL_IO_MONITORS_CONFIG_ASYNC,
 
     QXL_IO_RANGE_SIZE
 };
@@ -244,6 +247,12 @@ typedef struct SPICE_ATTR_PACKED QXLRam {
     QXLMemSlot mem_slot;
     QXLSurfaceCreate create_surface;
     uint64_t flags;
+
+    /* appended for qxl-4 */
+
+    /* used by QXL_IO_MONITORS_CONFIG_ASYNC */
+    QXLPHYSICAL monitors_config;
+
 } QXLRam;
 
 typedef union QXLReleaseInfo {
@@ -652,6 +661,26 @@ typedef struct SPICE_ATTR_PACKED QXLImage {
         QXLSurfaceId surface_image;
     };
 } QXLImage;
+
+/* A QXLHead is a single monitor output backed by a QXLSurface.
+ * x and y offsets are unsigned since they are used in relation to
+ * the given surface, not the same as the x, y coordinates in the guest
+ * screen reference frame. */
+typedef struct SPICE_ATTR_PACKED QXLHead {
+    uint32_t id;
+    uint32_t surface_id;
+    uint32_t width;
+    uint32_t height;
+    uint32_t x;
+    uint32_t y;
+    uint32_t flags;
+} QXLHead;
+
+typedef struct SPICE_ATTR_PACKED QXLMonitorsConfig {
+    uint16_t count;
+    uint16_t max_allowed; /* If it is 0 no fixed limit is given by the driver */
+    QXLHead heads[0];
+} QXLMonitorsConfig;
 
 #include <spice/end-packed.h>
 
