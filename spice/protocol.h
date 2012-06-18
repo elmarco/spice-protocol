@@ -125,6 +125,7 @@ enum {
 enum {
     SPICE_DISPLAY_CAP_SIZED_STREAM,
     SPICE_DISPLAY_CAP_MONITORS_CONFIG,
+    SPICE_DISPLAY_CAP_COMPOSITE,
 };
 
 #include <spice/end-packed.h>

@@ -347,6 +347,7 @@ enum {
     QXL_DRAW_TEXT,
     QXL_DRAW_TRANSPARENT,
     QXL_DRAW_ALPHA_BLEND,
+    QXL_DRAW_COMPOSITE
 };
 
 typedef struct SPICE_ATTR_PACKED QXLRasterGlyph {
@@ -487,6 +488,79 @@ typedef struct SPICE_ATTR_PACKED QXLClip {
     QXLPHYSICAL data;
 } QXLClip;
 
+typedef enum {
+    QXL_OP_CLEAR                     = 0x00,
+    QXL_OP_SOURCE		     = 0x01,
+    QXL_OP_DST                       = 0x02,
+    QXL_OP_OVER                      = 0x03,
+    QXL_OP_OVER_REVERSE              = 0x04,
+    QXL_OP_IN                        = 0x05,
+    QXL_OP_IN_REVERSE                = 0x06,
+    QXL_OP_OUT                       = 0x07,
+    QXL_OP_OUT_REVERSE               = 0x08,
+    QXL_OP_ATOP                      = 0x09,
+    QXL_OP_ATOP_REVERSE              = 0x0a,
+    QXL_OP_XOR                       = 0x0b,
+    QXL_OP_ADD                       = 0x0c,
+    QXL_OP_SATURATE                  = 0x0d,
+    /* Note the jump here from 0x0d to 0x30 */
+    QXL_OP_MULTIPLY                  = 0x30,
+    QXL_OP_SCREEN                    = 0x31,
+    QXL_OP_OVERLAY                   = 0x32,
+    QXL_OP_DARKEN                    = 0x33,
+    QXL_OP_LIGHTEN                   = 0x34,
+    QXL_OP_COLOR_DODGE               = 0x35,
+    QXL_OP_COLOR_BURN                = 0x36,
+    QXL_OP_HARD_LIGHT                = 0x37,
+    QXL_OP_SOFT_LIGHT                = 0x38,
+    QXL_OP_DIFFERENCE                = 0x39,
+    QXL_OP_EXCLUSION                 = 0x3a,
+    QXL_OP_HSL_HUE                   = 0x3b,
+    QXL_OP_HSL_SATURATION            = 0x3c,
+    QXL_OP_HSL_COLOR                 = 0x3d,
+    QXL_OP_HSL_LUMINOSITY            = 0x3e
+} QXLOperator;
+
+typedef struct {
+    uint32_t	t00;
+    uint32_t	t01;
+    uint32_t	t02;
+    uint32_t	t10;
+    uint32_t	t11;
+    uint32_t	t12;
+} QXLTransform;
+
+/* The flags field has the following bit fields:
+ *
+ *     operator:		[  0 -  7 ]
+ *     src_filter:		[  8 - 10 ]
+ *     mask_filter:		[ 11 - 13 ]
+ *     src_repeat:		[ 14 - 15 ]
+ *     mask_repeat:		[ 16 - 17 ]
+ *     component_alpha:		[ 18 - 18 ]
+ *     reserved:		[ 19 - 31 ]
+ *
+ * The repeat and filter values are those of pixman:
+ *		REPEAT_NONE =		0
+ *              REPEAT_NORMAL =		1
+ *		REPEAT_PAD =		2
+ *		REPEAT_REFLECT =	3
+ *
+ * The filter values are:
+ *		FILTER_NEAREST =	0
+ *		FILTER_BILINEAR	=	1
+ */
+typedef struct SPICE_ATTR_PACKED QXLComposite {
+    uint32_t		flags;
+
+    QXLPHYSICAL		src;
+    QXLPHYSICAL		src_transform;		/* May be NULL */
+    QXLPHYSICAL		mask;			/* May be NULL */
+    QXLPHYSICAL		mask_transform;		/* May be NULL */
+    QXLPoint16		src_origin;
+    QXLPoint16		mask_origin;
+} QXLComposite;
+
 typedef struct SPICE_ATTR_PACKED QXLCompatDrawable {
     QXLReleaseInfo release_info;
     uint8_t effect;
@@ -539,6 +613,7 @@ typedef struct SPICE_ATTR_PACKED QXLDrawable {
         QXLBlackness blackness;
         QXLInvers invers;
         QXLWhiteness whiteness;
+	QXLComposite composite;
     } u;
 } QXLDrawable;
 
