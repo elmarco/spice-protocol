@@ -1,3 +1,11 @@
+Major changes in 0.12.0
+=======================
+* Add support for arbitrary resolution on Windows QXL with
+  QXL_ESCAPE_SET_CUSTOM_DISPLAY
+* Add support for arbitrary resolution and multiple monitor per
+  display channel with QXLMonitorsConfig and co
+* build cleanup
+
 Major changes in 0.10.3 (0.10.2 was never released)
 ===================================================
 * Add support for video streams with differently sized (wxh) data
