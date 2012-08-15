@@ -130,6 +130,10 @@ enum {
     SPICE_DISPLAY_CAP_COMPOSITE,
 };
 
+enum {
+    SPICE_INPUTS_CAP_KEY_SCANCODE,
+};
+
 #include <spice/end-packed.h>
 
 #endif /* _H_SPICE_PROTOCOL */
