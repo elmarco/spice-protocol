@@ -148,7 +148,9 @@ typedef struct SPICE_ATTR_PACKED QXLRom {
     uint8_t slot_gen_bits;
     uint8_t slot_id_bits;
     uint8_t slot_generation;
-    uint8_t padding[3]; /* Padding to 32bit align */
+    /* appended for qxl-4 */
+    uint8_t client_present;
+    uint8_t client_capabilities[58];
 } QXLRom;
 
 /* qxl-1 compat: fixed */
@@ -231,6 +233,7 @@ SPICE_RING_DECLARE(QXLReleaseRing, uint64_t, QXL_RELEASE_RING_SIZE);
 #define QXL_INTERRUPT_CURSOR (1 << 1)
 #define QXL_INTERRUPT_IO_CMD (1 << 2)
 #define QXL_INTERRUPT_ERROR  (1 << 3)
+#define QXL_INTERRUPT_CLIENT (1 << 4)
 
 /* qxl-1 compat: append only */
 typedef struct SPICE_ATTR_PACKED QXLRam {
