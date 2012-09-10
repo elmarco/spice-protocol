@@ -125,6 +125,13 @@ typedef struct SPICE_ATTR_PACKED QXLRect {
     int32_t right;
 } QXLRect;
 
+typedef struct SPICE_ATTR_PACKED QXLURect {
+    uint32_t top;
+    uint32_t left;
+    uint32_t bottom;
+    uint32_t right;
+} QXLURect;
+
 /* qxl-1 compat: append only */
 typedef struct SPICE_ATTR_PACKED QXLRom {
     uint32_t magic;
@@ -151,7 +158,15 @@ typedef struct SPICE_ATTR_PACKED QXLRom {
     /* appended for qxl-4 */
     uint8_t client_present;
     uint8_t client_capabilities[58];
+    uint32_t client_monitors_config_crc;
+    struct {
+        uint16_t count;
+        uint16_t padding;
+        QXLURect heads[64];
+    } client_monitors_config;
 } QXLRom;
+
+#define CLIENT_MONITORS_CONFIG_CRC32_POLY 0xedb88320
 
 /* qxl-1 compat: fixed */
 typedef struct SPICE_ATTR_PACKED QXLMode {
@@ -234,6 +249,7 @@ SPICE_RING_DECLARE(QXLReleaseRing, uint64_t, QXL_RELEASE_RING_SIZE);
 #define QXL_INTERRUPT_IO_CMD (1 << 2)
 #define QXL_INTERRUPT_ERROR  (1 << 3)
 #define QXL_INTERRUPT_CLIENT (1 << 4)
+#define QXL_INTERRUPT_CLIENT_MONITORS_CONFIG  (1 << 5)
 
 /* qxl-1 compat: append only */
 typedef struct SPICE_ATTR_PACKED QXLRam {
