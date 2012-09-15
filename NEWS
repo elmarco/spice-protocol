@@ -1,3 +1,11 @@
+Major changes in 0.12.2
+=======================
+* Add A8 surface capability in display channel.
+* Add to qxl device support for:
+ * client present
+ * client capabilities
+ * client monitors configuration
+
 Major changes in 0.12.1
 =======================
 * Support seamless migration.
