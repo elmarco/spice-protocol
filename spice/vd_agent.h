@@ -69,8 +69,33 @@ enum {
     VD_AGENT_CLIPBOARD_GRAB,
     VD_AGENT_CLIPBOARD_REQUEST,
     VD_AGENT_CLIPBOARD_RELEASE,
+    VD_AGENT_FILE_XFER_START,
+    VD_AGENT_FILE_XFER_STATUS,
+    VD_AGENT_FILE_XFER_DATA,
     VD_AGENT_END_MESSAGE,
 };
+
+enum {
+    VD_AGENT_FILE_XFER_STATUS_CAN_SEND_DATA,
+    VD_AGENT_FILE_XFER_STATUS_CANCELLED,
+    VD_AGENT_FILE_XFER_STATUS_ERROR,
+};
+
+typedef struct SPICE_ATTR_PACKED VDAgentFileXferStatusMessage {
+   uint32_t id;
+   uint32_t result;
+} VDAgentFileXferStatusMessage;
+
+typedef struct SPICE_ATTR_PACKED VDAgentFileXferStartMessage {
+   uint32_t id;
+   uint8_t data[0];
+} VDAgentFileXferStartMessage;
+
+typedef struct SPICE_ATTR_PACKED VDAgentFileXferDataMessage {
+   uint32_t id;
+   uint64_t size;
+   uint8_t data[0];
+} VDAgentFileXferDataMessage;
 
 typedef struct SPICE_ATTR_PACKED VDAgentMonConfig {
     uint32_t height;
