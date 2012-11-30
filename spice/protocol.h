@@ -135,6 +135,12 @@ enum {
     SPICE_INPUTS_CAP_KEY_SCANCODE,
 };
 
+enum {
+    SPICE_PORT_EVENT_OPENED,
+    SPICE_PORT_EVENT_CLOSED,
+    SPICE_PORT_EVENT_BREAK,
+};
+
 #include <spice/end-packed.h>
 
 #endif /* _H_SPICE_PROTOCOL */
