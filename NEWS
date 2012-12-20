@@ -1,3 +1,7 @@
+Major changes in 0.12.3
+=======================
+* Add a generic "port" channel
+
 Major changes in 0.12.2
 =======================
 * Add A8 surface capability in display channel.
