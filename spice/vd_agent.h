@@ -98,6 +98,11 @@ typedef struct SPICE_ATTR_PACKED VDAgentFileXferDataMessage {
 } VDAgentFileXferDataMessage;
 
 typedef struct SPICE_ATTR_PACKED VDAgentMonConfig {
+    /*
+     * Note a width and height of 0 can be used to indicate a disabled
+     * monitor, this may only be used with agents with the
+     * VD_AGENT_CAP_SPARSE_MONITORS_CONFIG capability.
+     */
     uint32_t height;
     uint32_t width;
     uint32_t depth;
@@ -199,6 +204,7 @@ enum {
     VD_AGENT_CAP_DISPLAY_CONFIG,
     VD_AGENT_CAP_CLIPBOARD_BY_DEMAND,
     VD_AGENT_CAP_CLIPBOARD_SELECTION,
+    VD_AGENT_CAP_SPARSE_MONITORS_CONFIG,
     VD_AGENT_END_CAP,
 };
 
