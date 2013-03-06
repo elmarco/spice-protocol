@@ -1,3 +1,8 @@
+Major changes in 0.12.5
+=======================
+* Add agent file xfer success status
+* Add a client-disconnected agent message
+
 Major changes in 0.12.4
 =======================
 * Add agent file copy support.
