@@ -1,3 +1,10 @@
+Major changes in 0.12.6
+=======================
+* add adaptive video streaming support:
+  control playback latency and receive playback
+  reports from the client.
+* add agent capabilities for signaling guest line ending.
+
 Major changes in 0.12.5
 =======================
 * Add agent file xfer success status
