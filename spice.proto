@@ -678,6 +678,10 @@ struct Head {
     uint32 flags;
 };
 
+flags8 gl_scanout_flags {
+    Y0TOP
+};
+
 channel DisplayChannel : BaseChannel {
  server:
     message {
@@ -915,7 +919,23 @@ channel DisplayChannel : BaseChannel {
         uint32 timeout_ms;
     } stream_activate_report;
 
- client:
+    message {
+        unix_fd fd;
+        uint32 width;
+        uint32 height;
+        uint32 stride;
+        uint32 format; /* drm fourcc */
+        gl_scanout_flags flags;
+    } gl_scanout_unix;
+
+    message {
+        uint32 x;
+        uint32 y;
+        uint32 w;
+        uint32 h;
+    } gl_scanout_update;
+
+client:
     message {
 	uint8 pixmap_cache_id;
 	int64 pixmap_cache_size; //in pixels
