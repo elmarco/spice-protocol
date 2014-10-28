@@ -395,6 +395,12 @@ typedef enum SpiceVscMessageType {
     SPICE_VSC_MESSAGE_TYPE_ENUM_END
 } SpiceVscMessageType;
 
+typedef enum SpiceScanoutFlags {
+    SPICE_SCANOUT_FLAGS_Y0TOP = (1 << 0),
+
+    SPICE_SCANOUT_FLAGS_MASK = 0x1
+} SpiceScanoutFlags;
+
 enum {
     SPICE_CHANNEL_MAIN = 1,
     SPICE_CHANNEL_DISPLAY,
@@ -407,6 +413,7 @@ enum {
     SPICE_CHANNEL_USBREDIR,
     SPICE_CHANNEL_PORT,
     SPICE_CHANNEL_WEBDAV,
+    SPICE_CHANNEL_VIRGL,
 
     SPICE_END_CHANNEL
 };
@@ -644,6 +651,13 @@ enum {
     SPICE_MSGC_PORT_EVENT = 201,
 
     SPICE_MSGC_END_PORT
+};
+
+enum {
+    SPICE_MSG_VIRGL_SCANOUT_UNIX = 101,
+    SPICE_MSG_VIRGL_UPDATE,
+
+    SPICE_MSG_END_VIRGL
 };
 
 #endif /* _H_SPICE_ENUMS */

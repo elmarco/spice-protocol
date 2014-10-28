@@ -1373,6 +1373,33 @@ channel PortChannel : SpicevmcChannel {
 channel WebDAVChannel : PortChannel {
 };
 
+flags8 scanout_flags {
+    Y0TOP
+};
+
+channel VirglChannel : BaseChannel {
+ server:
+    message {
+        unix_fd fd;
+        uint32 width;
+        uint32 height;
+        uint32 stride;
+        uint32 format;
+        scanout_flags flags;
+        uint32 x;
+        uint32 y;
+        uint32 w;
+        uint32 h;
+    } scanout_unix = 101;
+
+    message {
+        uint32 x;
+        uint32 y;
+        uint32 w;
+        uint32 h;
+    } update;
+};
+
 protocol Spice {
     MainChannel main = 1;
     DisplayChannel display;
@@ -1385,4 +1412,5 @@ protocol Spice {
     UsbredirChannel usbredir;
     PortChannel port;
     WebDAVChannel webdav;
+    VirglChannel virgl;
 };
