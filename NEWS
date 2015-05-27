@@ -1,3 +1,12 @@
+Major changes in 0.12.8
+=======================
+* add LZ4 support
+* add audio volume synchronization
+* deprecate unused vdi-dev
+* add 'preferred-compression' message/capability
+* add a new Windows driver escape code to send
+  monitors capability from guest to client
+
 Major changes in 0.12.7
 =======================
 * add support for Webdav channel
