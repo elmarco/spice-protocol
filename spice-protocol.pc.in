@@ -1,5 +1,7 @@
 prefix=@prefix@
+exec_prefix=@exec_prefix@
 includedir=@includedir@
+codegendir=@libdir@/spice-protocol
 
 Name: spice-protocol
 Description: SPICE protocol headers
