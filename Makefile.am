@@ -1,5 +1,14 @@
 NULL =
-SUBDIRS = spice
+SUBDIRS = python_modules spice
+
+codegendir = $(libdir)/spice-protocol
+dist_codegen_DATA =			\
+	spice_codegen.py		\
+	spice.proto			\
+	spice1.proto			\
+	$(NULL)
+
+DISTCLEANFILES = *.pyc
 
 pkgconfigdir = $(datadir)/pkgconfig
 pkgconfig_DATA = spice-protocol.pc

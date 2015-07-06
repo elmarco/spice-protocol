@@ -18,4 +18,5 @@ AC_OUTPUT([
 Makefile
 spice-protocol.pc
 spice/Makefile
+python_modules/Makefile
 ])
