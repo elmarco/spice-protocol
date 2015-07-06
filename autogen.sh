@@ -11,7 +11,7 @@ test -z "$srcdir" && srcdir=.
     autoreconf --verbose --force --install
 )
 
-CONFIGURE_ARGS="--enable-maintainer-mode"
+CONFIGURE_ARGS="--enable-maintainer-mode --enable-code-generator"
 
 if [ -z "$NOCONFIGURE" ]; then
     echo "Running configure with $CONFIGURE_ARGS $@"
