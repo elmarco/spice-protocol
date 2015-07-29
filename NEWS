@@ -1,3 +1,9 @@
+Major changes in 0.12.9
+=======================
+* rename newly introduced SpiceImageCompress enum to SpiceImageCompression
+  as otherwise it was clashing with the definition used by older spice-server
+  releases, breaking QEMU build
+
 Major changes in 0.12.8
 =======================
 * add LZ4 support
