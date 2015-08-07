@@ -1,4 +1,5 @@
 NULL =
+ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = python_modules spice
 
 codegendir = $(libdir)/spice-protocol
