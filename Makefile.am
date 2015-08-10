@@ -4,9 +4,12 @@ SUBDIRS = python_modules spice
 
 codegendir = $(libdir)/spice-protocol
 dist_codegen_DATA =			\
-	spice_codegen.py		\
 	spice.proto			\
 	spice1.proto			\
+	$(NULL)
+
+dist_codegen_SCRIPTS =			\
+	spice_codegen.py		\
 	$(NULL)
 
 DISTCLEANFILES = *.pyc
