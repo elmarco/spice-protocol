@@ -18,10 +18,11 @@
 #ifndef _H_CONTROLLER_PROT
 #define _H_CONTROLLER_PROT
 
+#include <spice/macros.h>
 #include <spice/types.h>
 #include <spice/start-packed.h>
 
-#define CONTROLLER_MAGIC      (*(uint32_t*)"CTRL")
+#define CONTROLLER_MAGIC      SPICE_MAGIC_CONST("CTRL")
 #define CONTROLLER_VERSION    1
 
 

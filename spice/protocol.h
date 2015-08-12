@@ -33,9 +33,10 @@
 
 #include <spice/types.h>
 #include <spice/enums.h>
+#include <spice/macros.h>
 #include <spice/start-packed.h>
 
-#define SPICE_MAGIC (*(uint32_t*)"REDQ")
+#define SPICE_MAGIC SPICE_MAGIC_CONST("REDQ")
 #define SPICE_VERSION_MAJOR 2
 #define SPICE_VERSION_MINOR 2
 

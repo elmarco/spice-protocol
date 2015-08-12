@@ -18,10 +18,11 @@
 #ifndef _H_FOREIGN_MENU_PROT
 #define _H_FOREIGN_MENU_PROT
 
+#include <spice/macros.h>
 #include <spice/types.h>
 #include <spice/start-packed.h>
 
-#define FOREIGN_MENU_MAGIC      (*(uint32_t*)"FRGM")
+#define FOREIGN_MENU_MAGIC      SPICE_MAGIC_CONST("FRGM")
 #define FOREIGN_MENU_VERSION    1
 
 typedef struct SPICE_ATTR_PACKED FrgMenuInitHeader {

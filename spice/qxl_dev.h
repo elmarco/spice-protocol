@@ -36,6 +36,7 @@
 #include <spice/barrier.h>
 #include <spice/ipc_ring.h>
 #include <spice/enums.h>
+#include <spice/macros.h>
 
 #include <spice/start-packed.h>
 
@@ -54,8 +55,8 @@ enum {
 #define QXL_DEVICE_ID_DEVEL 0x01ff
 #define QXL_REVISION_DEVEL 0x01
 
-#define QXL_ROM_MAGIC (*(const uint32_t*)"QXRO")
-#define QXL_RAM_MAGIC (*(const uint32_t*)"QXRA")
+#define QXL_ROM_MAGIC SPICE_MAGIC_CONST("QXRO")
+#define QXL_RAM_MAGIC SPICE_MAGIC_CONST("QXRA")
 
 enum {
     QXL_RAM_RANGE_INDEX,
