@@ -416,10 +416,10 @@
 
 #if SPICE_ENDIAN == SPICE_ENDIAN_LITTLE
 #define SPICE_MAGIC_CONST(s) \
-    ((uint32_t)((s[0]&0xffu)|((s[1]&0xffu)<<8)|((s[2]&0xff)<<16)|((s[3]&0xffu)<<24)))
+    ((uint32_t)((s[0]&0xffu)|((s[1]&0xffu)<<8)|((s[2]&0xffu)<<16)|((s[3]&0xffu)<<24)))
 #else
 #define SPICE_MAGIC_CONST(s) \
-    ((uint32_t)((s[3]&0xffu)|((s[2]&0xffu)<<8)|((s[1]&0xff)<<16)|((s[0]&0xffu)<<24)))
+    ((uint32_t)((s[3]&0xffu)|((s[2]&0xffu)<<8)|((s[1]&0xffu)<<16)|((s[0]&0xffu)<<24)))
 #endif
 
 #endif /* _H_SPICE_MACROS */
