@@ -140,7 +140,7 @@
 #endif
 
 #define SPICE_CONTAINEROF(ptr, struct_type, member) \
-    ((struct_type *)((uint8_t *)(ptr) - SPICE_OFFSETOF(struct_type, member)))
+    ((struct_type *)(void *)((uint8_t *)(ptr) - SPICE_OFFSETOF(struct_type, member)))
 
 #define SPICE_MEMBER_P(struct_p, struct_offset)   \
     ((gpointer) ((guint8*) (struct_p) + (glong) (struct_offset)))
