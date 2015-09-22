@@ -1,3 +1,10 @@
+Major changes in 0.12.10
+========================
+* Add VD_AGENT_CAP_MONITORS_CONFIG_POSITION to handle multi-monitor
+  configurations that are not multi-head
+* Add protocol code generation scripts from spice-common
+* Endianness and compiler portability fixes (clang)
+
 Major changes in 0.12.9
 =======================
 * rename newly introduced SpiceImageCompress enum to SpiceImageCompression
