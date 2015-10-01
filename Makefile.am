@@ -2,7 +2,7 @@ NULL =
 ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = python_modules spice
 
-codegendir = $(libdir)/spice-protocol
+codegendir = $(datadir)/spice-protocol
 dist_codegen_DATA =			\
 	spice.proto			\
 	spice1.proto			\

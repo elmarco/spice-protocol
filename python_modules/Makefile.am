@@ -1,6 +1,6 @@
 NULL =
 
-python_codegendir = $(libdir)/spice-protocol/python_modules
+python_codegendir = $(datadir)/spice-protocol/python_modules
 dist_python_codegen_DATA =		\
 	__init__.py			\
 	codegen.py			\
